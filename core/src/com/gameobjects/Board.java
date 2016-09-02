@@ -18,6 +18,8 @@ public class Board extends Group {
     private int cols;
     private Tile[][] tiles;
 
+    private List<Region> regions;//list vs built in addActor?
+
     public Board(int rows, int cols) {
         super();
 
@@ -38,6 +40,8 @@ public class Board extends Group {
 
         setPosition(Gdx.graphics.getWidth() / 2 - getWidth() / 2, Gdx.graphics.getHeight() / 2 - getHeight() / 2);
         //System.out.println(getX() + ", " + getY());
+
+        regions = new ArrayList<Region>();
 
     }
 
@@ -85,6 +89,25 @@ public class Board extends Group {
         for (Tile t : tilesSelected){
             t.setSelected(true);
         }
+    }
+
+    public void addRegion(){
+        Region newRegion = new Region();
+        for (Actor actor : getChildren()) {
+            Tile tile = (Tile) actor;
+            if (tile.isAssigned()) {
+                //in this first run if a tile is already assigned, nullify the existing region
+            }
+        }
+        for (Actor actor : getChildren()) {
+            Tile tile = (Tile) actor;
+
+            if (tile.isSelected()){
+                tile.setAssigned(true);
+                newRegion.addActor(tile);
+            }
+        }
+        regions.add(newRegion);
     }
 
     public void assignColorToSelection(Color color){

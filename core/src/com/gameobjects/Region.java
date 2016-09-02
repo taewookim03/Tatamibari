@@ -1,5 +1,6 @@
 package com.gameobjects;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.Group;
 
 /**
@@ -8,5 +9,11 @@ import com.badlogic.gdx.scenes.scene2d.Group;
 public class Region extends Group {
     //Region contains tiles and stores information about the region such as:
     //symbol, symbol location, all tiles selected (part of group), color, etc.
+    private Color color;
+    private Tile symbolTile;
+
+    public Region(){
+
+    }
 
 }

@@ -75,7 +75,7 @@ public class GameWorld extends Stage {
                 lastTile = currentTile;
 
                 board.clearSelection();//to account for cases where selection shrinks
-                board.select(firstTile, lastTile);//selects a rectangular region and marks them red (for now)
+                board.select(firstTile, lastTile);//selects a rectangular region and marks them red* (for now)
 
                 System.out.println("(" + currentTile.getRow() + ", " + currentTile.getCol() + ")");
             }
@@ -89,10 +89,13 @@ public class GameWorld extends Stage {
         //clean up
         //set tiles' assigned to true to keep track of tiles that are assigned a color.
         board.assignColorToSelection(Color.RED);
+        board.addRegion();
 
         //if a new selection has overlaps with assigned tiles (checked at touchUp) then the old one will be invalidated.
         //need to make a board function to do that as well (keep assigned grouped together maybe use Group of actors?
         // each with diff color and symbol, which determines shape)
+
+        board.clearSelection();
 
         firstTile = null;
         lastTile = null;

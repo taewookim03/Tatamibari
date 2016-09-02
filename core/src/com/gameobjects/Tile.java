@@ -24,7 +24,7 @@ public class Tile extends Actor {//Actor vs Image?
     private int col;
 
     private boolean selected;//current selection (input handling)
-    private boolean assigned;//boolean for whether the tile has been assigned a color or not
+    private boolean assigned;//replace with hasParent/getParent of the Actor class
 
     //private Color color; //this is part of Actor class
     private Symbol symbol;
@@ -111,6 +111,8 @@ public class Tile extends Actor {//Actor vs Image?
             setColor(Color.WHITE);
         }
     }
+
+
 
     public Symbol getSymbol(){
         return symbol;
