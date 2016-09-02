@@ -24,7 +24,9 @@ public class Tile extends Actor {//Actor vs Image?
     private int col;
 
     private boolean selected;//current selection (input handling)
-    private boolean assigned;//replace with hasParent/getParent of the Actor class
+    //private boolean assigned;//replace with hasParent/getParent of the Actor class
+
+    private Region region;
 
     //private Color color; //this is part of Actor class
     private Symbol symbol;
@@ -41,7 +43,6 @@ public class Tile extends Actor {//Actor vs Image?
 
         setColor(Color.WHITE);
         symbol = Symbol.NONE;
-        assigned = false;
 
         sr = new ShapeRenderer();
         setBounds(getX(), getY(), getWidth(), getHeight());
@@ -94,14 +95,18 @@ public class Tile extends Actor {//Actor vs Image?
         return selected;
     }
 
-    public boolean isAssigned() {
-        return assigned;
+    public boolean isAssignedRegion() {
+        return region != null;
     }
 
-
-    public void setAssigned(boolean b){
-        assigned = b;
+    public void setRegion(Region region){
+        this.region = region;
     }
+
+    public void removeRegion(){
+        this.region = null;
+    }
+
     public void setSelected(boolean b){
         selected = b;
         if (selected){

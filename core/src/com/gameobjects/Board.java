@@ -92,10 +92,10 @@ public class Board extends Group {
     }
 
     public void addRegion(){
-        Region newRegion = new Region();
+        Region newRegion = new Region(Color.BLUE);
         for (Actor actor : getChildren()) {
             Tile tile = (Tile) actor;
-            if (tile.isAssigned()) {
+            if (tile.isAssignedRegion()) {
                 //in this first run if a tile is already assigned, nullify the existing region
             }
         }
@@ -103,8 +103,8 @@ public class Board extends Group {
             Tile tile = (Tile) actor;
 
             if (tile.isSelected()){
-                tile.setAssigned(true);
-                newRegion.addActor(tile);
+                tile.setRegion(newRegion);
+                newRegion.addTile(tile);
             }
         }
         regions.add(newRegion);

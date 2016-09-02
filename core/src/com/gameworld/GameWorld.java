@@ -7,6 +7,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.gameobjects.Board;
+import com.gameobjects.Region;
 import com.gameobjects.Tile;
 
 import java.util.HashSet;
@@ -42,7 +43,10 @@ public class GameWorld extends Stage {
 
     @Override
     public Tile hit(float stageX, float stageY, boolean touchable) {
-        return (Tile)super.hit(stageX, stageY, touchable);
+        if (super.hit(stageX, stageY, touchable)instanceof Tile){
+            return (Tile)super.hit(stageX, stageY, touchable);
+        }
+        return null;
     }
 
     @Override
@@ -88,8 +92,8 @@ public class GameWorld extends Stage {
 
         //clean up
         //set tiles' assigned to true to keep track of tiles that are assigned a color.
-        board.assignColorToSelection(Color.RED);
-        board.addRegion();
+        //board.assignColorToSelection(Color.RED);
+        //board.addRegion();
 
         //if a new selection has overlaps with assigned tiles (checked at touchUp) then the old one will be invalidated.
         //need to make a board function to do that as well (keep assigned grouped together maybe use Group of actors?
