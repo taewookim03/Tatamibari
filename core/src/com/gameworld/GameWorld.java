@@ -6,6 +6,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import com.gamelogic.GameLogic;
 import com.gameobjects.Board;
 import com.gameobjects.Region;
 import com.gameobjects.Tile;
@@ -31,10 +32,13 @@ public class GameWorld extends Stage {
     private Vector2 tileHitPosition;
     // containing all tiles in a rectangle from first tile to last tile (corner to corner)
 
+    private GameLogic logic;
+
     public GameWorld(int rows, int cols){
         super(new ScreenViewport());
 
         board = new Board(rows, cols);
+        logic = new GameLogic(board);
 
         addActor(board);
 
@@ -57,7 +61,7 @@ public class GameWorld extends Stage {
 
         if (firstTile != null){
 
-            newRegion = new Region(Color.LIGHT_GRAY);//instantiate a new region with a set color from list? (not implemented)
+            newRegion = new Region();//instantiate a new region with a set color from list? (not implemented)
 
             firstTile.setSelected(true, newRegion.getColor());
 
@@ -98,10 +102,12 @@ public class GameWorld extends Stage {
             return true;
         }
 
-        board.addRegion(newRegion);//add new region which was instantiated in touchDown
+        if (logic.checkRegionCompliance()){//check if adding a new region still complies with the tatamibari rules
+            board.addRegion(newRegion);//add new region which was instantiated in touchDown
+        }
 
         //System.out.println(board.getX() + ", " + board.getY() + ", " + board.getWidth() + ", " + board.getHeight());
-        
+
         //run some sort of game logic for rule checking e.g. logic member has board and and calls .checkRules function
 
         //if a new selection has overlaps with assigned tiles (checked at touchUp) then the old one will be invalidated.

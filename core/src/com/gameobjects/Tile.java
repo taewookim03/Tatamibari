@@ -20,6 +20,8 @@ public class Tile extends Actor {//Actor vs Image?
          */
     }
 
+    private static final float SYMBOL_THICKNESS = 2.5f;
+
     private int row;
     private int col;
 
@@ -37,7 +39,7 @@ public class Tile extends Actor {//Actor vs Image?
         super();
         this.row = row;
         this.col = col;
-        setPosition(row*50, col*50);
+        setPosition(col*50, row*50);
         setWidth(50);
         setHeight(50);
 
@@ -72,19 +74,50 @@ public class Tile extends Actor {//Actor vs Image?
     @Override
     public void draw(Batch batch, float parentAlpha) {
 
+        float screenX = getParent().getX() + getX();
+        float screenY = getParent().getY() + getY();
+
+        //draw tiles (white squares)
         sr.begin(ShapeRenderer.ShapeType.Filled);
         sr.setColor(getColor());
-        sr.rect(getParent().getX()+getX(), getParent().getY()+getY(), getWidth(), getHeight());
+        sr.rect(screenX, screenY, getWidth(), getHeight());
         sr.end();
 
         sr.begin(ShapeRenderer.ShapeType.Line);
+        //draw tile outline(thin gray lines)
         sr.setColor(Color.GRAY);
-        sr.rect(getParent().getX()+getX(), getParent().getY()+getY(), getWidth(), getHeight());
+        sr.rect(screenX, screenY, getWidth(), getHeight());
         sr.end();
 
-
-
+        //draw symbol
+        sr.begin(ShapeRenderer.ShapeType.Filled);
+        sr.setColor(Color.BLACK);
+        switch (symbol){
+            case HORIZONTAL:
+                drawSymbolHorizontal(sr, screenX, screenY, getWidth(), getHeight());
+                break;
+            case VERTICAL:
+                drawSymbolVertical(sr, screenX, screenY, getWidth(), getHeight());
+                break;
+            case SQUARE:
+                drawSymbolHorizontal(sr, screenX, screenY, getWidth(), getHeight());
+                drawSymbolVertical(sr, screenX, screenY, getWidth(), getHeight());
+                break;
+        }
+        sr.end();
     }
+
+    private void drawSymbolHorizontal(ShapeRenderer sr, float x, float y, float width, float height){
+        sr.rectLine(x + getWidth()/3, y + getHeight()/2,
+                x + getWidth()*2/3, y + getHeight()/2,
+                SYMBOL_THICKNESS);
+    }
+    private void drawSymbolVertical(ShapeRenderer sr, float x, float y, float width, float height){
+        sr.rectLine(x + getWidth()/2, y + getHeight()/3,
+                x + getWidth()/2, y + getHeight()*2/3,
+                SYMBOL_THICKNESS);
+    }
+
 
     public int getRow() {
         return row;

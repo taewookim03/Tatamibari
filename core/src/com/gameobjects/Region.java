@@ -26,12 +26,17 @@ public class Region {
 
     private static final float BORDER_THICKNESS = 3.0f;
 
-    public Region(Color color){
-        this.color = color;//idea: maybe color-code -, |, + ?
+    public Region(){
+        color = new Color(Color.rgba8888(255/255f, 255/255f, 224/255f, 0.5f));//alpha doesn't seem to change anything?
         tiles = new ArrayList<Tile>();
         sr = new ShapeRenderer();
         maxXY = new Vector2(0, 0);
         minXY = new Vector2(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+    }
+
+    public Region(Color color){//idea: maybe color-code -, |, + ?
+        this();
+        this.color = color;
     }
 
     public Color getColor(){

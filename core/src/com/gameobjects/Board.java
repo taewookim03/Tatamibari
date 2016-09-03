@@ -41,7 +41,7 @@ public class Board extends Group {
             }
         }
 
-        setWidth(tiles[0][0].getWidth() * cols);
+        setWidth(tiles[0][0].getWidth() * cols);//error handling?
         setHeight(tiles[0][0].getHeight() * rows);
 
         setPosition(Gdx.graphics.getWidth() / 2 - getWidth() / 2, Gdx.graphics.getHeight() / 2 - getHeight() / 2);
@@ -50,6 +50,11 @@ public class Board extends Group {
         regions = new ArrayList<Region>();
 
         sr = new ShapeRenderer();
+
+        //for testing symbol drawing
+        setSymbol(2, 2, Tile.Symbol.HORIZONTAL);
+        setSymbol(2, 3, Tile.Symbol.VERTICAL);
+        setSymbol(2, 4, Tile.Symbol.SQUARE);
 
     }
 
@@ -71,7 +76,7 @@ public class Board extends Group {
         return tiles[row][col];
     }
     */
-    /*
+
     public void setSymbol(int row, int col, Tile.Symbol symbol){
         Tile tile;
         try{
@@ -83,7 +88,6 @@ public class Board extends Group {
         }
         tile.setSymbol(symbol);
     }
-    */
 
     public void clearSelection(){
         for (Actor actor : getChildren()) {
