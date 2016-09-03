@@ -21,6 +21,7 @@ public class Region {
     private Color color;
     private Tile symbolTile;
     private List<Tile> tiles;
+
     private ShapeRenderer sr;
     private Vector2 maxXY, minXY;//for drawing the region (borders)
 
@@ -91,4 +92,11 @@ public class Region {
 
     }
 
+    public boolean hasOneSymbol(){
+        return true;
+    }
+
+    public boolean matchesSymbol(){
+        return true;
+    }
 }

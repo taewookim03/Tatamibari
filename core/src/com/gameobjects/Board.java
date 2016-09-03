@@ -125,8 +125,8 @@ public class Board extends Group {
         regions.remove(region);
     }
 
-    public void assignColorToSelection(Color color){
-
+    public List<Region> getRegions(){
+        return regions;
     }
 
     private Set<Tile> getRectangularSelection(Tile firstTile, Tile lastTile){
