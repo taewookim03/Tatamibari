@@ -3,6 +3,7 @@ package com.gameobjects;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 
@@ -20,6 +21,10 @@ public class Board extends Group {
     private Tile[][] tiles;
 
     private List<Region> regions;//maybe initialize regions with different colors
+
+    private ShapeRenderer sr;
+
+    private static final float OUTLINE_THICKNESS = 2.0f;
 
     public Board(int rows, int cols) {
         super();
@@ -43,6 +48,8 @@ public class Board extends Group {
         //System.out.println(getX() + ", " + getY());
 
         regions = new ArrayList<Region>();
+
+        sr = new ShapeRenderer();
 
     }
 
@@ -147,6 +154,16 @@ public class Board extends Group {
     @Override
     public void draw(Batch batch, float parentAlpha) {
         super.draw(batch, parentAlpha);
+
+        //draw the four edges of the board
+        sr.begin(ShapeRenderer.ShapeType.Filled);
+        sr.setColor(Color.BLACK);
+        sr.rectLine(getX(), getY(), getX() + getWidth(), getY(), OUTLINE_THICKNESS);//bottom
+        sr.rectLine(getX(), getY() + getHeight(), getX() + getWidth(), getY() + getHeight(), OUTLINE_THICKNESS);//top
+        sr.rectLine(getX(), getY(), getX(), getY() + getHeight(), OUTLINE_THICKNESS);//left
+        sr.rectLine(getX() + getWidth(), getY(), getX() + getWidth(), getY() + getHeight(), OUTLINE_THICKNESS);//right
+        sr.end();
+
         for (Region region : regions){
             region.draw(batch, parentAlpha);
         }

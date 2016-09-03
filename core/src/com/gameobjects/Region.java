@@ -27,7 +27,7 @@ public class Region {
     private static final float BORDER_THICKNESS = 3.0f;
 
     public Region(Color color){
-        this.color = color;
+        this.color = color;//idea: maybe color-code -, |, + ?
         tiles = new ArrayList<Tile>();
         sr = new ShapeRenderer();
         maxXY = new Vector2(0, 0);

@@ -100,6 +100,8 @@ public class GameWorld extends Stage {
 
         board.addRegion(newRegion);//add new region which was instantiated in touchDown
 
+        //System.out.println(board.getX() + ", " + board.getY() + ", " + board.getWidth() + ", " + board.getHeight());
+        
         //run some sort of game logic for rule checking e.g. logic member has board and and calls .checkRules function
 
         //if a new selection has overlaps with assigned tiles (checked at touchUp) then the old one will be invalidated.

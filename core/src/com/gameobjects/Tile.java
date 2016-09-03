@@ -78,7 +78,7 @@ public class Tile extends Actor {//Actor vs Image?
         sr.end();
 
         sr.begin(ShapeRenderer.ShapeType.Line);
-        sr.setColor(Color.BLACK);
+        sr.setColor(Color.GRAY);
         sr.rect(getParent().getX()+getX(), getParent().getY()+getY(), getWidth(), getHeight());
         sr.end();
 
