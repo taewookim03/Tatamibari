@@ -81,6 +81,9 @@ public class Tile extends Actor {//Actor vs Image?
         sr.setColor(Color.BLACK);
         sr.rect(getParent().getX()+getX(), getParent().getY()+getY(), getWidth(), getHeight());
         sr.end();
+
+
+
     }
 
     public int getRow() {
@@ -95,6 +98,10 @@ public class Tile extends Actor {//Actor vs Image?
         return selected;
     }
 
+    public Region getRegion(){
+        return region;
+    }
+
     public boolean isAssignedRegion() {
         return region != null;
     }
@@ -103,18 +110,18 @@ public class Tile extends Actor {//Actor vs Image?
         this.region = region;
     }
 
-    public void removeRegion(){
-        this.region = null;
+    public void setSelected(boolean b, Color color){
+        selected = b;
+        setColor(color);
+        /*
+        else{
+            setColor(Color.WHITE);
+        }
+        */
     }
 
     public void setSelected(boolean b){
         selected = b;
-        if (selected){
-            setColor(Color.RED);
-        }
-        else{
-            setColor(Color.WHITE);
-        }
     }
 
 

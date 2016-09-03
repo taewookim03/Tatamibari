@@ -26,15 +26,15 @@ public class GameWorld extends Stage {
     private Tile firstTile;
     private Tile lastTile;
 
+    private Region newRegion;
+
     private Vector2 tileHitPosition;
-    private Set<Tile> tilesSelected;//this needs to be a rectangular region
     // containing all tiles in a rectangle from first tile to last tile (corner to corner)
 
     public GameWorld(int rows, int cols){
         super(new ScreenViewport());
 
         board = new Board(rows, cols);
-        tilesSelected = new HashSet<Tile>();
 
         addActor(board);
 
@@ -43,7 +43,7 @@ public class GameWorld extends Stage {
 
     @Override
     public Tile hit(float stageX, float stageY, boolean touchable) {
-        if (super.hit(stageX, stageY, touchable)instanceof Tile){
+        if (super.hit(stageX, stageY, touchable) instanceof Tile){
             return (Tile)super.hit(stageX, stageY, touchable);
         }
         return null;
@@ -55,14 +55,13 @@ public class GameWorld extends Stage {
         firstTile = hit(tileHitPosition.x, tileHitPosition.y, false);//what was touchable again (3rd param)
         //Gdx.app.log("hit","registered by stage");
 
-        //encapsulate into a board function (something like addRegion)
         if (firstTile != null){
-            tilesSelected.add(firstTile);
 
-            board.clearSelection();
-            firstTile.setSelected(true);
+            newRegion = new Region(Color.LIGHT_GRAY);//instantiate a new region with a set color from list? (not implemented)
 
-            System.out.println("(" + firstTile.getRow() + ", " + firstTile.getCol() + ")");
+            firstTile.setSelected(true, newRegion.getColor());
+
+            //System.out.println("(" + firstTile.getRow() + ", " + firstTile.getCol() + ")");
             lastTile = firstTile;
         }
         return true;
@@ -79,9 +78,13 @@ public class GameWorld extends Stage {
                 lastTile = currentTile;
 
                 board.clearSelection();//to account for cases where selection shrinks
-                board.select(firstTile, lastTile);//selects a rectangular region and marks them red* (for now)
 
-                System.out.println("(" + currentTile.getRow() + ", " + currentTile.getCol() + ")");
+                board.select(firstTile, lastTile, newRegion.getColor());//selects a rectangular region and marks them
+                //make sure that the selection color covers the existing tiles for visibility
+
+                //maybe just do borders instead of coloring?
+
+                //System.out.println("(" + currentTile.getRow() + ", " + currentTile.getCol() + ")");
             }
         }
         return true;
@@ -89,16 +92,21 @@ public class GameWorld extends Stage {
 
     @Override
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
+        //Gdx.app.log("touchUp", "registered");
 
-        //clean up
-        //set tiles' assigned to true to keep track of tiles that are assigned a color.
-        //board.assignColorToSelection(Color.RED);
-        //board.addRegion();
+        if (newRegion == null){//if touchDown happens at a non-tile, then newRegion is not created.
+            return true;
+        }
+
+        board.addRegion(newRegion);//add new region which was instantiated in touchDown
+
+        //run some sort of game logic for rule checking e.g. logic member has board and and calls .checkRules function
 
         //if a new selection has overlaps with assigned tiles (checked at touchUp) then the old one will be invalidated.
         //need to make a board function to do that as well (keep assigned grouped together maybe use Group of actors?
         // each with diff color and symbol, which determines shape)
 
+        //clean up
         board.clearSelection();
 
         firstTile = null;

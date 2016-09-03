@@ -2,6 +2,7 @@ package com.gameobjects;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 
@@ -18,7 +19,7 @@ public class Board extends Group {
     private int cols;
     private Tile[][] tiles;
 
-    private List<Region> regions;//list vs built in addActor?
+    private List<Region> regions;//maybe initialize regions with different colors
 
     public Board(int rows, int cols) {
         super();
@@ -80,34 +81,37 @@ public class Board extends Group {
     public void clearSelection(){
         for (Actor actor : getChildren()) {
             Tile tile = (Tile) actor;
-            tile.setSelected(false);
+            tile.setSelected(false, Color.WHITE);//if multicolor scheme, should track previous color to revert to
         }
     }
 
-    public void select(Tile firstTile, Tile lastTile){
+    public void select(Tile firstTile, Tile lastTile, Color color){
         Set<Tile> tilesSelected = getRectangularSelection(firstTile, lastTile);
         for (Tile t : tilesSelected){
-            t.setSelected(true);
+            t.setSelected(true, color);
         }
     }
 
-    public void addRegion(){
-        Region newRegion = new Region(Color.BLUE);
+    public void addRegion(Region newRegion){
         for (Actor actor : getChildren()) {
             Tile tile = (Tile) actor;
-            if (tile.isAssignedRegion()) {
-                //in this first run if a tile is already assigned, nullify the existing region
+            if (tile.isSelected() && tile.isAssignedRegion()) {
+                //in this first run see if any tile is already assigned a region and nullify the existing region(s)
+                removeRegion(tile.getRegion());
+                tile.getRegion().clearRegionFromTiles();
             }
         }
         for (Actor actor : getChildren()) {
             Tile tile = (Tile) actor;
-
             if (tile.isSelected()){
-                tile.setRegion(newRegion);
-                newRegion.addTile(tile);
+                newRegion.addTile(tile);//sets color here as well
             }
         }
         regions.add(newRegion);
+    }
+
+    public void removeRegion(Region region){
+        regions.remove(region);
     }
 
     public void assignColorToSelection(Color color){
@@ -138,5 +142,13 @@ public class Board extends Group {
             }
         }
         return selection;
+    }
+
+    @Override
+    public void draw(Batch batch, float parentAlpha) {
+        super.draw(batch, parentAlpha);
+        for (Region region : regions){
+            region.draw(batch, parentAlpha);
+        }
     }
 }
