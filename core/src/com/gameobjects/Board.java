@@ -4,13 +4,11 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Created by Gayming on 8/31/2016.
@@ -55,7 +53,7 @@ public class Board extends Group {
         setSymbol(2, 2, Tile.Symbol.SQUARE);
         setSymbol(2, 3, Tile.Symbol.VERTICAL);
         setSymbol(0, 0, Tile.Symbol.HORIZONTAL);
-
+        setSymbol(0, 4, Tile.Symbol.SQUARE);
     }
 
     public Tile getTile(int row, int col) {
@@ -207,7 +205,32 @@ public class Board extends Group {
     }
 
     public boolean hasFourRegionCorner() {
-        //implement this after fixing the region row/col tracking (and region drawing)
+        //map of corner positions (Vector2 of xy) : count, return true if any count is 4 (can't be more than 4)
+        Map<Vector2, Integer> cornerCount = new HashMap<Vector2, Integer>();
+        Vector2[] corners = new Vector2[4];
+
+        for (Region region : regions){
+
+            corners[0] = region.getLowerLeftCorner();
+            corners[1] = region.getLowerRightCorner();
+            corners[2] = region.getUpperLeftCorner();
+            corners[3] = region.getUpperRightCorner();
+
+            for (Vector2 corner : corners){
+                if (cornerCount.containsKey(corner)){
+                    cornerCount.put(corner, cornerCount.get(corner) + 1);
+                }
+                else{
+                    cornerCount.put(corner, 1);
+                }
+            }
+        }
+
+        for (Vector2 corner : cornerCount.keySet()){
+            if (cornerCount.get(corner) == 4){
+                return true;
+            }
+        }
 
         return false;
     }

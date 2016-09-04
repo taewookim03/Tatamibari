@@ -22,6 +22,8 @@ public class Region {
     private Tile symbolTile;
     private List<Tile> tiles;
 
+    //private Vector2 upperLeft, upperRight, lowerLeft, lowerRight;
+
     private Board board;
 
     private ShapeRenderer sr;
@@ -98,18 +100,28 @@ public class Region {
         return tiles.get(tiles.size() - 1).getCol();
     }
 
+    public Vector2 getUpperLeftCorner(){
+        return new Vector2(tiles.get(0).getScreenX(), tiles.get(tiles.size() - 1).getScreenY() + symbolTile.getHeight());
+    }
+    public Vector2 getUpperRightCorner(){
+        return new Vector2(tiles.get(tiles.size() - 1).getScreenX() + symbolTile.getWidth(),
+                tiles.get(tiles.size() - 1).getScreenY() + symbolTile.getHeight());
+    }
+    public Vector2 getLowerLeftCorner(){
+        return new Vector2(tiles.get(0).getScreenX(), tiles.get(0).getScreenY());
+    }
+    public Vector2 getLowerRightCorner(){
+        return new Vector2(tiles.get(tiles.size() - 1).getScreenX() + symbolTile.getWidth(), tiles.get(0).getScreenY());
+    }
+
     public void draw(Batch batch, float parentAlpha){
         //Gdx.app.log("region", "draw function called");
 
-        Tile minTile = tiles.get(0);//this tile has the smallest row and col
+        float tileWidth = tiles.get(0).getWidth();
+        float tileHeight = tiles.get(0).getHeight();
 
-        float tileWidth = minTile.getWidth();
-        float tileHeight = minTile.getHeight();
-
-        Vector2 minXY = new Vector2(minTile.getScreenX(), minTile.getScreenY());
-
-        Tile maxTile = tiles.get(tiles.size() - 1);
-        Vector2 maxXY = new Vector2(maxTile.getScreenX() + tileWidth, maxTile.getScreenY() + tileHeight);
+        Vector2 minXY = getLowerLeftCorner();
+        Vector2 maxXY = getUpperRightCorner();
 
         //drawing border for the region
         sr.begin(ShapeRenderer.ShapeType.Filled);
