@@ -21,22 +21,33 @@ public class Region {
     private Color color;
     private Tile symbolTile;
     private List<Tile> tiles;
+    private int topRow, bottomRow, leftCol, rightCol;
+
+    private Board board;
 
     private ShapeRenderer sr;
     private Vector2 maxXY, minXY;//for drawing the region (borders)
 
     private static final float BORDER_THICKNESS = 3.0f;
 
-    public Region(){
+    public Region(Board board){
+        this.board = board;
+
         color = new Color(Color.rgba8888(255/255f, 255/255f, 224/255f, 0.5f));//alpha doesn't seem to change anything?
         tiles = new ArrayList<Tile>();
         sr = new ShapeRenderer();
+
+        topRow = 0;
+        bottomRow = board.getRows();
+        leftCol = board.getCols();
+        rightCol = 0;
+
         maxXY = new Vector2(0, 0);
         minXY = new Vector2(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
     }
 
-    public Region(Color color){//idea: maybe color-code -, |, + ?
-        this();
+    public Region(Board board, Color color){//idea: maybe color-code -, |, + ?
+        this(board);
         this.color = color;
     }
 
@@ -44,11 +55,43 @@ public class Region {
         return color;
     }
 
+    public void addSelectedTiles(){
+        for (Actor actor : board.getChildren()) {
+            Tile tile = (Tile) actor;
+            if (tile.isSelected()){
+                addTile(tile);//sets color here as well and gets the position data for drawing the region
+                //region takes the first symbol process as the symbol (checked for multiple symbols in other function)
+                if (tile.getSymbol() != Tile.Symbol.NONE && symbolTile == null){
+                    symbolTile = tile;
+                    //System.out.println("symbol Tile: " + symbolTile.toString());
+                }
+            }
+        }
+    }
+
     public void addTile(Tile tile){
         tile.setRegion(this);
         tile.setColor(color);
         tiles.add(tile);
 
+        /*
+        int tileRow = tile.getRow();
+        int tileCol = tile.getCol();
+
+        if (tileRow < bottomRow){
+            bottomRow = tileRow;
+        }
+        else if (tileRow > topRow){
+            topRow = tileRow;
+        }
+        if (tileCol < leftCol){
+            leftCol = tileCol;
+        }
+        else if (tileCol > rightCol){
+            rightCol = tileCol;
+        }
+        */
+        //REPLACE BELOW WITH A MORE ELEGANT REGION DIMENSION FUNCTIONS
         //check to update min/max corner coordinates of the region
         Vector2 tilePosition = new Vector2(tile.getParent().getX() + tile.getX(), tile.getParent().getY() + tile.getY());
         if (tilePosition.x < minXY.x){
@@ -69,12 +112,45 @@ public class Region {
 
     public void clearRegionFromTiles(){
         for (Tile tile : tiles){
-            tile.setRegion(null);
-            tile.setColor(Color.WHITE);
+            if (this.equals(tile.getRegion())){
+                tile.setRegion(null);
+                tile.setColor(Color.WHITE);
+            }
+            if (this.equals(tile.getPrevRegion())){
+                tile.setPrevRegion(null);
+            }
+
         }
         tiles.clear();
-
     }
+
+    public List<Tile> getTiles(){
+        return tiles;
+    }
+
+    /*
+    public int getMinRow(){
+        int minRow = board.getRows();//if empty then this function returns 0
+        for (Tile tile : tiles){
+            int row = tile.getRow();
+            if (row < minRow) {
+                minRow = row;
+            }
+        }
+        return minRow;
+    }
+
+    public int getMaxRow() {
+        int maxRow = 0;
+        for (Tile tile : tiles) {
+            int row = tile.getRow();
+            if (row > maxRow) {
+                maxRow = row;
+            }
+        }
+        return maxRow;
+    }
+    */
 
     public void draw(Batch batch, float parentAlpha){
         //Gdx.app.log("region", "draw function called");
@@ -93,10 +169,38 @@ public class Region {
     }
 
     public boolean hasOneSymbol(){
-        return true;
+        //count symbol tiles
+        int symbolCount = 0;
+        for (Tile tile : tiles){
+            if(tile.getSymbol() != Tile.Symbol.NONE){
+                symbolCount++;
+            }
+        }
+        return symbolCount == 1;
     }
 
     public boolean matchesSymbol(){
-        return true;
+        int numRows = Math.abs(tiles.get(tiles.size() - 1).getRow() - tiles.get(0).getRow()) + 1;
+        int numCols = Math.abs(tiles.get(tiles.size() - 1).getCol() - tiles.get(0).getCol()) + 1;
+
+        switch(symbolTile.getSymbol()){
+            case HORIZONTAL:
+                return numCols > numRows;
+            case VERTICAL:
+                return numRows > numCols;
+            case SQUARE:
+                return numRows == numCols;
+        }
+
+        return false;
+    }
+
+    @Override
+    public String toString() {
+        String str = "region containing tiles:\n";
+        for (Tile t : tiles){
+            str += t + "\n";
+        }
+        return str;
     }
 }

@@ -16,7 +16,7 @@ public class GameLogic {
     public boolean checkRegionCompliance(){
         //check if each region holds one symbol and
         for (Region region : board.getRegions()){
-            if (!(region.hasOneSymbol())){//&& region matches symbol - add later
+            if (!(region.hasOneSymbol() && region.matchesSymbol())){//&& region matches symbol - add later
                 return false;
             }
         }

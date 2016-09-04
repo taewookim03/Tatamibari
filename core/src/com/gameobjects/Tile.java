@@ -29,6 +29,7 @@ public class Tile extends Actor {//Actor vs Image?
     //private boolean assigned;//replace with hasParent/getParent of the Actor class
 
     private Region region;
+    private Region prevRegion;
 
     //private Color color; //this is part of Actor class
     private Symbol symbol;
@@ -135,12 +136,25 @@ public class Tile extends Actor {//Actor vs Image?
         return region;
     }
 
+    public Region getPrevRegion(){
+        return prevRegion;
+    }
+
     public boolean isAssignedRegion() {
         return region != null;
     }
 
+    public boolean wasAssignedRegion(){
+        return prevRegion != null;
+    }
+
     public void setRegion(Region region){
+        prevRegion = this.region;
         this.region = region;
+    }
+
+    public void setPrevRegion(Region region){
+        prevRegion = region;
     }
 
     public void setSelected(boolean b, Color color){
@@ -167,4 +181,8 @@ public class Tile extends Actor {//Actor vs Image?
         this.symbol = symbol;
     }
 
+    @Override
+    public String toString() {
+        return "row: " + getRow() + ", col: " + getCol();
+    }
 }

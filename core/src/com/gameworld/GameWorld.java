@@ -12,6 +12,7 @@ import com.gameobjects.Region;
 import com.gameobjects.Tile;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -61,7 +62,7 @@ public class GameWorld extends Stage {
 
         if (firstTile != null){
 
-            newRegion = new Region();//instantiate a new region with a set color from list? (not implemented)
+            newRegion = new Region(board);//instantiate a new region with a set color from list? (not implemented)
 
             firstTile.setSelected(true, newRegion.getColor());
 
@@ -102,8 +103,23 @@ public class GameWorld extends Stage {
             return true;
         }
 
+        board.addRegion(newRegion);//add new region which was instantiated in touchDown
+
+        //System.out.println("one symbol: " + newRegion.hasOneSymbol());
+        //System.out.println("symbol match: " + newRegion.matchesSymbol());
+
         if (logic.checkRegionCompliance()){//check if adding a new region still complies with the tatamibari rules
-            board.addRegion(newRegion);//add new region which was instantiated in touchDown
+            /*
+            List<Tile> tiles = newRegion.getTiles();
+            System.out.println(tiles.get(0).getRow() + ", " + tiles.get(0).getCol() + ", " +
+                    tiles.get(tiles.size()-1).getRow() + ", " +tiles.get(tiles.size()-1).getCol());
+                    */
+
+            //if compliant, clear existing region from overlapping tiles
+            board.clearOverlappingRegions(newRegion);
+        }
+        else{
+            board.removeRegion(newRegion);
         }
 
         //System.out.println(board.getX() + ", " + board.getY() + ", " + board.getWidth() + ", " + board.getHeight());

@@ -103,26 +103,40 @@ public class Board extends Group {
         }
     }
 
+    public void addTempRegion(Region tempRegion){
+
+    }
     public void addRegion(Region newRegion){
-        for (Actor actor : getChildren()) {
-            Tile tile = (Tile) actor;
-            if (tile.isSelected() && tile.isAssignedRegion()) {
-                //in this first run see if any tile is already assigned a region and nullify the existing region(s)
-                removeRegion(tile.getRegion());
-                tile.getRegion().clearRegionFromTiles();
-            }
-        }
-        for (Actor actor : getChildren()) {
-            Tile tile = (Tile) actor;
-            if (tile.isSelected()){
-                newRegion.addTile(tile);//sets color here as well
-            }
-        }
+        newRegion.addSelectedTiles();
+
         regions.add(newRegion);
     }
 
     public void removeRegion(Region region){
+        region.clearRegionFromTiles();
         regions.remove(region);
+    }
+
+    public void clearOverlappingRegions(Region newRegion){
+        for (Actor actor : getChildren()) {
+            Tile tile = (Tile) actor;
+
+            if(tile.isSelected()){
+                System.out.println("selected tile: " + tile);
+                System.out.println("assigned: " + tile.isAssignedRegion());
+                if (tile.isAssignedRegion()){
+                    System.out.println("region is newRegion: " + tile.getRegion().equals(newRegion));
+                }
+                System.out.println();
+            }
+
+            //if tile is selected then it was already assigned a region. check assigned prev region
+            if (tile.isSelected() && tile.wasAssignedRegion()) {
+                //in this first run see if any tile is already assigned a region and nullify the existing region(s)
+                System.out.println(tile.getPrevRegion());
+                removeRegion(tile.getPrevRegion());
+            }
+        }
     }
 
     public List<Region> getRegions(){
@@ -131,6 +145,10 @@ public class Board extends Group {
 
     private Set<Tile> getRectangularSelection(Tile firstTile, Tile lastTile){
         Set<Tile> selection = new HashSet<Tile>();
+        if (firstTile == null || lastTile == null){
+            return selection;
+        }
+
         int row1 = firstTile.getRow();
         int col1 = firstTile.getCol();
         int row2 = lastTile.getRow();
@@ -153,6 +171,14 @@ public class Board extends Group {
             }
         }
         return selection;
+    }
+
+    public int getRows() {
+        return rows;
+    }
+
+    public int getCols() {
+        return cols;
     }
 
     @Override
