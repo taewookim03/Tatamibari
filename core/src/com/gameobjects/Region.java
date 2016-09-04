@@ -116,16 +116,18 @@ public class Region {
                 tile.setRegion(null);
                 tile.setColor(Color.WHITE);
             }
-            if (this.equals(tile.getPrevRegion())){
-                tile.setPrevRegion(null);
-            }
-
         }
         tiles.clear();
     }
 
     public List<Tile> getTiles(){
         return tiles;
+    }
+
+    public void refresh(){
+        for (Tile tile : tiles){
+            tile.setRegion(this);
+        }
     }
 
     /*

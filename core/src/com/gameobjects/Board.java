@@ -113,29 +113,33 @@ public class Board extends Group {
     }
 
     public void removeRegion(Region region){
+        System.out.println("deleting region: " + region);
         region.clearRegionFromTiles();
         regions.remove(region);
     }
 
-    public void clearOverlappingRegions(Region newRegion){
-        for (Actor actor : getChildren()) {
-            Tile tile = (Tile) actor;
+    public void clearOverlappingRegions(){
+        Set<Region> toBeRemoved = new HashSet<Region>();
 
-            if(tile.isSelected()){
-                System.out.println("selected tile: " + tile);
-                System.out.println("assigned: " + tile.isAssignedRegion());
-                if (tile.isAssignedRegion()){
-                    System.out.println("region is newRegion: " + tile.getRegion().equals(newRegion));
+        for (Region region : regions){
+            //for each region, check if it contains tiles whose assigned region is not itself (because it was assigned newRegion)
+            //delete such regions
+            for (Tile tile : region.getTiles()){
+                if (!region.equals(tile.getRegion())){
+                    toBeRemoved.add(region);
+                    System.out.println("tile " + tile + " is part of:\n" + region + "\nbut getRegion() returns: " + tile.getRegion());
                 }
-                System.out.println();
             }
+        }
 
-            //if tile is selected then it was already assigned a region. check assigned prev region
-            if (tile.isSelected() && tile.wasAssignedRegion()) {
-                //in this first run see if any tile is already assigned a region and nullify the existing region(s)
-                System.out.println(tile.getPrevRegion());
-                removeRegion(tile.getPrevRegion());
-            }
+        for (Region region : toBeRemoved){
+            removeRegion(region);
+        }
+    }
+
+    public void refreshRegions(){
+        for (Region region : regions){
+            region.refresh();
         }
     }
 

@@ -116,11 +116,12 @@ public class GameWorld extends Stage {
                     */
 
             //if compliant, clear existing region from overlapping tiles
-            board.clearOverlappingRegions(newRegion);
+            board.clearOverlappingRegions();
         }
         else{
             board.removeRegion(newRegion);
         }
+        board.refreshRegions();
 
         //System.out.println(board.getX() + ", " + board.getY() + ", " + board.getWidth() + ", " + board.getHeight());
 
