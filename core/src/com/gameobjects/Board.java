@@ -93,6 +93,9 @@ public class Board extends Group {
         for (Actor actor : getChildren()) {
             Tile tile = (Tile) actor;
             tile.setSelected(false);//if multicolor scheme, should track previous color to revert to
+            if (tile.getRegion() == null){
+                tile.setColor(Color.WHITE);
+            }
         }
     }
 

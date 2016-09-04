@@ -71,11 +71,18 @@ public class Tile extends Actor {//Actor vs Image?
         */
     }
 
+    public float getScreenX(){
+        return getParent().getX() + getX();
+    }
+    public float getScreenY(){
+        return getParent().getY() + getY();
+    }
+
     @Override
     public void draw(Batch batch, float parentAlpha) {
 
-        float screenX = getParent().getX() + getX();
-        float screenY = getParent().getY() + getY();
+        float screenX = getScreenX();
+        float screenY = getScreenY();
 
         //draw tiles (white squares)
         sr.begin(ShapeRenderer.ShapeType.Filled);
@@ -142,6 +149,13 @@ public class Tile extends Actor {//Actor vs Image?
 
     public void setRegion(Region region){
         this.region = region;
+        if (region == null){
+            this.setColor(Color.WHITE);
+        }
+        else{
+            this.setColor(region.getColor());
+        }
+        //this.setColor(region.getColor());
     }
 
     public void setSelected(boolean b, Color color){

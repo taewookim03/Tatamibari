@@ -25,19 +25,14 @@ public class Region {
     private Board board;
 
     private ShapeRenderer sr;
-    private Vector2 maxXY, minXY;//for drawing the region (borders)
 
     private static final float BORDER_THICKNESS = 3.0f;
 
     public Region(Board board){
         this.board = board;
-
         color = new Color(Color.rgba8888(255/255f, 255/255f, 224/255f, 0.5f));//alpha doesn't seem to change anything?
         tiles = new ArrayList<Tile>();
         sr = new ShapeRenderer();
-
-        maxXY = new Vector2(0, 0);
-        minXY = new Vector2(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
     }
 
     public Region(Board board, Color color){//idea: maybe color-code -, |, + ?
@@ -68,22 +63,6 @@ public class Region {
         tile.setColor(color);
         tiles.add(tile);
 
-        //REPLACE BELOW WITH A MORE ELEGANT REGION DIMENSION FUNCTIONS
-        //check to update min/max corner coordinates of the region
-        Vector2 tilePosition = new Vector2(tile.getParent().getX() + tile.getX(), tile.getParent().getY() + tile.getY());
-        if (tilePosition.x < minXY.x){
-            minXY.x = tilePosition.x;
-        }
-        if (tilePosition.x + tile.getWidth() > maxXY.x){
-            maxXY.x = tilePosition.x + tile.getWidth();
-        }
-        if (tilePosition.y < minXY.y){
-            minXY.y = tilePosition.y;
-        }
-        if (tilePosition.y + tile.getHeight() > maxXY.y){
-            maxXY.y = tilePosition.y + tile.getHeight();
-        }
-
     }
     //need some kind of a container of colors to assign to each region and free up as a region is deleted, etc.
 
@@ -91,7 +70,6 @@ public class Region {
         for (Tile tile : tiles){
             if (this.equals(tile.getRegion())){
                 tile.setRegion(null);
-                tile.setColor(Color.WHITE);
             }
         }
         tiles.clear();
@@ -123,8 +101,16 @@ public class Region {
     public void draw(Batch batch, float parentAlpha){
         //Gdx.app.log("region", "draw function called");
 
-        float tileWidth = tiles.get(0).getWidth();
-        //Vector2
+        Tile minTile = tiles.get(0);//this tile has the smallest row and col
+
+        float tileWidth = minTile.getWidth();
+        float tileHeight = minTile.getHeight();
+
+        Vector2 minXY = new Vector2(minTile.getScreenX(), minTile.getScreenY());
+
+        Tile maxTile = tiles.get(tiles.size() - 1);
+        Vector2 maxXY = new Vector2(maxTile.getScreenX() + tileWidth, maxTile.getScreenY() + tileHeight);
+
         //drawing border for the region
         sr.begin(ShapeRenderer.ShapeType.Filled);
         sr.setColor(Color.BLACK);
