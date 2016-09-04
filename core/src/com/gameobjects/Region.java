@@ -21,7 +21,6 @@ public class Region {
     private Color color;
     private Tile symbolTile;
     private List<Tile> tiles;
-    private int topRow, bottomRow, leftCol, rightCol;
 
     private Board board;
 
@@ -36,11 +35,6 @@ public class Region {
         color = new Color(Color.rgba8888(255/255f, 255/255f, 224/255f, 0.5f));//alpha doesn't seem to change anything?
         tiles = new ArrayList<Tile>();
         sr = new ShapeRenderer();
-
-        topRow = 0;
-        bottomRow = board.getRows();
-        leftCol = board.getCols();
-        rightCol = 0;
 
         maxXY = new Vector2(0, 0);
         minXY = new Vector2(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
@@ -74,23 +68,6 @@ public class Region {
         tile.setColor(color);
         tiles.add(tile);
 
-        /*
-        int tileRow = tile.getRow();
-        int tileCol = tile.getCol();
-
-        if (tileRow < bottomRow){
-            bottomRow = tileRow;
-        }
-        else if (tileRow > topRow){
-            topRow = tileRow;
-        }
-        if (tileCol < leftCol){
-            leftCol = tileCol;
-        }
-        else if (tileCol > rightCol){
-            rightCol = tileCol;
-        }
-        */
         //REPLACE BELOW WITH A MORE ELEGANT REGION DIMENSION FUNCTIONS
         //check to update min/max corner coordinates of the region
         Vector2 tilePosition = new Vector2(tile.getParent().getX() + tile.getX(), tile.getParent().getY() + tile.getY());
@@ -130,33 +107,24 @@ public class Region {
         }
     }
 
-    /*
-    public int getMinRow(){
-        int minRow = board.getRows();//if empty then this function returns 0
-        for (Tile tile : tiles){
-            int row = tile.getRow();
-            if (row < minRow) {
-                minRow = row;
-            }
-        }
-        return minRow;
+    public int getBottomRow(){
+        return tiles.get(0).getRow();
     }
-
-    public int getMaxRow() {
-        int maxRow = 0;
-        for (Tile tile : tiles) {
-            int row = tile.getRow();
-            if (row > maxRow) {
-                maxRow = row;
-            }
-        }
-        return maxRow;
+    public int getTopRow(){
+        return tiles.get(tiles.size() - 1).getRow();
     }
-    */
+    public int getLeftCol(){
+        return tiles.get(0).getCol();
+    }
+    public int getRightCol(){
+        return tiles.get(tiles.size() - 1).getCol();
+    }
 
     public void draw(Batch batch, float parentAlpha){
         //Gdx.app.log("region", "draw function called");
 
+        float tileWidth = tiles.get(0).getWidth();
+        //Vector2
         //drawing border for the region
         sr.begin(ShapeRenderer.ShapeType.Filled);
         sr.setColor(Color.BLACK);

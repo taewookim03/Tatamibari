@@ -14,12 +14,18 @@ public class GameLogic {
     }
 
     public boolean checkRegionCompliance(){
-        //check if each region holds one symbol and
+        //check if each region holds one symbol and it satisfies the symbol requirement
         for (Region region : board.getRegions()){
-            if (!(region.hasOneSymbol() && region.matchesSymbol())){//&& region matches symbol - add later
+            if (!(region.hasOneSymbol() && region.matchesSymbol())){
                 return false;
             }
         }
+
+        //check the 4-corner rule
+        if (board.hasFourRegionCorner()){
+            return false;
+        }
+
         return true;
     }
 }

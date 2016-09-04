@@ -52,9 +52,9 @@ public class Board extends Group {
         sr = new ShapeRenderer();
 
         //for testing symbol drawing
-        setSymbol(2, 2, Tile.Symbol.HORIZONTAL);
+        setSymbol(2, 2, Tile.Symbol.SQUARE);
         setSymbol(2, 3, Tile.Symbol.VERTICAL);
-        setSymbol(2, 4, Tile.Symbol.SQUARE);
+        setSymbol(0, 0, Tile.Symbol.HORIZONTAL);
 
     }
 
@@ -92,7 +92,7 @@ public class Board extends Group {
     public void clearSelection(){
         for (Actor actor : getChildren()) {
             Tile tile = (Tile) actor;
-            tile.setSelected(false, Color.WHITE);//if multicolor scheme, should track previous color to revert to
+            tile.setSelected(false);//if multicolor scheme, should track previous color to revert to
         }
     }
 
@@ -113,7 +113,7 @@ public class Board extends Group {
     }
 
     public void removeRegion(Region region){
-        System.out.println("deleting region: " + region);
+        //System.out.println("deleting region: " + region);
         region.clearRegionFromTiles();
         regions.remove(region);
     }
@@ -127,7 +127,7 @@ public class Board extends Group {
             for (Tile tile : region.getTiles()){
                 if (!region.equals(tile.getRegion())){
                     toBeRemoved.add(region);
-                    System.out.println("tile " + tile + " is part of:\n" + region + "\nbut getRegion() returns: " + tile.getRegion());
+                    //System.out.println("tile " + tile + " is part of:\n" + region + "\nbut getRegion() returns: " + tile.getRegion());
                 }
             }
         }
@@ -201,5 +201,11 @@ public class Board extends Group {
         for (Region region : regions){
             region.draw(batch, parentAlpha);
         }
+    }
+
+    public boolean hasFourRegionCorner() {
+        //implement this after fixing the region row/col tracking (and region drawing)
+
+        return false;
     }
 }

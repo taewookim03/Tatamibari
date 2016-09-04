@@ -105,6 +105,13 @@ public class GameWorld extends Stage {
 
         board.addRegion(newRegion);//add new region which was instantiated in touchDown
 
+        /*
+        System.out.println(newRegion.getBottomRow());
+        System.out.println(newRegion.getTopRow());
+        System.out.println(newRegion.getLeftCol());
+        System.out.println(newRegion.getRightCol());
+        */
+
         //System.out.println("one symbol: " + newRegion.hasOneSymbol());
         //System.out.println("symbol match: " + newRegion.matchesSymbol());
 
