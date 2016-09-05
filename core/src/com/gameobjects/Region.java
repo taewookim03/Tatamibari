@@ -26,6 +26,7 @@ public class Region {
 
     private Board board;
 
+    private boolean draw;
     private ShapeRenderer sr;
 
     private static final float BORDER_THICKNESS = 3.0f;
@@ -34,6 +35,7 @@ public class Region {
         this.board = board;
         color = new Color(Color.rgba8888(255/255f, 255/255f, 0/255f, 0.3f));
         tiles = new ArrayList<Tile>();
+        draw = true;
         sr = new ShapeRenderer();
     }
 
@@ -85,6 +87,7 @@ public class Region {
         for (Tile tile : tiles){
             tile.setRegion(this);
         }
+        setDraw(true);
     }
 
     public int getBottomRow(){
@@ -114,26 +117,41 @@ public class Region {
         return new Vector2(tiles.get(tiles.size() - 1).getScreenX() + symbolTile.getWidth(), tiles.get(0).getScreenY());
     }
 
+    public void setDraw(boolean d){
+        draw = d;
+        if (draw){
+            for (Tile tile : tiles){
+                tile.setColor(color);
+            }
+        }
+        else{
+            for (Tile tile : tiles){
+                tile.setColor(Color.WHITE);
+            }
+        }
+    }
+
     public void draw(Batch batch, float parentAlpha){
         //Gdx.app.log("region", "draw function called");
 
-        float tileWidth = tiles.get(0).getWidth();
-        float tileHeight = tiles.get(0).getHeight();
+        if (draw){
+            float tileWidth = tiles.get(0).getWidth();
+            float tileHeight = tiles.get(0).getHeight();
 
-        Vector2 minXY = getLowerLeftCorner();
-        Vector2 maxXY = getUpperRightCorner();
+            Vector2 minXY = getLowerLeftCorner();
+            Vector2 maxXY = getUpperRightCorner();
 
-        //drawing border for the region
-        sr.begin(ShapeRenderer.ShapeType.Filled);
-        sr.setColor(Color.BLACK);
+            //drawing border for the region
+            sr.begin(ShapeRenderer.ShapeType.Filled);
+            sr.setColor(Color.BLACK);
 
-        sr.rectLine(minXY.x, maxXY.y, maxXY.x, maxXY.y, BORDER_THICKNESS);//top
-        sr.rectLine(minXY.x, minXY.y, maxXY.x, minXY.y, BORDER_THICKNESS);//bottom
-        sr.rectLine(minXY.x, minXY.y, minXY.x, maxXY.y, BORDER_THICKNESS);//left
-        sr.rectLine(maxXY.x, minXY.y, maxXY.x, maxXY.y, BORDER_THICKNESS);//right
+            sr.rectLine(minXY.x, maxXY.y, maxXY.x, maxXY.y, BORDER_THICKNESS);//top
+            sr.rectLine(minXY.x, minXY.y, maxXY.x, minXY.y, BORDER_THICKNESS);//bottom
+            sr.rectLine(minXY.x, minXY.y, minXY.x, maxXY.y, BORDER_THICKNESS);//left
+            sr.rectLine(maxXY.x, minXY.y, maxXY.x, maxXY.y, BORDER_THICKNESS);//right
 
-        sr.end();
-
+            sr.end();
+        }
     }
 
     public boolean hasOneSymbol(){

@@ -28,10 +28,8 @@ public class GameWorld extends Stage {
     private Tile firstTile;
     private Tile lastTile;
 
-    private Region newRegion;
-
-    private Vector2 tileHitPosition;
-    // containing all tiles in a rectangle from first tile to last tile (corner to corner)
+    private Region newRegion;//cache
+    private Vector2 tileHitPosition;//cache
 
     private GameLogic logic;
 
@@ -62,7 +60,9 @@ public class GameWorld extends Stage {
 
         if (firstTile != null){
             //implement region.doDraw thing here
-
+            if (firstTile.getRegion() != null){
+                firstTile.getRegion().setDraw(false);
+            }
 
             newRegion = new Region(board);//instantiate a new region with a set color from list? (not implemented)
 
@@ -84,8 +84,11 @@ public class GameWorld extends Stage {
             if (currentTile != lastTile){//check to only run the following code if currentTile changes
                 lastTile = currentTile;
 
-                board.clearSelection();//to account for cases where selection shrinks
+                if (currentTile.getRegion() != null){
+                    currentTile.getRegion().setDraw(false);
+                }
 
+                board.clearSelection();//to account for cases where selection shrinks
                 board.select(firstTile, lastTile, newRegion.getColor());//selects a rectangular region and marks them
                 //make sure that the selection color covers the existing tiles for visibility
 
