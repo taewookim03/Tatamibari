@@ -61,6 +61,8 @@ public class GameWorld extends Stage {
         //Gdx.app.log("hit","registered by stage");
 
         if (firstTile != null){
+            //implement region.doDraw thing here
+
 
             newRegion = new Region(board);//instantiate a new region with a set color from list? (not implemented)
 

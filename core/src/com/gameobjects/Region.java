@@ -32,7 +32,7 @@ public class Region {
 
     public Region(Board board){
         this.board = board;
-        color = new Color(Color.rgba8888(255/255f, 255/255f, 224/255f, 0.5f));//alpha doesn't seem to change anything?
+        color = new Color(Color.rgba8888(255/255f, 255/255f, 0/255f, 0.3f));
         tiles = new ArrayList<Tile>();
         sr = new ShapeRenderer();
     }
