@@ -61,7 +61,8 @@ public class GameWorld extends Stage {
         if (firstTile != null){
             //implement region.doDraw thing here
             if (firstTile.getRegion() != null){
-                firstTile.getRegion().setDraw(false);
+                board.removeRegion(firstTile.getRegion());
+                //firstTile.getRegion().setDraw(false);//if necessary to restore invalidated region, replace above with this
             }
 
             newRegion = new Region(board);//instantiate a new region with a set color from list? (not implemented)
@@ -85,7 +86,8 @@ public class GameWorld extends Stage {
                 lastTile = currentTile;
 
                 if (currentTile.getRegion() != null){
-                    currentTile.getRegion().setDraw(false);
+                    board.removeRegion(currentTile.getRegion());
+                    //currentTile.getRegion().setDraw(false);//if necessary to restore invalidated region, replace above with this
                 }
 
                 board.clearSelection();//to account for cases where selection shrinks
