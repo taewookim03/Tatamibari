@@ -234,4 +234,14 @@ public class Board extends Group {
 
         return false;
     }
+
+    public boolean isFilled(){
+        for (Actor actor : getChildren()){
+            Tile tile = (Tile)actor;
+            if (tile.getRegion() == null){
+                return false;
+            }
+        }
+        return true;
+    }
 }
