@@ -148,7 +148,7 @@ public class Board extends Group {
         return regions;
     }
 
-    private Set<Tile> getRectangularSelection(Tile firstTile, Tile lastTile){
+    public Set<Tile> getRectangularSelection(Tile firstTile, Tile lastTile){
         Set<Tile> selection = new HashSet<Tile>();
         if (firstTile == null || lastTile == null){
             return selection;

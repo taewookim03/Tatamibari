@@ -22,6 +22,11 @@ import java.util.Set;
  */
 public class GameWorld extends Stage {
 
+    public enum GameState{//from menu, choose tile size etc. and run game.
+        MENU, RUNNING, SOLVED
+    }
+    private GameState currentState;
+
     private Board board;
 
     private Tile currentTile;
@@ -36,6 +41,7 @@ public class GameWorld extends Stage {
     public GameWorld(int rows, int cols){
         super(new ScreenViewport());
 
+        currentState = GameState.RUNNING;
         board = new Board(rows, cols);
         logic = new GameLogic(board);
 
@@ -54,24 +60,28 @@ public class GameWorld extends Stage {
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        tileHitPosition = stageToScreenCoordinates(new Vector2(screenX, screenY));
-        firstTile = hit(tileHitPosition.x, tileHitPosition.y, false);//what was touchable again (3rd param)
-        //Gdx.app.log("hit","registered by stage");
 
-        if (firstTile != null){
-            //implement region.doDraw thing here
-            if (firstTile.getRegion() != null){
-                board.removeRegion(firstTile.getRegion());
-                //firstTile.getRegion().setDraw(false);//if necessary to restore invalidated region, replace above with this
+        if (currentState == GameState.RUNNING){
+            tileHitPosition = stageToScreenCoordinates(new Vector2(screenX, screenY));
+            firstTile = hit(tileHitPosition.x, tileHitPosition.y, false);//what was touchable again (3rd param)
+            //Gdx.app.log("hit","registered by stage");
+
+            if (firstTile != null){
+                //implement region.doDraw thing here
+                if (firstTile.getRegion() != null){
+                    board.removeRegion(firstTile.getRegion());
+                    //firstTile.getRegion().setDraw(false);//if necessary to restore invalidated region, replace above with this
+                }
+
+                newRegion = new Region(board);//instantiate a new region with a set color from list? (not implemented)
+
+                firstTile.setSelected(true, newRegion.getColor());
+
+                //System.out.println("(" + firstTile.getRow() + ", " + firstTile.getCol() + ")");
+                lastTile = firstTile;
             }
-
-            newRegion = new Region(board);//instantiate a new region with a set color from list? (not implemented)
-
-            firstTile.setSelected(true, newRegion.getColor());
-
-            //System.out.println("(" + firstTile.getRow() + ", " + firstTile.getCol() + ")");
-            lastTile = firstTile;
         }
+
         return true;
     }
 
@@ -85,9 +95,11 @@ public class GameWorld extends Stage {
             if (currentTile != lastTile){//check to only run the following code if currentTile changes
                 lastTile = currentTile;
 
-                if (currentTile.getRegion() != null){
-                    board.removeRegion(currentTile.getRegion());
-                    //currentTile.getRegion().setDraw(false);//if necessary to restore invalidated region, replace above with this
+                for (Tile tile : board.getRectangularSelection(firstTile, lastTile)){
+                    if (tile.getRegion() != null){
+                        board.removeRegion(tile.getRegion());
+                        //currentTile.getRegion().setDraw(false);//if necessary to restore invalidated region, replace above with this
+                    }
                 }
 
                 board.clearSelection();//to account for cases where selection shrinks
@@ -145,8 +157,6 @@ public class GameWorld extends Stage {
         //need to make a board function to do that as well (keep assigned grouped together maybe use Group of actors?
         // each with diff color and symbol, which determines shape)
 
-
-
         //clean up
         board.clearSelection();
 
@@ -154,6 +164,30 @@ public class GameWorld extends Stage {
         lastTile = null;
         currentTile = null;
 
+        //check if puzzle is solved
+        if (board.isFilled()){
+            currentState = GameState.SOLVED;
+        }
+
         return true;
+    }
+
+    @Override
+    public void draw() {
+        //here draw additional stuff base on gamestate
+        switch(currentState){
+            case MENU:
+
+                break;
+            case RUNNING:
+                super.draw();
+                break;
+            case SOLVED:
+                super.draw();
+                //add a text message saying congrats and offer option to go back to menu (via setState to MENU);
+
+                break;
+        }
+
     }
 }
