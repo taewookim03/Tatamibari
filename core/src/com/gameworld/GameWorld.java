@@ -184,7 +184,7 @@ public class GameWorld extends Stage {
                 break;
             case SOLVED:
                 super.draw();
-                //add a text message saying congrats and offer option to go back to menu (via setState to MENU);
+                //add a text message saying congrats and show button to go back to main menu
 
                 break;
         }
