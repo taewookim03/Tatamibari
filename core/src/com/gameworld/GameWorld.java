@@ -1,6 +1,7 @@
 package com.gameworld;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -20,11 +21,42 @@ import java.util.Set;
  *
  * due to simplicity don't use this class and just use the default Stage claess with custom input inside the TatamibariGame class?
  */
-public class GameWorld extends Stage {
+public class GameWorld extends Stage implements Screen {
+
+    @Override
+    public void show() {
+
+    }
+
+    @Override
+    public void render(float delta) {
+        this.draw();
+    }
+
+    @Override
+    public void resize(int width, int height) {
+
+    }
+
+    @Override
+    public void pause() {
+
+    }
+
+    @Override
+    public void resume() {
+
+    }
+
+    @Override
+    public void hide() {
+
+    }
 
     public enum GameState{//from menu, choose tile size etc. and run game.
         MENU, RUNNING, SOLVED
     }
+
     private GameState currentState;
 
     private Board board;
