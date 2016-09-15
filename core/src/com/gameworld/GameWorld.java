@@ -6,6 +6,9 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.gamelogic.GameLogic;
 import com.gameobjects.Board;
@@ -21,40 +24,10 @@ import java.util.Set;
  *
  * due to simplicity don't use this class and just use the default Stage claess with custom input inside the TatamibariGame class?
  */
-public class GameWorld extends Stage implements Screen {
-
-    @Override
-    public void show() {
-
-    }
-
-    @Override
-    public void render(float delta) {
-        this.draw();
-    }
-
-    @Override
-    public void resize(int width, int height) {
-
-    }
-
-    @Override
-    public void pause() {
-
-    }
-
-    @Override
-    public void resume() {
-
-    }
-
-    @Override
-    public void hide() {
-
-    }
+public class GameWorld extends Stage {
 
     public enum GameState{//from menu, choose tile size etc. and run game.
-        MENU, RUNNING, SOLVED
+        RUNNING, SOLVED//MENU is handled by a separate screen
     }
 
     private GameState currentState;
@@ -70,6 +43,12 @@ public class GameWorld extends Stage implements Screen {
 
     private GameLogic logic;
 
+    //UI
+    private Skin skin;
+    public TextButton toMenuButton;
+    public Dialog dialog;
+
+
     public GameWorld(int rows, int cols){
         super(new ScreenViewport());
 
@@ -77,7 +56,25 @@ public class GameWorld extends Stage implements Screen {
         board = new Board(rows, cols);
         logic = new GameLogic(board);
 
+        skin = new Skin(Gdx.files.internal("uiskin.json"));
+
+        toMenuButton = new TextButton("Return", skin, "default");
+        toMenuButton.setWidth(100);
+        toMenuButton.setHeight(20);
+        toMenuButton.setColor(Color.RED);
+        toMenuButton.setVisible(false);
+
+        dialog = new Dialog("Click Message", skin);
+        dialog.setPosition(100, 100);
+        //dialog.setColor(Color.BLUE);
+        //dialog.setVisible(false);
+
         addActor(board);
+        addActor(toMenuButton);
+        board.setZIndex(1);
+        toMenuButton.setZIndex(0);
+        dialog.setZIndex(0);
+        //addActor(dialog);
 
         Gdx.input.setInputProcessor(this);
     }
@@ -204,22 +201,23 @@ public class GameWorld extends Stage implements Screen {
         return true;
     }
 
+    /*
     @Override
     public void draw() {
         //here draw additional stuff base on gamestate
         switch(currentState){
-            case MENU:
-
-                break;
             case RUNNING:
                 super.draw();
                 break;
             case SOLVED:
+                toMenuButton.setVisible(true);
                 super.draw();
-                //add a text message saying congrats and show button to go back to main menu
-
                 break;
         }
+    }
+    */
 
+    public GameState getState(){
+        return currentState;
     }
 }

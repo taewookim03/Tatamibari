@@ -53,7 +53,7 @@ public class Board extends Group {
         setSymbol(2, 2, Tile.Symbol.SQUARE);
         setSymbol(2, 3, Tile.Symbol.VERTICAL);
         setSymbol(0, 0, Tile.Symbol.HORIZONTAL);
-        setSymbol(0, 4, Tile.Symbol.SQUARE);
+        //setSymbol(0, 4, Tile.Symbol.SQUARE);
     }
 
     public Tile getTile(int row, int col) {
