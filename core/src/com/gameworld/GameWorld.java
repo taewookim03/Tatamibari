@@ -5,10 +5,12 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.gamelogic.GameLogic;
 import com.gameobjects.Board;
@@ -45,8 +47,8 @@ public class GameWorld extends Stage {
 
     //UI
     private Skin skin;
-    public TextButton toMenuButton;
-    public Dialog dialog;
+    //public TextButton toMenuButton;
+    public Dialog endDialog;
 
 
     public GameWorld(int rows, int cols){
@@ -56,25 +58,52 @@ public class GameWorld extends Stage {
         board = new Board(rows, cols);
         logic = new GameLogic(board);
 
+        //UI
         skin = new Skin(Gdx.files.internal("uiskin.json"));
 
+        /*
         toMenuButton = new TextButton("Return", skin, "default");
-        toMenuButton.setWidth(100);
-        toMenuButton.setHeight(20);
-        toMenuButton.setColor(Color.RED);
-        toMenuButton.setVisible(false);
+        //toMenuButton.setWidth(100);
+        //toMenuButton.setHeight(20);
 
-        dialog = new Dialog("Click Message", skin);
-        dialog.setPosition(100, 100);
-        //dialog.setColor(Color.BLUE);
-        //dialog.setVisible(false);
+        addActor(toMenuButton);
+
+        toMenuButton.setColor(Color.RED);
+
+        //toMenuButton.setVisible(false);
+        toMenuButton.toFront();
+        toMenuButton.setPosition(Gdx.graphics.getWidth()/2 - toMenuButton.getWidth()/2,
+                Gdx.graphics.getHeight()/2 - toMenuButton.getHeight()/2 - 50);
+
+        toMenuButton.setPosition(0,0);
+
+        toMenuButton.addListener(new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                System.out.println("button clicked");
+            }
+        });
+        */
+        //addActor(board);
+
+        endDialog = new Dialog("Click Message zzzzzzzzzzzzzzzz", skin);
+
+        endDialog.setModal(true);
+        endDialog.setMovable(false);
+        endDialog.setResizable(false);
+        //endDialog.show(this).setPosition(100,100);
+        endDialog.setName("endDialog");
 
         addActor(board);
-        addActor(toMenuButton);
-        board.setZIndex(1);
-        toMenuButton.setZIndex(0);
-        dialog.setZIndex(0);
-        //addActor(dialog);
+        //addActor(endDialog);
+
+
+
+        //endDialog.show(this);
+        addActor(endDialog);
+        endDialog.hide();
+
+        //endDialog.toFront();
 
         Gdx.input.setInputProcessor(this);
     }
@@ -89,6 +118,8 @@ public class GameWorld extends Stage {
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+
+        System.out.println(endDialog.getX() + ", " + endDialog.getY());
 
         if (currentState == GameState.RUNNING){
             tileHitPosition = stageToScreenCoordinates(new Vector2(screenX, screenY));
@@ -200,22 +231,6 @@ public class GameWorld extends Stage {
 
         return true;
     }
-
-    /*
-    @Override
-    public void draw() {
-        //here draw additional stuff base on gamestate
-        switch(currentState){
-            case RUNNING:
-                super.draw();
-                break;
-            case SOLVED:
-                toMenuButton.setVisible(true);
-                super.draw();
-                break;
-        }
-    }
-    */
 
     public GameState getState(){
         return currentState;

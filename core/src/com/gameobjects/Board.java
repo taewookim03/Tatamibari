@@ -190,12 +190,17 @@ public class Board extends Group {
     public void draw(Batch batch, float parentAlpha) {
         super.draw(batch, parentAlpha);//draw tiles
 
+        //http://stackoverflow.com/questions/16381106/libgdx-shaperenderer-in-group-draw-renders-in-wrong-colour
+        //also note performance hit of batch being/end
+
         //draw regions
         for (Region region : regions){
             region.draw(batch, parentAlpha);
         }
 
         //draw the four edges of the board
+        batch.end();//see above link
+        sr.setProjectionMatrix(getStage().getCamera().combined);
         sr.begin(ShapeRenderer.ShapeType.Filled);
         sr.setColor(Color.BLACK);
         sr.rectLine(getX(), getY(), getX() + getWidth(), getY(), OUTLINE_THICKNESS);//bottom
@@ -203,6 +208,8 @@ public class Board extends Group {
         sr.rectLine(getX(), getY(), getX(), getY() + getHeight(), OUTLINE_THICKNESS);//left
         sr.rectLine(getX() + getWidth(), getY(), getX() + getWidth(), getY() + getHeight(), OUTLINE_THICKNESS);//right
         sr.end();
+
+        batch.begin();
     }
 
     public boolean hasFourRegionCorner() {

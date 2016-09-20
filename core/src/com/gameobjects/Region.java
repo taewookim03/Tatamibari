@@ -142,6 +142,8 @@ public class Region {
             Vector2 maxXY = getUpperRightCorner();
 
             //drawing border for the region
+            //batch.end();
+
             sr.begin(ShapeRenderer.ShapeType.Filled);
             sr.setColor(Color.BLACK);
 
@@ -151,6 +153,8 @@ public class Region {
             sr.rectLine(maxXY.x, minXY.y, maxXY.x, maxXY.y, BORDER_THICKNESS);//right
 
             sr.end();
+
+            //batch.begin();
         }
     }
 

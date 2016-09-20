@@ -84,6 +84,9 @@ public class Tile extends Actor {//Actor vs Image?
         float screenX = getScreenX();
         float screenY = getScreenY();
 
+        //batch.end();
+
+        sr.setProjectionMatrix(getStage().getCamera().combined);
         //draw tiles (white squares)
         sr.begin(ShapeRenderer.ShapeType.Filled);
         sr.setColor(getColor());
@@ -112,6 +115,8 @@ public class Tile extends Actor {//Actor vs Image?
                 break;
         }
         sr.end();
+
+        //batch.begin();
     }
 
     private void drawSymbolHorizontal(ShapeRenderer sr, float x, float y, float width, float height){
