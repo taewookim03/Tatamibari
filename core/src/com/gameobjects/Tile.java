@@ -1,6 +1,8 @@
 package com.gameobjects;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -84,7 +86,10 @@ public class Tile extends Actor {//Actor vs Image?
         float screenX = getScreenX();
         float screenY = getScreenY();
 
-        //batch.end();
+        batch.end();
+
+        Gdx.gl.glEnable(GL20.GL_BLEND);
+        Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
 
         sr.setProjectionMatrix(getStage().getCamera().combined);
         //draw tiles (white squares)
@@ -116,7 +121,7 @@ public class Tile extends Actor {//Actor vs Image?
         }
         sr.end();
 
-        //batch.begin();
+        batch.begin();
     }
 
     private void drawSymbolHorizontal(ShapeRenderer sr, float x, float y, float width, float height){

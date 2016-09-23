@@ -2,6 +2,7 @@ package com.gameobjects;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -135,6 +136,10 @@ public class Region {
         //Gdx.app.log("region", "draw function called");
 
         if (draw){
+            if (tiles.size() == 0){
+                return;
+            }
+
             float tileWidth = tiles.get(0).getWidth();
             float tileHeight = tiles.get(0).getHeight();
 
@@ -142,7 +147,10 @@ public class Region {
             Vector2 maxXY = getUpperRightCorner();
 
             //drawing border for the region
-            //batch.end();
+            batch.end();
+
+            Gdx.gl.glEnable(GL20.GL_BLEND);
+            Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
 
             sr.begin(ShapeRenderer.ShapeType.Filled);
             sr.setColor(Color.BLACK);
@@ -154,7 +162,7 @@ public class Region {
 
             sr.end();
 
-            //batch.begin();
+            batch.begin();
         }
     }
 

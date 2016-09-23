@@ -84,7 +84,8 @@ public class GameWorld extends Stage {
             }
         });
         */
-        //addActor(board);
+        addActor(board);
+
 
         endDialog = new Dialog("Click Message zzzzzzzzzzzzzzzz", skin);
 
@@ -95,15 +96,13 @@ public class GameWorld extends Stage {
         endDialog.setName("endDialog");
 
         addActor(board);
-        //addActor(endDialog);
-
-
-
         //endDialog.show(this);
-        addActor(endDialog);
-        endDialog.hide();
+
+        //addActor(endDialog);
+        //endDialog.hide();
 
         //endDialog.toFront();
+
 
         Gdx.input.setInputProcessor(this);
     }
@@ -119,7 +118,7 @@ public class GameWorld extends Stage {
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
 
-        System.out.println(endDialog.getX() + ", " + endDialog.getY());
+        //System.out.println(endDialog.getX() + ", " + endDialog.getY());
 
         if (currentState == GameState.RUNNING){
             tileHitPosition = stageToScreenCoordinates(new Vector2(screenX, screenY));
@@ -176,6 +175,9 @@ public class GameWorld extends Stage {
 
     @Override
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
+
+        //update states when touch up, might want to encapsulate everything into an update() function if needed
+
         //Gdx.app.log("touchUp", "registered");
 
         if (newRegion == null){//if touchDown happens at a non-tile, then newRegion is not created.
@@ -227,6 +229,22 @@ public class GameWorld extends Stage {
         //check if puzzle is solved
         if (board.isFilled()){
             currentState = GameState.SOLVED;
+        }
+        if (currentState == GameWorld.GameState.SOLVED){
+            System.out.println("solved!");
+
+            endDialog.show(this);
+
+            /*
+            game.batch.begin();
+            game.font.setColor(Color.PINK);
+            game.font.draw(game.batch, "Click to go back to main menu", Gdx.graphics.getWidth()/2, Gdx.graphics.getHeight()/2);
+            game.batch.end();
+            */
+            //world.endDialog.show(world).setPosition(100,100);
+            //world.toMenuButton.setVisible(true);
+
+
         }
 
         return true;
