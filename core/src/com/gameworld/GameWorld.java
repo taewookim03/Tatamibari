@@ -7,6 +7,8 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.Touchable;
+import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
@@ -49,7 +51,7 @@ public class GameWorld extends Stage {
     private Skin skin;
     //public TextButton toMenuButton;
     public Dialog endDialog;
-
+    public boolean endDialogShowing = false;
 
     public GameWorld(int rows, int cols){
         super(new ScreenViewport());
@@ -87,15 +89,26 @@ public class GameWorld extends Stage {
         addActor(board);
 
 
-        endDialog = new Dialog("Click Message zzzzzzzzzzzzzzzz", skin);
+        endDialog = new Dialog("Click Message", skin);
 
-        endDialog.setModal(true);
-        endDialog.setMovable(false);
-        endDialog.setResizable(false);
+        //endDialog.setModal(true);
+        //endDialog.setMovable(false);
+        //endDialog.setResizable(false);
         //endDialog.show(this).setPosition(100,100);
         endDialog.setName("endDialog");
 
-        addActor(board);
+        Button b = new TextButton("A", skin, "default");
+
+        b.addListener(new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                Gdx.app.log("Clicked", "Yes you did");
+            }
+        });
+        endDialog.button(b);
+
+
+        //addActor(board);
         //endDialog.show(this);
 
         //addActor(endDialog);
@@ -183,7 +196,9 @@ public class GameWorld extends Stage {
         if (newRegion == null){//if touchDown happens at a non-tile, then newRegion is not created.
             return true;
         }
-
+        if (endDialogShowing){
+            return true;
+        }
         board.addRegion(newRegion);//add new region which was instantiated in touchDown
 
         /*
@@ -226,14 +241,18 @@ public class GameWorld extends Stage {
         lastTile = null;
         currentTile = null;
 
-        //check if puzzle is solved
+        //check if puzzle is solved (it is solved if board is filled completely assuming each region follows the rules)
         if (board.isFilled()){
             currentState = GameState.SOLVED;
-        }
-        if (currentState == GameWorld.GameState.SOLVED){
             System.out.println("solved!");
-
-            endDialog.show(this);
+            endDialog.show(this).setPosition(0, 100);
+            endDialogShowing = true;
+            /*
+            for (Actor a : this.getActors()){
+                a.setTouchable(Touchable.enabled);
+            }
+            */
+        }
 
             /*
             game.batch.begin();
@@ -243,9 +262,6 @@ public class GameWorld extends Stage {
             */
             //world.endDialog.show(world).setPosition(100,100);
             //world.toMenuButton.setVisible(true);
-
-
-        }
 
         return true;
     }
