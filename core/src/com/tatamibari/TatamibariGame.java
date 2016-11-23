@@ -47,39 +47,4 @@ public class TatamibariGame extends Game {
         font.dispose();
 		skin.dispose();
 	}
-
-	private void showDialog() {
-		Dialog dialog = new Dialog("Choose an action", skin) {
-
-			@Override
-			protected void result(Object object) {
-				boolean exit = (Boolean) object;
-				if (exit) {
-					Gdx.app.exit();
-				} else {
-					remove();
-				}
-			}
-
-			@Override
-			public Dialog show(Stage stage) {
-				return super.show(stage);
-			}
-
-			@Override
-			public void cancel() {
-				super.cancel();
-			}
-
-			@Override
-			public float getPrefHeight() {
-				return 50f;
-			}
-		};
-		dialog.button("Yes", true);
-		dialog.button("No", false);
-		dialog.key(Input.Keys.ENTER, true);
-		dialog.key(Input.Keys.ESCAPE, false);
-		dialog.show(world);
-	}
 }

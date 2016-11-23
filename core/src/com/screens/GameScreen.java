@@ -1,6 +1,7 @@
 package com.screens;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
@@ -20,7 +21,11 @@ public class GameScreen implements Screen {
 
     public GameScreen(GameWorld world){
         this.world = world;//world is instantiated in main menu and passed in
-        Gdx.input.setInputProcessor(new InputHandler(world));
+        InputMultiplexer im = new InputMultiplexer();
+
+        im.addProcessor(new InputHandler(world));
+        im.addProcessor(world);//trying to make dialog work by doing this
+        Gdx.input.setInputProcessor(im);//MIGHT NEED MULTIPLEXER HERE
     }
 
     @Override

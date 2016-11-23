@@ -33,10 +33,9 @@ import com.gameobjects.Tile;
  * unused; see GameWorld for input processing
  */
 
-public class InputHandler implements  InputProcessor{//implements InputProcessor{
+public class InputHandler implements InputProcessor{
 
     private GameWorld world;
-    private Actor hit;
     private Board board;
     private GameLogic logic;
 
@@ -57,33 +56,33 @@ public class InputHandler implements  InputProcessor{//implements InputProcessor
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
 
         //System.out.println(endDialog.getX() + ", " + endDialog.getY());
+        if (!world.isRunning()) return false;
 
-        if (world.isRunning()){
-            tileHitPosition = world.stageToScreenCoordinates(new Vector2(screenX, screenY));
-            firstTile = world.hit(tileHitPosition.x, tileHitPosition.y, false);//what was touchable again (3rd param)
-            //Gdx.app.log("hit","registered by stage");
+        tileHitPosition = world.stageToScreenCoordinates(new Vector2(screenX, screenY));
+        firstTile = world.hit(tileHitPosition.x, tileHitPosition.y, false);//what was touchable again (3rd param)
+        //Gdx.app.log("hit","registered by stage");
 
-            if (firstTile != null){
-                //implement region.doDraw thing here
-                if (firstTile.getRegion() != null){
-                    board.removeRegion(firstTile.getRegion());
-                    //firstTile.getRegion().setDraw(false);//if necessary to restore invalidated region, replace above with this
-                }
-
-                newRegion = new Region(board);//instantiate a new region with a set color from list? (not implemented)
-
-                firstTile.setSelected(true, newRegion.getColor());
-
-                //System.out.println("(" + firstTile.getRow() + ", " + firstTile.getCol() + ")");
-                lastTile = firstTile;
+        if (firstTile != null){
+            //implement region.doDraw thing here
+            if (firstTile.getRegion() != null){
+                board.removeRegion(firstTile.getRegion());
+                //firstTile.getRegion().setDraw(false);//if necessary to restore invalidated region, replace above with this
             }
-        }
 
+            newRegion = new Region(board);//instantiate a new region with a set color from list? (not implemented)
+
+            firstTile.setSelected(true, newRegion.getColor());
+
+            //System.out.println("(" + firstTile.getRow() + ", " + firstTile.getCol() + ")");
+            lastTile = firstTile;
+        }
         return true;
     }
 
     @Override
     public boolean touchDragged(int screenX, int screenY, int pointer) {
+        if (!world.isRunning()) return false;
+
         tileHitPosition = world.stageToScreenCoordinates(new Vector2(screenX, screenY));
         currentTile = world.hit(tileHitPosition.x, tileHitPosition.y, false);
         //Gdx.app.log("drag","registered by stage");
@@ -117,11 +116,10 @@ public class InputHandler implements  InputProcessor{//implements InputProcessor
         //update states when touch up, might want to encapsulate everything into an update() function if needed
 
         //Gdx.app.log("touchUp", "registered");
-
-        if (newRegion == null){//if touchDown happens at a non-tile, then newRegion is not created.
-            return true;
+        if (!world.isRunning()){
+            return false;
         }
-        if (world.isSolved()){
+        if (newRegion == null){//if touchDown happens at a non-tile, then newRegion is not created.
             return true;
         }
 
@@ -176,7 +174,7 @@ public class InputHandler implements  InputProcessor{//implements InputProcessor
             endDialog.setTouchable(Touchable.enabled);
             */
 
-            //showDialog();
+            world.showDialog();
 
             /*
             for (Actor a : this.getActors()){

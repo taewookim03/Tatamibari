@@ -41,7 +41,7 @@ public class GameWorld extends Stage {
     //UI
     private Skin skin;
     //public TextButton toMenuButton;
-    //public Dialog endDialog;
+    public Dialog endDialog;
 
     public GameWorld(int rows, int cols){
         super(new ScreenViewport());
@@ -100,7 +100,7 @@ public class GameWorld extends Stage {
         endDialog.button(b);
         endDialog.button("Yes", true);
         //endDialog.show(this);
-        addActor(endDialog);
+        //addActor(endDialog);
         //addActor(board);
         //endDialog.show(this);
 
@@ -110,8 +110,6 @@ public class GameWorld extends Stage {
 
         //endDialog.toFront();
         */
-
-        Gdx.input.setInputProcessor(this);
     }
 
     @Override
@@ -135,5 +133,55 @@ public class GameWorld extends Stage {
     }
     public void setSolved(){
         currentState = GameState.SOLVED;
+    }
+
+    public void showDialog() {
+        Dialog dialog = new Dialog("Choose an action", skin) {
+
+            @Override
+            protected void result(Object object) {
+                boolean exit = (Boolean) object;
+                if (exit) {
+                    Gdx.app.exit();
+                } else {
+                    remove();
+                }
+            }
+
+            @Override
+            public Dialog show(Stage stage) {
+                return super.show(stage);
+            }
+
+            @Override
+            public void cancel() {
+                super.cancel();
+            }
+
+            @Override
+            public float getPrefHeight() {
+                return 50f;
+            }
+        };
+        dialog.button("Yes", true);
+        dialog.button("No", false);
+        dialog.key(Input.Keys.ENTER, true);
+        dialog.key(Input.Keys.ESCAPE, false);
+        dialog.show(this);
+    }
+
+    @Override
+    public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+        return true;
+    }
+
+    @Override
+    public boolean touchDragged(int screenX, int screenY, int pointer) {
+        return true;
+    }
+
+    @Override
+    public boolean touchUp(int screenX, int screenY, int pointer, int button) {
+        return true;
     }
 }
