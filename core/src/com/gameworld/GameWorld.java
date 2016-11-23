@@ -1,6 +1,7 @@
 package com.gameworld;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Vector2;
@@ -51,7 +52,6 @@ public class GameWorld extends Stage {
     private Skin skin;
     //public TextButton toMenuButton;
     public Dialog endDialog;
-    public boolean endDialogShowing = false;
 
     public GameWorld(int rows, int cols){
         super(new ScreenViewport());
@@ -88,8 +88,12 @@ public class GameWorld extends Stage {
         */
         addActor(board);
 
-
-        endDialog = new Dialog("Click Message", skin);
+        /*
+        endDialog = new Dialog("Click Message", skin){
+            public void result(Object obj){
+                System.out.println("result " + obj);
+            }
+        };
 
         //endDialog.setModal(true);
         //endDialog.setMovable(false);
@@ -100,22 +104,23 @@ public class GameWorld extends Stage {
         Button b = new TextButton("A", skin, "default");
 
         b.addListener(new ClickListener(){
-            @Override
             public void clicked(InputEvent event, float x, float y) {
-                Gdx.app.log("Clicked", "Yes you did");
+                Gdx.app.log("Clicked", "you did");
             }
         });
         endDialog.button(b);
-
-
+        endDialog.button("Yes", true);
+        //endDialog.show(this);
+        addActor(endDialog);
         //addActor(board);
         //endDialog.show(this);
 
         //addActor(endDialog);
         //endDialog.hide();
+        //endDialog.setTouchable(Touchable.disabled);
 
         //endDialog.toFront();
-
+        */
 
         Gdx.input.setInputProcessor(this);
     }
@@ -196,9 +201,10 @@ public class GameWorld extends Stage {
         if (newRegion == null){//if touchDown happens at a non-tile, then newRegion is not created.
             return true;
         }
-        if (endDialogShowing){
+        if (currentState == GameState.SOLVED){
             return true;
         }
+
         board.addRegion(newRegion);//add new region which was instantiated in touchDown
 
         /*
@@ -245,8 +251,12 @@ public class GameWorld extends Stage {
         if (board.isFilled()){
             currentState = GameState.SOLVED;
             System.out.println("solved!");
+            /*
             endDialog.show(this).setPosition(0, 100);
-            endDialogShowing = true;
+            endDialog.setTouchable(Touchable.enabled);
+            */
+            showDialog();
+
             /*
             for (Actor a : this.getActors()){
                 a.setTouchable(Touchable.enabled);
@@ -264,6 +274,41 @@ public class GameWorld extends Stage {
             //world.toMenuButton.setVisible(true);
 
         return true;
+    }
+
+    private void showDialog() {
+        Dialog dialog = new Dialog("Choose an action", skin) {
+
+            @Override
+            protected void result(Object object) {
+                boolean exit = (Boolean) object;
+                if (exit) {
+                    Gdx.app.exit();
+                } else {
+                    remove();
+                }
+            }
+
+            @Override
+            public Dialog show(Stage stage) {
+                return super.show(stage);
+            }
+
+            @Override
+            public void cancel() {
+                super.cancel();
+            }
+
+            @Override
+            public float getPrefHeight() {
+                return 50f;
+            }
+        };
+        dialog.button("Yes", true);
+        dialog.button("No", false);
+        dialog.key(Input.Keys.ENTER, true);
+        dialog.key(Input.Keys.ESCAPE, false);
+        dialog.show(this);
     }
 
     public GameState getState(){
