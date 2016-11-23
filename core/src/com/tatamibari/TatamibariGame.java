@@ -26,10 +26,10 @@ import com.screens.MainMenuScreen;
 public class TatamibariGame extends Game {
 
     private GameWorld world;
+	//using default fonts and skins instead of loading assets for now
     public SpriteBatch batch;
     public BitmapFont font;
 	public Skin skin;
-
 
 	@Override
 	public void create () {
@@ -37,13 +37,7 @@ public class TatamibariGame extends Game {
 	    font = new BitmapFont(Gdx.files.internal("default.fnt"));
 		skin = new Skin(Gdx.files.internal("uiskin.json"));
 
-        this.setScreen(new MainMenuScreen(this));
-	}
-
-
-	@Override
-	public void render () {
-	    super.render();
+        setScreen(new MainMenuScreen(this));
 	}
 
 	@Override
@@ -53,14 +47,6 @@ public class TatamibariGame extends Game {
         font.dispose();
 		skin.dispose();
 	}
-
-	public void setWorld(GameWorld world){
-	    this.world = world;
-    }
-
-	public GameWorld getWorld(){
-	    return world;
-    }
 
 	private void showDialog() {
 		Dialog dialog = new Dialog("Choose an action", skin) {

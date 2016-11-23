@@ -14,16 +14,15 @@ import com.tatamibari.TatamibariGame;
  * Created by Gayming on 9/8/2016.
  */
 public class MainMenuScreen implements Screen {
-
-    private TatamibariGame game;
-    OrthographicCamera camera;
+    private TatamibariGame game;//need this to set screen based on which menu item is chosen
+    private OrthographicCamera camera;
+    private GameWorld world;
 
     public MainMenuScreen(TatamibariGame game){
         this.game = game;
-
         camera = new OrthographicCamera();
         camera.setToOrtho(false);
-
+        //instantiate world based on which size board is touched
     }
     @Override
     public void show() {
@@ -44,10 +43,11 @@ public class MainMenuScreen implements Screen {
 
         game.batch.end();
 
+        //later have multiple options based on which button is touched, instantiate different sizes etc.
         if (Gdx.input.isTouched()){
             System.out.println("main menu touch registered");
-            game.setWorld(new GameWorld(5,5));
-            game.setScreen(new GameScreen(game));
+            world = new GameWorld(5,5);//instantiate world based on which size board is touched
+            game.setScreen(new GameScreen(world));
             dispose();
         }
 

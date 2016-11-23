@@ -15,13 +15,10 @@ import com.tatamibari.TatamibariGame;
  */
 public class GameScreen implements Screen {
 
-    private TatamibariGame game;
     private GameWorld world;
 
-    public GameScreen(TatamibariGame game){
-        this.game = game;
-        world = game.getWorld();
-
+    public GameScreen(GameWorld world){
+        this.world = world;//world is instantiated in main menu and passed in
     }
 
     @Override
