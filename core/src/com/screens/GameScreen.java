@@ -8,6 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.gameworld.GameWorld;
+import com.helpers.InputHandler;
 import com.tatamibari.TatamibariGame;
 
 /**
@@ -19,6 +20,7 @@ public class GameScreen implements Screen {
 
     public GameScreen(GameWorld world){
         this.world = world;//world is instantiated in main menu and passed in
+        Gdx.input.setInputProcessor(new InputHandler(world));
     }
 
     @Override

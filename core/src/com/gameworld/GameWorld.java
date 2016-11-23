@@ -36,29 +36,18 @@ public class GameWorld extends Stage {
     }
 
     private GameState currentState;
-
     private Board board;
-
-    private Tile currentTile;
-    private Tile firstTile;
-    private Tile lastTile;
-
-    private Region newRegion;//cache
-    private Vector2 tileHitPosition;//cache
-
-    private GameLogic logic;
 
     //UI
     private Skin skin;
     //public TextButton toMenuButton;
-    public Dialog endDialog;
+    //public Dialog endDialog;
 
     public GameWorld(int rows, int cols){
         super(new ScreenViewport());
 
         currentState = GameState.RUNNING;
         board = new Board(rows, cols);
-        logic = new GameLogic(board);
 
         //UI
         skin = new Skin(Gdx.files.internal("uiskin.json"));
@@ -133,185 +122,18 @@ public class GameWorld extends Stage {
         return null;
     }
 
-    @Override
-    public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-
-        //System.out.println(endDialog.getX() + ", " + endDialog.getY());
-
-        if (currentState == GameState.RUNNING){
-            tileHitPosition = stageToScreenCoordinates(new Vector2(screenX, screenY));
-            firstTile = hit(tileHitPosition.x, tileHitPosition.y, false);//what was touchable again (3rd param)
-            //Gdx.app.log("hit","registered by stage");
-
-            if (firstTile != null){
-                //implement region.doDraw thing here
-                if (firstTile.getRegion() != null){
-                    board.removeRegion(firstTile.getRegion());
-                    //firstTile.getRegion().setDraw(false);//if necessary to restore invalidated region, replace above with this
-                }
-
-                newRegion = new Region(board);//instantiate a new region with a set color from list? (not implemented)
-
-                firstTile.setSelected(true, newRegion.getColor());
-
-                //System.out.println("(" + firstTile.getRow() + ", " + firstTile.getCol() + ")");
-                lastTile = firstTile;
-            }
-        }
-
-        return true;
+    public Board getBoard(){
+        return board;
     }
 
-    @Override
-    public boolean touchDragged(int screenX, int screenY, int pointer) {
-        tileHitPosition = stageToScreenCoordinates(new Vector2(screenX, screenY));
-        currentTile = hit(tileHitPosition.x, tileHitPosition.y, false);
-        //Gdx.app.log("drag","registered by stage");
-
-        if (currentTile != null){//if a tile is hit
-            if (currentTile != lastTile){//check to only run the following code if currentTile changes
-                lastTile = currentTile;
-
-                for (Tile tile : board.getRectangularSelection(firstTile, lastTile)){
-                    if (tile.getRegion() != null){
-                        board.removeRegion(tile.getRegion());
-                        //currentTile.getRegion().setDraw(false);//if necessary to restore invalidated region, replace above with this
-                    }
-                }
-
-                board.clearSelection();//to account for cases where selection shrinks
-                board.select(firstTile, lastTile, newRegion.getColor());//selects a rectangular region and marks them
-                //make sure that the selection color covers the existing tiles for visibility
-
-                //maybe just do borders instead of coloring?
-
-                //System.out.println("(" + currentTile.getRow() + ", " + currentTile.getCol() + ")");
-            }
-        }
-        return true;
+    public boolean isRunning(){
+        return currentState == GameState.RUNNING;
     }
 
-    @Override
-    public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-
-        //update states when touch up, might want to encapsulate everything into an update() function if needed
-
-        //Gdx.app.log("touchUp", "registered");
-
-        if (newRegion == null){//if touchDown happens at a non-tile, then newRegion is not created.
-            return true;
-        }
-        if (currentState == GameState.SOLVED){
-            return true;
-        }
-
-        board.addRegion(newRegion);//add new region which was instantiated in touchDown
-
-        /*
-        System.out.println(newRegion.getBottomRow());
-        System.out.println(newRegion.getTopRow());
-        System.out.println(newRegion.getLeftCol());
-        System.out.println(newRegion.getRightCol());
-        */
-
-        //System.out.println("one symbol: " + newRegion.hasOneSymbol());
-        //System.out.println("symbol match: " + newRegion.matchesSymbol());
-
-        if (logic.checkRegionCompliance()){//check if adding a new region still complies with the tatamibari rules
-            /*
-            List<Tile> tiles = newRegion.getTiles();
-            System.out.println(tiles.get(0).getRow() + ", " + tiles.get(0).getCol() + ", " +
-                    tiles.get(tiles.size()-1).getRow() + ", " +tiles.get(tiles.size()-1).getCol());
-                    */
-
-            //if compliant, clear existing region from overlapping tiles
-            board.clearOverlappingRegions();
-        }
-        else{
-            board.removeRegion(newRegion);
-        }
-        board.refreshRegions();
-
-        //System.out.println(board.getX() + ", " + board.getY() + ", " + board.getWidth() + ", " + board.getHeight());
-
-        //run some sort of game logic for rule checking e.g. logic member has board and and calls .checkRules function
-
-        //if a new selection has overlaps with assigned tiles (checked at touchUp) then the old one will be invalidated.
-        //need to make a board function to do that as well (keep assigned grouped together maybe use Group of actors?
-        // each with diff color and symbol, which determines shape)
-
-        //clean up
-        board.clearSelection();
-
-        firstTile = null;
-        lastTile = null;
-        currentTile = null;
-
-        //check if puzzle is solved (it is solved if board is filled completely assuming each region follows the rules)
-        if (board.isFilled()){
-            currentState = GameState.SOLVED;
-            System.out.println("solved!");
-            /*
-            endDialog.show(this).setPosition(0, 100);
-            endDialog.setTouchable(Touchable.enabled);
-            */
-            showDialog();
-
-            /*
-            for (Actor a : this.getActors()){
-                a.setTouchable(Touchable.enabled);
-            }
-            */
-        }
-
-            /*
-            game.batch.begin();
-            game.font.setColor(Color.PINK);
-            game.font.draw(game.batch, "Click to go back to main menu", Gdx.graphics.getWidth()/2, Gdx.graphics.getHeight()/2);
-            game.batch.end();
-            */
-            //world.endDialog.show(world).setPosition(100,100);
-            //world.toMenuButton.setVisible(true);
-
-        return true;
+    public boolean isSolved(){
+        return currentState == GameWorld.GameState.SOLVED;
     }
-
-    private void showDialog() {
-        Dialog dialog = new Dialog("Choose an action", skin) {
-
-            @Override
-            protected void result(Object object) {
-                boolean exit = (Boolean) object;
-                if (exit) {
-                    Gdx.app.exit();
-                } else {
-                    remove();
-                }
-            }
-
-            @Override
-            public Dialog show(Stage stage) {
-                return super.show(stage);
-            }
-
-            @Override
-            public void cancel() {
-                super.cancel();
-            }
-
-            @Override
-            public float getPrefHeight() {
-                return 50f;
-            }
-        };
-        dialog.button("Yes", true);
-        dialog.button("No", false);
-        dialog.key(Input.Keys.ENTER, true);
-        dialog.key(Input.Keys.ESCAPE, false);
-        dialog.show(this);
-    }
-
-    public GameState getState(){
-        return currentState;
+    public void setSolved(){
+        currentState = GameState.SOLVED;
     }
 }
