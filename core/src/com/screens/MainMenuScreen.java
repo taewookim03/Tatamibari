@@ -51,6 +51,8 @@ public class MainMenuScreen implements Screen {
             dispose();
         }
 
+        //Still need to handle when touch dragged, which causes a crash
+
     }
 
     @Override
@@ -77,4 +79,5 @@ public class MainMenuScreen implements Screen {
     public void dispose() {
 
     }
+
 }

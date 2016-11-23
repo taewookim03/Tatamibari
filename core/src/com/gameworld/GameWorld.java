@@ -136,7 +136,7 @@ public class GameWorld extends Stage {
     }
 
     public void showDialog() {
-        Dialog dialog = new Dialog("Choose an action", skin) {
+        Dialog dialog = new Dialog("Quit?", skin) {
 
             @Override
             protected void result(Object object) {
@@ -167,21 +167,25 @@ public class GameWorld extends Stage {
         dialog.button("No", false);
         dialog.key(Input.Keys.ENTER, true);
         dialog.key(Input.Keys.ESCAPE, false);
+        //addActor(dialog);
         dialog.show(this);
-    }
 
+    }
+/*
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        return true;
+        System.out.println("GameWorld touchDown returning false");
+        return false;//default false
     }
 
     @Override
     public boolean touchDragged(int screenX, int screenY, int pointer) {
-        return true;
+        return false;
     }
 
     @Override
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-        return true;
+        return false;
     }
+    */
 }

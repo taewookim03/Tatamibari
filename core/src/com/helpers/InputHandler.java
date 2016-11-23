@@ -54,9 +54,11 @@ public class InputHandler implements InputProcessor{
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-
         //System.out.println(endDialog.getX() + ", " + endDialog.getY());
-        if (!world.isRunning()) return false;
+        if (!world.isRunning()) {
+            System.out.println("InputHandler touchDown returning false");
+            return false;
+        }
 
         tileHitPosition = world.stageToScreenCoordinates(new Vector2(screenX, screenY));
         firstTile = world.hit(tileHitPosition.x, tileHitPosition.y, false);//what was touchable again (3rd param)
@@ -76,6 +78,7 @@ public class InputHandler implements InputProcessor{
             //System.out.println("(" + firstTile.getRow() + ", " + firstTile.getCol() + ")");
             lastTile = firstTile;
         }
+        System.out.println("InputHandler touchDown returning true");
         return true;
     }
 
@@ -120,7 +123,7 @@ public class InputHandler implements InputProcessor{
             return false;
         }
         if (newRegion == null){//if touchDown happens at a non-tile, then newRegion is not created.
-            return true;
+            return false;
         }
 
         board.addRegion(newRegion);//add new region which was instantiated in touchDown
