@@ -28,9 +28,10 @@ public class GameScreen implements Screen {
     public void show() {
         world.getViewport().update(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), true);
         InputMultiplexer im = new InputMultiplexer();
-        im.addProcessor(new InputHandler(world));
-        im.addProcessor(world);//trying to make dialog work by doing this
-        Gdx.input.setInputProcessor(im);//MIGHT NEED MULTIPLEXER HERE
+
+        im.addProcessor(0, world);
+        im.addProcessor(1, new InputHandler(world));
+        Gdx.input.setInputProcessor(im);
     }
 
     @Override

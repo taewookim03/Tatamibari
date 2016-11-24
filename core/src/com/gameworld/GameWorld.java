@@ -13,6 +13,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.gamelogic.GameLogic;
@@ -52,29 +53,6 @@ public class GameWorld extends Stage {
         //UI
         skin = new Skin(Gdx.files.internal("uiskin.json"));
 
-        /*
-        toMenuButton = new TextButton("Return", skin, "default");
-        //toMenuButton.setWidth(100);
-        //toMenuButton.setHeight(20);
-
-        addActor(toMenuButton);
-
-        toMenuButton.setColor(Color.RED);
-
-        //toMenuButton.setVisible(false);
-        toMenuButton.toFront();
-        toMenuButton.setPosition(Gdx.graphics.getWidth()/2 - toMenuButton.getWidth()/2,
-                Gdx.graphics.getHeight()/2 - toMenuButton.getHeight()/2 - 50);
-
-        toMenuButton.setPosition(0,0);
-
-        toMenuButton.addListener(new ClickListener(){
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                System.out.println("button clicked");
-            }
-        });
-        */
         addActor(board);
 
         /*
@@ -136,46 +114,43 @@ public class GameWorld extends Stage {
     }
 
     public void showDialog() {
-        Dialog dialog = new Dialog("Quit?", skin) {
+        //clear();
+        //Gdx.input.setInputProcessor(this);
+        TextButton toMenuButton = new TextButton("Return", skin, "default");
+        toMenuButton.setWidth(100);
+        toMenuButton.setHeight(20);
 
+
+        toMenuButton.setColor(Color.RED);
+
+        toMenuButton.toFront();
+        //toMenuButton.setPosition(Gdx.graphics.getWidth()/2 - toMenuButton.getWidth()/2,
+        //        Gdx.graphics.getHeight()/2 - toMenuButton.getHeight()/2 - 50);
+
+        toMenuButton.setPosition(50,50);
+
+        toMenuButton.addListener(new ChangeListener(){
             @Override
-            protected void result(Object object) {
-                boolean exit = (Boolean) object;
-                if (exit) {
-                    Gdx.app.exit();
-                } else {
-                    remove();
-                }
+            public void changed (ChangeEvent event, Actor actor) {
+                System.out.println("button clicked");
             }
-
-            @Override
-            public Dialog show(Stage stage) {
-                return super.show(stage);
-            }
-
-            @Override
-            public void cancel() {
-                super.cancel();
-            }
-
-            @Override
-            public float getPrefHeight() {
-                return 50f;
-            }
-        };
-        dialog.button("Yes", true);
-        dialog.button("No", false);
-        dialog.key(Input.Keys.ENTER, true);
-        dialog.key(Input.Keys.ESCAPE, false);
-        //addActor(dialog);
-        dialog.show(this);
-
+        });
+        addActor(toMenuButton);
     }
+
 /*
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        System.out.println("GameWorld touchDown returning false");
-        return false;//default false
+        if(super.touchDown(screenX,screenY,pointer,button)){
+            System.out.println("stage's super returning true");
+        }
+        else{
+            System.out.println("stage's super returning false");
+        }
+        return super.touchDown(screenX, screenY, pointer, button);
+
+        //System.out.println("GameWorld touchDown returning false");
+        //return false;//default false
     }
 
     @Override
@@ -188,4 +163,9 @@ public class GameWorld extends Stage {
         return false;
     }
     */
+
+    @Override
+    public void draw() {
+        super.draw();
+    }
 }

@@ -46,6 +46,10 @@ public class InputHandler implements InputProcessor{
     private Tile currentTile;
     private Region newRegion;
 
+    private Dialog endDialog;
+    private Skin skin;
+
+
     public InputHandler(GameWorld world){
         this.world = world;
         this.board = world.getBoard();
@@ -58,6 +62,7 @@ public class InputHandler implements InputProcessor{
         if (!world.isRunning()) {
             System.out.println("InputHandler touchDown returning false");
             return false;
+            //return world.touchDown(screenX, screenY, pointer, button);
         }
 
         tileHitPosition = world.stageToScreenCoordinates(new Vector2(screenX, screenY));
@@ -177,13 +182,16 @@ public class InputHandler implements InputProcessor{
             endDialog.setTouchable(Touchable.enabled);
             */
 
-            world.showDialog();
+            this.showDialog();
+            //world.showDialog();
+
 
             /*
             for (Actor a : this.getActors()){
                 a.setTouchable(Touchable.enabled);
             }
             */
+            return true;
         }
 
             /*
@@ -221,5 +229,43 @@ public class InputHandler implements InputProcessor{
     @Override
     public boolean scrolled(int amount) {
         return false;
+    }
+
+    public void showDialog() {
+        skin = new Skin(Gdx.files.internal("uiskin.json"));
+        Dialog dialog = new Dialog("Quit?", skin) {
+
+            @Override
+            protected void result(Object object) {
+                boolean exit = (Boolean) object;
+                if (exit) {
+                    Gdx.app.exit();
+                } else {
+                    remove();
+                }
+            }
+
+            @Override
+            public Dialog show(Stage stage) {
+                return super.show(stage);
+            }
+
+            @Override
+            public void cancel() {
+                super.cancel();
+            }
+
+            @Override
+            public float getPrefHeight() {
+                return 50f;
+            }
+        };
+        dialog.button("Yes", true);
+        dialog.button("No", false);
+        dialog.key(Input.Keys.ENTER, true);
+        dialog.key(Input.Keys.ESCAPE, false);
+        //world.addActor(dialog);
+        dialog.show(world).setPosition(100,100);
+        //Gdx.input.setInputProcessor(world);
     }
 }
