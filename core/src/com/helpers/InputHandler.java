@@ -66,7 +66,7 @@ public class InputHandler implements InputProcessor{
         }
 
         tileHitPosition = world.stageToScreenCoordinates(new Vector2(screenX, screenY));
-        firstTile = world.hit(tileHitPosition.x, tileHitPosition.y, false);//what was touchable again (3rd param)
+        firstTile = (Tile)world.hit(tileHitPosition.x, tileHitPosition.y, false);//what was touchable again (3rd param)
         //Gdx.app.log("hit","registered by stage");
 
         if (firstTile != null){
@@ -92,7 +92,7 @@ public class InputHandler implements InputProcessor{
         if (!world.isRunning()) return false;
 
         tileHitPosition = world.stageToScreenCoordinates(new Vector2(screenX, screenY));
-        currentTile = world.hit(tileHitPosition.x, tileHitPosition.y, false);
+        currentTile = (Tile)world.hit(tileHitPosition.x, tileHitPosition.y, false);
         //Gdx.app.log("drag","registered by stage");
 
         if (currentTile != null){//if a tile is hit
@@ -264,8 +264,6 @@ public class InputHandler implements InputProcessor{
         dialog.button("No", false);
         dialog.key(Input.Keys.ENTER, true);
         dialog.key(Input.Keys.ESCAPE, false);
-        //world.addActor(dialog);
-        dialog.show(world).setPosition(100,100);
-        //Gdx.input.setInputProcessor(world);
+        dialog.show(world);
     }
 }

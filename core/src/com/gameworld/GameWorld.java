@@ -90,6 +90,8 @@ public class GameWorld extends Stage {
         */
     }
 
+/*
+    OVERRIDING HIT WAS CAUSING THE ISSUE WHERE DIALOG COULD NOT BE CLICKED. FINALLY FOUND THIS BUG!!!
     @Override
     public Tile hit(float stageX, float stageY, boolean touchable) {
         if (super.hit(stageX, stageY, touchable) instanceof Tile){
@@ -97,6 +99,7 @@ public class GameWorld extends Stage {
         }
         return null;
     }
+*/
 
     public Board getBoard(){
         return board;
