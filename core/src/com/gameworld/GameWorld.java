@@ -16,14 +16,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
-import com.gamelogic.GameLogic;
 import com.gameobjects.Board;
-import com.gameobjects.Region;
-import com.gameobjects.Tile;
-
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 
 /**
  * manages game objects (tile and board (group of tiles)
@@ -41,8 +34,6 @@ public class GameWorld extends Stage {
 
     //UI
     private Skin skin;
-    //public TextButton toMenuButton;
-    public Dialog endDialog;
 
     public GameWorld(int rows, int cols){
         super(new ScreenViewport());
@@ -56,38 +47,12 @@ public class GameWorld extends Stage {
         addActor(board);
 
         /*
-        endDialog = new Dialog("Click Message", skin){
-            public void result(Object obj){
-                System.out.println("result " + obj);
-            }
-        };
-
         //endDialog.setModal(true);
         //endDialog.setMovable(false);
         //endDialog.setResizable(false);
         //endDialog.show(this).setPosition(100,100);
         endDialog.setName("endDialog");
-
-        Button b = new TextButton("A", skin, "default");
-
-        b.addListener(new ClickListener(){
-            public void clicked(InputEvent event, float x, float y) {
-                Gdx.app.log("Clicked", "you did");
-            }
-        });
-        endDialog.button(b);
-        endDialog.button("Yes", true);
-        //endDialog.show(this);
-        //addActor(endDialog);
-        //addActor(board);
-        //endDialog.show(this);
-
-        //addActor(endDialog);
-        //endDialog.hide();
-        //endDialog.setTouchable(Touchable.disabled);
-
-        //endDialog.toFront();
-        */
+*/
     }
 
 /*

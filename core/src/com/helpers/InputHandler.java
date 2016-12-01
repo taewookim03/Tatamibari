@@ -60,7 +60,7 @@ public class InputHandler implements InputProcessor{
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
         //System.out.println(endDialog.getX() + ", " + endDialog.getY());
         if (!world.isRunning()) {
-            System.out.println("InputHandler touchDown returning false");
+            //System.out.println("InputHandler touchDown returning false");
             return false;
             //return world.touchDown(screenX, screenY, pointer, button);
         }
@@ -83,7 +83,7 @@ public class InputHandler implements InputProcessor{
             //System.out.println("(" + firstTile.getRow() + ", " + firstTile.getCol() + ")");
             lastTile = firstTile;
         }
-        System.out.println("InputHandler touchDown returning true");
+        //System.out.println("InputHandler touchDown returning true");
         return true;
     }
 
@@ -176,32 +176,14 @@ public class InputHandler implements InputProcessor{
         //check if puzzle is solved (it is solved if board is filled completely assuming each region follows the rules)
         if (board.isFilled()){
             world.setSolved();
-            System.out.println("solved!");
-            /*
-            endDialog.show(this).setPosition(0, 100);
-            endDialog.setTouchable(Touchable.enabled);
-            */
+            //System.out.println("solved!");
 
             this.showDialog();
-            //world.showDialog();
 
-
-            /*
-            for (Actor a : this.getActors()){
-                a.setTouchable(Touchable.enabled);
-            }
-            */
             return true;
         }
 
-            /*
-            game.batch.begin();
-            game.font.setColor(Color.PINK);
-            game.font.draw(game.batch, "Click to go back to main menu", Gdx.graphics.getWidth()/2, Gdx.graphics.getHeight()/2);
-            game.batch.end();
-            */
-        //world.endDialog.show(world).setPosition(100,100);
-        //world.toMenuButton.setVisible(true);
+
 
         return true;
     }

@@ -8,14 +8,14 @@
     },
 
     com.badlogic.gdx.scenes.scene2d.ui.TextButton$TextButtonStyle: {
-        default: { down: default-round-down, up: default-round, font: default-font, fontColor: red },
+        default: { down: default-round-down, up: default-round, font: default-font, fontColor: black },
     },
     com.badlogic.gdx.scenes.scene2d.ui.Window$WindowStyle: {
         default:  {
-        titleFont: default-font, titleFontColor: red
+        titleFont: default-font, titleFontColor: black
         }
     },
     com.badlogic.gdx.scenes.scene2d.ui.Label$LabelStyle: {
-    	default: { font: default-font, fontColor: red }
+    	default: { font: default-font, fontColor: black }
     }
 }

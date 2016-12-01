@@ -6,6 +6,9 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import com.badlogic.gdx.utils.viewport.Viewport;
 import com.gameobjects.Board;
 import com.gameworld.GameWorld;
 import com.tatamibari.TatamibariGame;
@@ -16,13 +19,22 @@ import com.tatamibari.TatamibariGame;
 public class MainMenuScreen implements Screen {
     private TatamibariGame game;//need this to set screen based on which menu item is chosen
     private OrthographicCamera camera;
-    private GameWorld world;
+    private GameWorld world;//stage containing game elements, to be initiated from here
+    private Stage menuStage;
+    private Skin skin;
+    private Viewport viewport;
+
 
     public MainMenuScreen(TatamibariGame game){
         this.game = game;
         camera = new OrthographicCamera();
+        viewport = new ScreenViewport(camera);
+        viewport.apply();//what does this do?
         camera.setToOrtho(false);
+        camera.update();
         //instantiate world based on which size board is touched
+        menuStage = new Stage(viewport);
+        Gdx.input.setInputProcessor(menuStage);
     }
     @Override
     public void show() {
@@ -46,7 +58,7 @@ public class MainMenuScreen implements Screen {
         //later have multiple options based on which button is touched, instantiate different sizes etc.
         if (Gdx.input.isTouched()){
             System.out.println("main menu touch registered");
-            world = new GameWorld(5,5);//instantiate world based on which size board is touched
+            world = new GameWorld(5, 5);//instantiate world based on which size board is touched
             game.setScreen(new GameScreen(world));
             dispose();
         }
