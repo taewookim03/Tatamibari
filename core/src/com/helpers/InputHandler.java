@@ -27,6 +27,8 @@ import com.gamelogic.GameLogic;
 import com.gameobjects.Board;
 import com.gameobjects.Region;
 import com.gameobjects.Tile;
+import com.screens.MainMenuScreen;
+import com.tatamibari.TatamibariGame;
 
 
 /**
@@ -34,7 +36,7 @@ import com.gameobjects.Tile;
  */
 
 public class InputHandler implements InputProcessor{
-
+    private TatamibariGame game;
     private GameWorld world;
     private Board board;
     private GameLogic logic;
@@ -50,7 +52,8 @@ public class InputHandler implements InputProcessor{
     private Skin skin;
 
 
-    public InputHandler(GameWorld world){
+    public InputHandler(TatamibariGame game, GameWorld world){
+        this.game = game;
         this.world = world;
         this.board = world.getBoard();
         this.logic = new GameLogic(board);
@@ -219,9 +222,12 @@ public class InputHandler implements InputProcessor{
 
             @Override
             protected void result(Object object) {
-                boolean exit = (Boolean) object;
-                if (exit) {
-                    Gdx.app.exit();
+                boolean mainMenu = (Boolean) object;
+                if (mainMenu) {
+                    //go to main menu
+                    //do i have to delete this screen?
+                    game.setScreen(new MainMenuScreen(game));
+
                 } else {
                     remove();
                 }
@@ -242,10 +248,10 @@ public class InputHandler implements InputProcessor{
                 return 50f;
             }
         };
-        dialog.button("Yes", true);
-        dialog.button("No", false);
+        dialog.button("Main Menu", true);
+        //dialog.button("", false);
         dialog.key(Input.Keys.ENTER, true);
-        dialog.key(Input.Keys.ESCAPE, false);
+        //dialog.key(Input.Keys.ESCAPE, false);
         dialog.show(world);
     }
 }

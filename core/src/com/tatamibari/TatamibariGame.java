@@ -25,7 +25,6 @@ import com.screens.MainMenuScreen;
 
 public class TatamibariGame extends Game {
 
-    private GameWorld world;
 	//using default fonts and skins instead of loading assets for now
     public SpriteBatch batch;
     public BitmapFont font;
@@ -47,4 +46,5 @@ public class TatamibariGame extends Game {
         font.dispose();
 		skin.dispose();
 	}
+
 }

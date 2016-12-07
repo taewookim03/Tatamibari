@@ -16,10 +16,11 @@ import com.tatamibari.TatamibariGame;
  * might not use this
  */
 public class GameScreen implements Screen {
-
+    private TatamibariGame game;
     private GameWorld world;
 
-    public GameScreen(GameWorld world){
+    public GameScreen(TatamibariGame game, GameWorld world){
+        this.game = game;
         this.world = world;//world is instantiated in main menu and passed in
 
     }
@@ -29,8 +30,8 @@ public class GameScreen implements Screen {
         world.getViewport().update(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), true);
         InputMultiplexer im = new InputMultiplexer();
 
-        im.addProcessor(0, world);
-        im.addProcessor(1, new InputHandler(world));
+        im.addProcessor(world);//input for the dialog
+        im.addProcessor(new InputHandler(game, world));
         Gdx.input.setInputProcessor(im);
     }
 
