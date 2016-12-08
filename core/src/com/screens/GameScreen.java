@@ -5,9 +5,11 @@ import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.gameworld.GameWorld;
 import com.helpers.InputHandler;
 import com.tatamibari.TatamibariGame;
@@ -28,9 +30,21 @@ public class GameScreen implements Screen {
     @Override
     public void show() {
         world.getViewport().update(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), true);
-        InputMultiplexer im = new InputMultiplexer();
 
-        im.addProcessor(world);//input for the dialog
+        //add a give up button to go back to main menu
+        TextButton giveUpButton = new TextButton("Give Up", game.skin);
+        giveUpButton.addListener(new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float x, float y){
+                game.setScreen(new MainMenuScreen(game));
+            }
+        });
+        giveUpButton.setX(Gdx.graphics.getWidth() - giveUpButton.getWidth());
+        world.addActor(giveUpButton);
+
+
+        InputMultiplexer im = new InputMultiplexer();
+        im.addProcessor(world);//input processor for the dialog
         im.addProcessor(new InputHandler(game, world));
         Gdx.input.setInputProcessor(im);
     }

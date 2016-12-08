@@ -24,7 +24,6 @@ public class MainMenuScreen implements Screen {
     private OrthographicCamera camera;
     private GameWorld world;//stage containing game elements, to be initiated from here
     private Stage menuStage;
-    private Skin skin;
     private Viewport viewport;
 
 
@@ -38,7 +37,6 @@ public class MainMenuScreen implements Screen {
         //instantiate world based on which size board is touched
         menuStage = new Stage(viewport);
         Gdx.input.setInputProcessor(menuStage);
-        skin = new Skin(Gdx.files.internal("uiskin.json"));
     }
     @Override
     public void show() {
@@ -47,9 +45,9 @@ public class MainMenuScreen implements Screen {
         mainTable.top();//alignment of contents
 
         //create buttons
-        TextButton play5x5Button = new TextButton("5x5", skin);
-        TextButton play10x10Button = new TextButton("10x10", skin);
-        TextButton quitButton = new TextButton("Quit", skin);
+        TextButton play5x5Button = new TextButton("5x5", game.skin);
+        TextButton play10x10Button = new TextButton("10x10", game.skin);
+        TextButton quitButton = new TextButton("Quit", game.skin);
 
         //add listeners to buttons
         play5x5Button.addListener(new ClickListener(){

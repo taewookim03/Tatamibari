@@ -21,7 +21,7 @@ public class Tile extends Actor {//Actor vs Image?
          */
     }
 
-    private static final float SYMBOL_THICKNESS = 2.5f;
+    private final float SYMBOL_THICKNESS;
 
     private final int row;
     private final int col;
@@ -41,11 +41,14 @@ public class Tile extends Actor {//Actor vs Image?
         this.row = row;
         this.col = col;
 
-        //determine tile width and height based on board length
-
+        //determine tile width and height based on board size
         setPosition(col*tileWidth, row*tileHeight);
         setWidth(tileWidth);
         setHeight(tileHeight);
+
+        //scale symbol line thickness based on tile size
+        //thickness 2.0 : tile size 50 = 1:20
+        SYMBOL_THICKNESS = tileWidth / 25.0f;
 
         setColor(Color.WHITE);
         symbol = Symbol.NONE;

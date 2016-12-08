@@ -15,8 +15,8 @@ import java.util.*;
  * Created by Gayming on 8/31/2016.
  */
 public class Board extends Group {
-    private static final float BOARD_WIDTH = 400;
-    private static final float BOARD_HEIGHT = 400;
+    private static final float BOARD_WIDTH = 350;
+    private static final float BOARD_HEIGHT = 350;
     private static final float OUTLINE_THICKNESS = 2.0f;
 
     private final int rows;
