@@ -15,28 +15,32 @@ import java.util.*;
  * Created by Gayming on 8/31/2016.
  */
 public class Board extends Group {
-    private int rows;
-    private int cols;
+    private static final float BOARD_WIDTH = 400;
+    private static final float BOARD_HEIGHT = 400;
+    private static final float OUTLINE_THICKNESS = 2.0f;
+
+    private final int rows;
+    private final int cols;
     private Tile[][] tiles;
 
     private List<Region> regions;//maybe initialize regions with different colors
 
     private ShapeRenderer sr;
 
-    private static final float OUTLINE_THICKNESS = 2.0f;
-
     public Board(int rows, int cols) {
         super();
 
         this.rows = rows;
         this.cols = cols;
+        final float tileWidth = BOARD_WIDTH / cols;
+        final float tileHeight = BOARD_HEIGHT / rows;
 
         tiles = new Tile[rows][cols];
 
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < cols; j++) {
-                tiles[i][j] = new Tile(i, j);
-                addActor(tiles[i][j]);//adding tiles to group
+                tiles[i][j] = new Tile(i, j, tileWidth, tileHeight);
+                addActor(tiles[i][j]);//adding tiles to Board as actors
             }
         }
 
@@ -54,7 +58,7 @@ public class Board extends Group {
         setSymbol(2, 2, Tile.Symbol.SQUARE);
         setSymbol(2, 3, Tile.Symbol.VERTICAL);
         setSymbol(0, 0, Tile.Symbol.HORIZONTAL);
-        //setSymbol(0, 4, Tile.Symbol.SQUARE);
+
     }
 
     public Tile getTile(int row, int col) {

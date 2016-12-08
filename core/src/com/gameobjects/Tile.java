@@ -11,7 +11,6 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
  * Created by Gayming on 8/31/2016.
  */
 public class Tile extends Actor {//Actor vs Image?
-
     public enum Symbol{
         NONE, HORIZONTAL, VERTICAL, SQUARE
         /*
@@ -24,26 +23,29 @@ public class Tile extends Actor {//Actor vs Image?
 
     private static final float SYMBOL_THICKNESS = 2.5f;
 
-    private int row;
-    private int col;
+    private final int row;
+    private final int col;
 
     private boolean selected;//current selection (input handling)
     //private boolean assigned;//replace with hasParent/getParent of the Actor class
 
-    private Region region;
+    private Region region;//region of the board that the tile belongs to
 
     //private Color color; //this is part of Actor class
-    private Symbol symbol;
+    private Symbol symbol;//symbol contained in the tile
+    private ShapeRenderer sr;//for drawing the tile
 
-    private ShapeRenderer sr;
+    public Tile(int row, int col, float tileWidth, float tileHeight){
+        super();//actor ctor
 
-    public Tile(int row, int col){
-        super();
         this.row = row;
         this.col = col;
-        setPosition(col*50, row*50);
-        setWidth(50);
-        setHeight(50);
+
+        //determine tile width and height based on board length
+
+        setPosition(col*tileWidth, row*tileHeight);
+        setWidth(tileWidth);
+        setHeight(tileHeight);
 
         setColor(Color.WHITE);
         symbol = Symbol.NONE;
