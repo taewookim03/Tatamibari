@@ -107,24 +107,24 @@ public class Region {
 
     public int getRows(){//calculates the number of rows
         try{
-            return getLastTile().getRow() - getFirstTile().getRow();
+            return getLastTile().getRow() - getFirstTile().getRow() + 1;
         }
         catch (NullPointerException e){
             System.out.println(e.getMessage());
             Gdx.app.log("getRows", "something wrong with getFirstTile and/or getLastTile: "
-                    + (getLastTile().getRow() - getFirstTile().getRow()));
+                    + (getLastTile().getRow() - getFirstTile().getRow() + 1));
             return -1;
         }
     }
 
     public int getCols(){//calculates the number of columns
         try{
-            return getLastTile().getCol() - getFirstTile().getCol();
+            return getLastTile().getCol() - getFirstTile().getCol() + 1;
         }
         catch (NullPointerException e){
             System.out.println(e.getMessage());
             Gdx.app.log("getCols", "something wrong with getFirstTile and/or getLastTile: "
-            + (getLastTile().getCol() - getFirstTile().getCol()));
+            + (getLastTile().getCol() - getFirstTile().getCol() + 1));
             return -1;
         }
     }

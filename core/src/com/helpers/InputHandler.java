@@ -160,7 +160,7 @@ public class InputHandler implements InputProcessor{
         currentTile = null;
 
         //check if puzzle is solved (it is solved if board is filled completely assuming each region follows the rules)
-        if (board.isFilled()){
+        if (board.isFilled() && logic.hasValidRegions()){
             world.setSolved();
             //System.out.println("solved!");
 

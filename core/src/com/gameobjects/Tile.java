@@ -199,6 +199,6 @@ public class Tile extends Actor {//Actor vs Image?
 
     @Override
     public String toString() {
-        return "row: " + getRow() + ", col: " + getCol();
+        return getRow() + "," + getCol();
     }
 }

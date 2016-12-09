@@ -81,7 +81,7 @@ public final class GameLogic {
         board.removeRegion(region);
 
         //randomly choose vertical/horizontal direction for division, one followed by the other (in case the first
-        //direction does not have any valid divisions
+        //direction does not have any valid divisions)
         //true: divide vertically (dividing line is vertical across the board)
         //false: divide horizontally (dividing line is horizontal across the board)
         //boolean divideVertical = rand.nextBoolean();
@@ -152,13 +152,15 @@ public final class GameLogic {
                 //check that board is valid
                 if (!board.hasFourRegionCorner()){//if valid, quit the loop
                     System.out.println("has valid regions");
-                    System.out.println("region 1: " + region2);
+                    System.out.println("region 1: " + region1);
                     System.out.println("region 2: " + region2);
                     divided = true;
                     break;
                 }
                 //if not, delete the regions and try again
                 System.out.println("removing regions");
+                System.out.println("region 1: " + region1);
+                System.out.println("region 2: " + region2);
                 board.removeRegion(region1);
                 board.removeRegion(region2);
             }
@@ -166,16 +168,19 @@ public final class GameLogic {
             //check if division is successful
             if (divided){
                 //recursion - randomize depth reduction - randomly reduce by a number in range [1 ... 3], for example
-                //determine the sweet spot range for a good generator by trial and error later
-                int depthReduction = rand.nextInt(3) + 1;
+                //determine the sweet spot range for a good generator by trial and error depending on board size
+                int depthReduction = rand.nextInt(3) + 1;//[1,2,3]
                 divideRegion(depth - depthReduction, region1);
+
+                depthReduction = rand.nextInt(3) + 1;//[1,2,3]
                 divideRegion(depth - depthReduction, region2);
+
                 break;//break out of the loop so this does not repeat
             }
             //if not, it means there are no valid division in the division direction randomly chosen
             //flip the direction and try again - track that both directions have been tried
         }
-        //if division has not occurred, restore the original region
+        //if a division has not occurred, restore the original region
         board.select(region1FirstTile, region2LastTile);
         board.addRegion(new Region(board));
         board.clearSelection();
