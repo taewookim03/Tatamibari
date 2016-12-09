@@ -84,6 +84,27 @@ public class Region {
         return tiles;
     }
 
+    public Tile getFirstTile(){
+        try{
+            return tiles.get(0);
+        }
+        catch (IndexOutOfBoundsException e){
+            System.out.println(e.getMessage());
+            Gdx.app.log("getFirstTile", "index out of bounds");
+            return null;
+        }
+    }
+    public Tile getLastTile(){
+        try{
+            return tiles.get(tiles.size() - 1);
+        }
+        catch (IndexOutOfBoundsException e){
+            System.out.println(e.getMessage());
+            Gdx.app.log("getLastTile", "index out of bounds");
+            return null;
+        }
+    }
+
     public void refresh(){
         for (Tile tile : tiles){
             tile.setRegion(this);

@@ -112,6 +112,10 @@ public class Board extends Group {
         }
     }
 
+    public void select(Tile firstTile, Tile lastTile){
+        select(firstTile, lastTile, Color.WHITE);
+    }
+
     public void addRegion(Region newRegion){
         newRegion.addSelectedTiles();
 
