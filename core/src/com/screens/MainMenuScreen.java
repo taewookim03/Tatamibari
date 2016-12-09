@@ -7,9 +7,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
@@ -22,7 +20,7 @@ import com.tatamibari.TatamibariGame;
 public class MainMenuScreen implements Screen {
     private TatamibariGame game;//need this to set screen based on which menu item is chosen
     private OrthographicCamera camera;
-    private GameWorld world;//stage containing game elements, to be initiated from here
+    private GameWorld world;//stage containing game elements, to be initiated when user chooses board size and difficulty
     private Stage menuStage;
     private Viewport viewport;
 
@@ -42,9 +40,10 @@ public class MainMenuScreen implements Screen {
     public void show() {
         Table mainTable = new Table();
         mainTable.setFillParent(true);//set table to fill the whole stage
-        mainTable.top();//alignment of contents
+        mainTable.center();//alignment of contents
 
-        //create buttons
+        //create menu buttons
+        Label sizePrompt = new Label("Choose a size:", game.skin);
         TextButton play5x5Button = new TextButton("5x5", game.skin);
         TextButton play10x10Button = new TextButton("10x10", game.skin);
         TextButton quitButton = new TextButton("Quit", game.skin);
@@ -72,14 +71,18 @@ public class MainMenuScreen implements Screen {
         });
 
         //add buttons to table
+        mainTable.add(sizePrompt);
+        mainTable.row();
         mainTable.add(play5x5Button);
         mainTable.row();
         mainTable.add(play10x10Button);
         mainTable.row();
         mainTable.add(quitButton);
 
-        //add button to stage
+        //add table to stage
         menuStage.addActor(mainTable);
+
+        //implement difficulty as well (parameter to GameWorld which calls random problem generator)
 
     }
 

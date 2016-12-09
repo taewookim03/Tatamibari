@@ -105,17 +105,19 @@ public class Region {
     }
 
     public Vector2 getUpperLeftCorner(){
-        return new Vector2(tiles.get(0).getScreenX(), tiles.get(tiles.size() - 1).getScreenY() + symbolTile.getHeight());
+        return new Vector2(tiles.get(0).getScreenX(),
+                tiles.get(tiles.size() - 1).getScreenY() + tiles.get(tiles.size() - 1).getHeight());
     }
     public Vector2 getUpperRightCorner(){
-        return new Vector2(tiles.get(tiles.size() - 1).getScreenX() + symbolTile.getWidth(),
-                tiles.get(tiles.size() - 1).getScreenY() + symbolTile.getHeight());
+        return new Vector2(tiles.get(tiles.size() - 1).getScreenX() + tiles.get(tiles.size() - 1).getWidth(),
+                tiles.get(tiles.size() - 1).getScreenY() + tiles.get(tiles.size() - 1).getHeight());
     }
     public Vector2 getLowerLeftCorner(){
         return new Vector2(tiles.get(0).getScreenX(), tiles.get(0).getScreenY());
     }
     public Vector2 getLowerRightCorner(){
-        return new Vector2(tiles.get(tiles.size() - 1).getScreenX() + symbolTile.getWidth(), tiles.get(0).getScreenY());
+        return new Vector2(tiles.get(tiles.size() - 1).getScreenX() + tiles.get(tiles.size() - 1).getWidth(),
+                tiles.get(0).getScreenY());
     }
 
     public void setDraw(boolean d){

@@ -69,12 +69,11 @@ public class InputHandler implements InputProcessor{
         }
 
         tileHitPosition = world.stageToScreenCoordinates(new Vector2(screenX, screenY));
-        firstTile = (Tile)world.hit(tileHitPosition.x, tileHitPosition.y, false);//what was touchable again (3rd param)
+        firstTile = (Tile)world.hit(tileHitPosition.x, tileHitPosition.y, false);//get the tile clicked
         //Gdx.app.log("hit","registered by stage");
 
-        if (firstTile != null){
-            //implement region.doDraw thing here
-            if (firstTile.getRegion() != null){
+        if (firstTile != null){//if a tile was selected
+            if (firstTile.getRegion() != null){//if the selected tile belongs to an existing region
                 board.removeRegion(firstTile.getRegion());
                 //firstTile.getRegion().setDraw(false);//if necessary to restore invalidated region, replace above with this
             }
@@ -84,7 +83,7 @@ public class InputHandler implements InputProcessor{
             firstTile.setSelected(true, newRegion.getColor());
 
             //System.out.println("(" + firstTile.getRow() + ", " + firstTile.getCol() + ")");
-            lastTile = firstTile;
+            lastTile = firstTile;//update last tile selected
         }
         //System.out.println("InputHandler touchDown returning true");
         return true;
@@ -100,7 +99,7 @@ public class InputHandler implements InputProcessor{
 
         if (currentTile != null){//if a tile is hit
             if (currentTile != lastTile){//check to only run the following code if currentTile changes
-                lastTile = currentTile;
+                lastTile = currentTile;//update last tile selected
 
                 for (Tile tile : board.getRectangularSelection(firstTile, lastTile)){
                     if (tile.getRegion() != null){
@@ -113,7 +112,6 @@ public class InputHandler implements InputProcessor{
                 board.select(firstTile, lastTile, newRegion.getColor());//selects a rectangular region and marks them
                 //make sure that the selection color covers the existing tiles for visibility
 
-                //maybe just do borders instead of coloring?
 
                 //System.out.println("(" + currentTile.getRow() + ", " + currentTile.getCol() + ")");
             }
@@ -123,18 +121,18 @@ public class InputHandler implements InputProcessor{
 
     @Override
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-
         //update states when touch up, might want to encapsulate everything into an update() function if needed
 
         //Gdx.app.log("touchUp", "registered");
-        if (!world.isRunning()){
+
+        if (!world.isRunning()){//if game is not running, do nothing
             return false;
         }
         if (newRegion == null){//if touchDown happens at a non-tile, then newRegion is not created.
             return false;
         }
 
-        board.addRegion(newRegion);//add new region which was instantiated in touchDown
+        board.addRegion(newRegion);//add new region which was instantiated in touchDown based on tiles selected
 
         /*
         System.out.println(newRegion.getBottomRow());
@@ -156,7 +154,7 @@ public class InputHandler implements InputProcessor{
             //if compliant, clear existing region from overlapping tiles
             board.clearOverlappingRegions();
         }
-        else{
+        else{//if the new region is illegal, remove it
             board.removeRegion(newRegion);
         }
         board.refreshRegions();

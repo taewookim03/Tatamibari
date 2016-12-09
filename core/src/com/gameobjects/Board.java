@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
+import com.gamelogic.GameLogic;
 
 import java.util.*;
 
@@ -26,6 +27,8 @@ public class Board extends Group {
     private List<Region> regions;//maybe initialize regions with different colors
 
     private ShapeRenderer sr;
+
+    private GameLogic logic;
 
     public Board(int rows, int cols) {
         super();
@@ -54,11 +57,17 @@ public class Board extends Group {
 
         sr = new ShapeRenderer();
 
+        logic = new GameLogic(this);
+
+        //randomly generate a problem
+        logic.generateRandomProblem();
+
         //for testing symbol drawing
+        /*
         setSymbol(2, 2, Tile.Symbol.SQUARE);
         setSymbol(2, 3, Tile.Symbol.VERTICAL);
         setSymbol(0, 0, Tile.Symbol.HORIZONTAL);
-
+        */
     }
 
     public Tile getTile(int row, int col) {
@@ -72,13 +81,6 @@ public class Board extends Group {
             return null;
         }
     }
-    /*
-    public Tile getTile(int index) {
-        int row = index/rows;
-        int col = index%rows;
-        return tiles[row][col];
-    }
-    */
 
     public void setSymbol(int row, int col, Tile.Symbol symbol){
         Tile tile;
@@ -102,6 +104,7 @@ public class Board extends Group {
         }
     }
 
+    //left color parameter in case of future implementation of differently colored regions
     public void select(Tile firstTile, Tile lastTile, Color color){
         Set<Tile> tilesSelected = getRectangularSelection(firstTile, lastTile);
         for (Tile t : tilesSelected){
@@ -109,9 +112,6 @@ public class Board extends Group {
         }
     }
 
-    public void addTempRegion(Region tempRegion){
-
-    }
     public void addRegion(Region newRegion){
         newRegion.addSelectedTiles();
 

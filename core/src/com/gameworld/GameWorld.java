@@ -21,38 +21,23 @@ import com.gameobjects.Board;
 /**
  * manages game objects (tile and board (group of tiles)
  *
- * due to simplicity don't use this class and just use the default Stage claess with custom input inside the TatamibariGame class?
  */
 public class GameWorld extends Stage {
 
-    public enum GameState{//from menu, choose tile size etc. and run game.
-        RUNNING, SOLVED//MENU is handled by a separate screen
+    public enum GameState{
+        RUNNING, SOLVED
     }
 
     private GameState currentState;
     private Board board;
 
-    //UI
-    private Skin skin;
 
     public GameWorld(int rows, int cols){
         super(new ScreenViewport());
-
         currentState = GameState.RUNNING;
         board = new Board(rows, cols);
 
-        //UI
-        skin = new Skin(Gdx.files.internal("uiskin.json"));
-
         addActor(board);
-
-        /*
-        //endDialog.setModal(true);
-        //endDialog.setMovable(false);
-        //endDialog.setResizable(false);
-        //endDialog.show(this).setPosition(100,100);
-        endDialog.setName("endDialog");
-*/
     }
 
 /*
@@ -77,60 +62,10 @@ public class GameWorld extends Stage {
     public boolean isSolved(){
         return currentState == GameWorld.GameState.SOLVED;
     }
+
     public void setSolved(){
         currentState = GameState.SOLVED;
     }
-
-    public void showDialog() {
-        //clear();
-        //Gdx.input.setInputProcessor(this);
-        TextButton toMenuButton = new TextButton("Return", skin, "default");
-        toMenuButton.setWidth(100);
-        toMenuButton.setHeight(20);
-
-
-        toMenuButton.setColor(Color.RED);
-
-        toMenuButton.toFront();
-        //toMenuButton.setPosition(Gdx.graphics.getWidth()/2 - toMenuButton.getWidth()/2,
-        //        Gdx.graphics.getHeight()/2 - toMenuButton.getHeight()/2 - 50);
-
-        toMenuButton.setPosition(50,50);
-
-        toMenuButton.addListener(new ChangeListener(){
-            @Override
-            public void changed (ChangeEvent event, Actor actor) {
-                System.out.println("button clicked");
-            }
-        });
-        addActor(toMenuButton);
-    }
-
-/*
-    @Override
-    public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        if(super.touchDown(screenX,screenY,pointer,button)){
-            System.out.println("stage's super returning true");
-        }
-        else{
-            System.out.println("stage's super returning false");
-        }
-        return super.touchDown(screenX, screenY, pointer, button);
-
-        //System.out.println("GameWorld touchDown returning false");
-        //return false;//default false
-    }
-
-    @Override
-    public boolean touchDragged(int screenX, int screenY, int pointer) {
-        return false;
-    }
-
-    @Override
-    public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-        return false;
-    }
-    */
 
     @Override
     public void draw() {
