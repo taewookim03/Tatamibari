@@ -60,7 +60,7 @@ public class Board extends Group {
         logic = new GameLogic(this);
 
         //randomly generate a problem
-        logic.generateRandomProblem();
+        logic.generateRandomProblem(5);//pass recursive division depth which scales with difficulty
 
         //for testing symbol drawing
         /*

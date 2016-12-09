@@ -2,7 +2,6 @@ package com.helpers;
 
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.gameobjects.Board;
 import com.gameobjects.Region;
 import com.gameobjects.Tile;
@@ -10,23 +9,9 @@ import com.gameworld.GameWorld;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.Touchable;
-import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.gamelogic.GameLogic;
-import com.gameobjects.Board;
-import com.gameobjects.Region;
-import com.gameobjects.Tile;
 import com.screens.MainMenuScreen;
 import com.tatamibari.TatamibariGame;
 
@@ -144,7 +129,7 @@ public class InputHandler implements InputProcessor{
         //System.out.println("one symbol: " + newRegion.hasOneSymbol());
         //System.out.println("symbol match: " + newRegion.matchesSymbol());
 
-        if (logic.checkRegionCompliance()){//check if adding a new region still complies with the tatamibari rules
+        if (logic.hasValidRegions()){//check if adding a new region still complies with the tatamibari rules
             /*
             List<Tile> tiles = newRegion.getTiles();
             System.out.println(tiles.get(0).getRow() + ", " + tiles.get(0).getCol() + ", " +

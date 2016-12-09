@@ -100,8 +100,32 @@ public class Region {
         }
         catch (IndexOutOfBoundsException e){
             System.out.println(e.getMessage());
-            Gdx.app.log("getLastTile", "index out of bounds");
+            Gdx.app.log("getLastTile", "index out of bounds. index=" + (tiles.size() - 1));
             return null;
+        }
+    }
+
+    public int getRows(){//calculates the number of rows
+        try{
+            return getLastTile().getRow() - getFirstTile().getRow();
+        }
+        catch (NullPointerException e){
+            System.out.println(e.getMessage());
+            Gdx.app.log("getRows", "something wrong with getFirstTile and/or getLastTile: "
+                    + (getLastTile().getRow() - getFirstTile().getRow()));
+            return -1;
+        }
+    }
+
+    public int getCols(){//calculates the number of columns
+        try{
+            return getLastTile().getCol() - getFirstTile().getCol();
+        }
+        catch (NullPointerException e){
+            System.out.println(e.getMessage());
+            Gdx.app.log("getCols", "something wrong with getFirstTile and/or getLastTile: "
+            + (getLastTile().getCol() - getFirstTile().getCol()));
+            return -1;
         }
     }
 
