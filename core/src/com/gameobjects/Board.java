@@ -60,14 +60,17 @@ public class Board extends Group {
         logic = new GameLogic(this);
 
         //randomly generate a problem
-        //logic.generateRandomProblem(10);//pass recursive division depth which scales with difficulty
+        logic.generateRandomProblem(3);//pass recursive division depth which scales with difficulty
 
         //for testing symbol drawing
-
-        setSymbol(2, 2, Tile.Symbol.SQUARE);
-        setSymbol(2, 3, Tile.Symbol.VERTICAL);
+        /*
+        setSymbol(4, 0, Tile.Symbol.HORIZONTAL);
+        setSymbol(1, 0, Tile.Symbol.HORIZONTAL);
+        setSymbol(1, 4, Tile.Symbol.HORIZONTAL);
         setSymbol(0, 0, Tile.Symbol.HORIZONTAL);
-        
+        setSymbol(0, 4, Tile.Symbol.SQUARE);
+        */
+
     }
 
     public Tile getTile(int row, int col) {
@@ -231,12 +234,12 @@ public class Board extends Group {
         //corner = row grid * number of column grids in a row + column grid
         int[] corners = new int[4];
 
-        //calculate corner indices of each corner of each region
+        //calculate corner indices of each corner of each region and remember the count
         for (Region region : regions){
-            corners[0] = region.getBottomRow() * (region.getCols() + 1) + region.getLeftCol();//lower left corner
-            corners[1] = region.getBottomRow() * (region.getCols() + 1) + region.getRightCol() + 1;//lower right corner
-            corners[2] = (region.getTopRow() + 1) * (region.getCols() + 1) + region.getLeftCol();//upper left corner
-            corners[3] = (region.getTopRow() + 1) * (region.getCols() + 1) + region.getRightCol() + 1;//upper right corner
+            corners[0] = region.getBottomRow() * (this.getCols() + 1) + region.getLeftCol();//lower left corner
+            corners[1] = region.getBottomRow() * (this.getCols() + 1) + region.getRightCol() + 1;//lower right corner
+            corners[2] = (region.getTopRow() + 1) * (this.getCols() + 1) + region.getLeftCol();//upper left corner
+            corners[3] = (region.getTopRow() + 1) * (this.getCols() + 1) + region.getRightCol() + 1;//upper right corner
 
             //store the corners into their corner indices
             for (int corner : corners){
@@ -247,12 +250,13 @@ public class Board extends Group {
                     cornerCount.put(corner, 1);
                 }
             }
+        }
 
-            //see if any corner occurs 4 times
-            for (int corner: cornerCount.keySet()){
-                if (cornerCount.get(corner) >= 4){
-                    return true;
-                }
+        //see if any corner occurs 4 times
+        for (int corner: cornerCount.keySet()){
+            if (cornerCount.get(corner) >= 4){
+                System.out.println("Corner index " + corner + " has " + cornerCount.get(corner) + " corners.");
+                return true;
             }
         }
         return false;

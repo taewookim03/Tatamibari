@@ -91,12 +91,11 @@ public final class GameLogic {
 
         boolean divided = false;//boolean to track if the region has successfully been divided
 
-        for (int b = 0; !divided && b < divideDirections.length; b++){
-            boolean divideVertical = divideDirections[b];
-
+        for (boolean divideVertical : divideDirections){
             //randomly choose which row/column to divide at by shuffling possible indices
             //invalid divsions will be skipped - if no valid division, swap vertical/horizontal and try again.
             //If still no valid division, return.
+
             int[] divIndices;//possible indices where division can occur
             if (divideVertical){
                 divIndices = new int[originalRegionCols - 1];
@@ -104,6 +103,7 @@ public final class GameLogic {
             else{
                 divIndices = new int[originalRegionRows - 1];
             }
+
             //fill array with indices [1 ... n - 1]
             for (int i = 0; i < divIndices.length; i++){
                 divIndices[i] = i + 1;
@@ -111,24 +111,14 @@ public final class GameLogic {
 
             shuffleArray(divIndices);//shuffle the possible indices
 
-
-        /*
-        int divideAt;
-        if (divideVertical) {//vertical division
-            divideAt = rand.nextInt(region.getCols() - 1) + 1;//[1 ... numCols - 1]
-        }
-        else {//horizontal division
-            divideAt = rand.nextInt(region.getRows() - 1) + 1;//[1 ... numRows - 1]
-        }
-        */
-
-            int divideAt;
+            //create the new regions but don't add them yet
             Region region1 = new Region(board);
             Region region2 = new Region(board);
 
-            //iterate over the possible division indices and see if it is valid (does not violate four corner rule)
-            for (int i = 0; i < divIndices.length; i++){
-                divideAt = divIndices[i];
+            //iterate over the possible division indices and see if it is valid (i.e. does not violate four corner rule)
+            for (int divideAt : divIndices){
+
+
                 if (divideVertical){
                     //vertical division means the rows are the same between the first tiles, and also between the last tiles
                     region1LastTile = board.getTile(region2LastTile.getRow(), region1FirstTile.getCol() + divideAt - 1);
@@ -139,8 +129,8 @@ public final class GameLogic {
                     region1LastTile = board.getTile(region1FirstTile.getRow() + divideAt - 1, region2LastTile.getCol());
                     region2FirstTile = board.getTile(region1FirstTile.getRow() + divideAt, region1FirstTile.getCol());
                 }
-                //create the new regions and add to board
 
+                //create the new regions and add to board
                 board.select(region1FirstTile, region1LastTile);
                 board.addRegion(region1);
                 board.clearSelection();
@@ -151,16 +141,20 @@ public final class GameLogic {
 
                 //check that board is valid
                 if (!board.hasFourRegionCorner()){//if valid, quit the loop
+                    /*
                     System.out.println("has valid regions");
                     System.out.println("region 1: " + region1);
                     System.out.println("region 2: " + region2);
+                    */
                     divided = true;
                     break;
                 }
-                //if not, delete the regions and try again
-                System.out.println("removing regions");
+                //if not, delete the regions and continue the loop
+                /*
+                System.out.println("invalid regions");
                 System.out.println("region 1: " + region1);
                 System.out.println("region 2: " + region2);
+                */
                 board.removeRegion(region1);
                 board.removeRegion(region2);
             }
@@ -169,6 +163,8 @@ public final class GameLogic {
             if (divided){
                 //recursion - randomize depth reduction - randomly reduce by a number in range [1 ... 3], for example
                 //determine the sweet spot range for a good generator by trial and error depending on board size
+
+                //int depthReduction = 1;
                 int depthReduction = rand.nextInt(3) + 1;//[1,2,3]
                 divideRegion(depth - depthReduction, region1);
 
@@ -181,9 +177,11 @@ public final class GameLogic {
             //flip the direction and try again - track that both directions have been tried
         }
         //if a division has not occurred, restore the original region
-        board.select(region1FirstTile, region2LastTile);
-        board.addRegion(new Region(board));
-        board.clearSelection();
+        if (!divided){
+            board.select(region1FirstTile, region2LastTile);
+            board.addRegion(new Region(board));
+            board.clearSelection();
+        }
     }
 
 
