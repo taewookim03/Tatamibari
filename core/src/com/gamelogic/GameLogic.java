@@ -2,13 +2,12 @@ package com.gamelogic;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g3d.particles.influencers.ColorInfluencer;
+import com.badlogic.gdx.scenes.scene2d.ui.List;
 import com.gameobjects.Board;
 import com.gameobjects.Region;
 import com.gameobjects.Tile;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Random;
+import java.util.*;
 
 /**
  * Created by Taewoo Kim on 9/3/2016.
@@ -71,6 +70,48 @@ public final class GameLogic {
         return true;
     }
 
+
+    //a pair class used to hold divide direction (bool indicating vertical/horizontal) and divide index (int)
+    private class Pair{
+        private final boolean direction;//true = vertical, false = horizontal
+        private final int divideIndex;
+
+        public Pair(boolean direction, int divideIndex){
+            super();
+            this.direction = direction;
+            this.divideIndex = divideIndex;
+        }
+
+        @Override
+        public int hashCode() {
+            int hashDirection = new Boolean(direction).hashCode();
+            int hashIndex = divideIndex;
+            return 31 * hashIndex + hashDirection;//31 chosen as a small prime
+        }
+
+        @Override
+        public boolean equals(Object other) {//two pairs are equal if the members are equal
+            if (other instanceof Pair){
+                Pair otherPair = (Pair)other;
+                return this.direction == otherPair.direction && this.divideIndex == otherPair.divideIndex;
+            }
+            return false;
+        }
+
+        @Override
+        public String toString() {
+            return (direction ? "vertical" : "horizontal") + "," + divideIndex;
+        }
+
+        public boolean getDirection(){
+            return direction;
+        }
+        public int getDivideIndex(){
+            return divideIndex;
+        }
+    }
+
+
     public void generateRandomProblem(int divisionDepth){
         System.out.println("---------------NEW PROBLEM-----------------");
         /*
@@ -94,6 +135,7 @@ public final class GameLogic {
         board.addRegion(newRegion);
         board.clearSelection();
 
+        //divide region recursively
         divideRegion(divisionDepth, newRegion);
         //board.setSymbol(1, 3, Tile.Symbol.SQUARE);
 
@@ -140,86 +182,104 @@ public final class GameLogic {
         //true: divide vertically (dividing line is vertical across the board)
         //false: divide horizontally (dividing line is horizontal across the board)
         //boolean divideVertical = rand.nextBoolean();
+        /*
         boolean[] divideDirections = new boolean[2];
         divideDirections[0] = rand.nextBoolean();
         divideDirections[1] = !divideDirections[0];
+        */
 
         boolean divided = false;//boolean to track if the region has successfully been divided
         //create the new regions but don't add them yet
         Region region1 = new Region(board);
         Region region2 = new Region(board);
 
-        for (boolean divideVertical : divideDirections){
+        //for (boolean divideVertical : divideDirections){
             //randomly choose which row/column to divide at by shuffling possible indices
             //invalid divsions will be skipped - if no valid division, swap vertical/horizontal and try again.
             //If still no valid division, return.
 
+        /*
             int[] divIndices;//possible indices where division can occur
+
             if (divideVertical){
                 divIndices = new int[originalRegionCols - 1];
             }
             else{
                 divIndices = new int[originalRegionRows - 1];
             }
+        */
 
+        ArrayList<Pair> divPairs = new ArrayList<Pair>();
+
+        //fill array with all possible division (direction index pair)
+        //possible vertical divisions [1 ... c - 1]
+        for (int i = 0; i < originalRegionCols - 1; i++) {
+            divPairs.add(new Pair(true, i + 1));
+        }
+        //possible horizontal divisions [1 ... r - 1]
+        for (int i = 0; i < originalRegionRows - 1; i++) {
+            divPairs.add(new Pair(false, i + 1));
+        }
+        shuffleArray(divPairs);//shuffle the possible indices
+
+        /*
             //fill array with indices [1 ... n - 1]
             for (int i = 0; i < divIndices.length; i++){
                 divIndices[i] = i + 1;
             }
 
             shuffleArray(divIndices);//shuffle the possible indices
+        */
 
-            //iterate over the possible division indices and see if it is valid (i.e. does not violate four corner rule)
-            for (int divideAt : divIndices){
+        //iterate over the possible division indices and see if it is valid (i.e. does not violate four corner rule)
+        for (Pair pair : divPairs){
+            boolean divideVertical = pair.direction;
+            int divideAt = pair.getDivideIndex();
 
+            if (divideVertical){
+                //vertical division means the rows are the same between the first tiles, and also between the last tiles
+                region1LastTile = board.getTile(region2LastTile.getRow(), region1FirstTile.getCol() + divideAt - 1);
+                region2FirstTile = board.getTile(region1FirstTile.getRow(), region1FirstTile.getCol() + divideAt);
+            }
+            else{
+                //horizontal division so only the rows are separated
+                region1LastTile = board.getTile(region1FirstTile.getRow() + divideAt - 1, region2LastTile.getCol());
+                region2FirstTile = board.getTile(region1FirstTile.getRow() + divideAt, region1FirstTile.getCol());
+            }
 
-                if (divideVertical){
-                    //vertical division means the rows are the same between the first tiles, and also between the last tiles
-                    region1LastTile = board.getTile(region2LastTile.getRow(), region1FirstTile.getCol() + divideAt - 1);
-                    region2FirstTile = board.getTile(region1FirstTile.getRow(), region1FirstTile.getCol() + divideAt);
-                }
-                else{
-                    //horizontal division so only the rows are separated
-                    region1LastTile = board.getTile(region1FirstTile.getRow() + divideAt - 1, region2LastTile.getCol());
-                    region2FirstTile = board.getTile(region1FirstTile.getRow() + divideAt, region1FirstTile.getCol());
-                }
+            //create the new regions and add to board
+            board.select(region1FirstTile, region1LastTile);
+            board.addRegion(region1);
+            board.clearSelection();
 
-                //create the new regions and add to board
-                board.select(region1FirstTile, region1LastTile);
-                board.addRegion(region1);
-                board.clearSelection();
+            board.select(region2FirstTile, region2LastTile);
+            board.addRegion(region2);
+            board.clearSelection();
 
-                board.select(region2FirstTile, region2LastTile);
-                board.addRegion(region2);
-                board.clearSelection();
-
-                //check that board is valid
-                if (!hasFourRegionCorner()){//if valid, quit the loop
-                    /*
-                    System.out.println("has valid regions");
-                    System.out.println("region 1: " + region1);
-                    System.out.println("region 2: " + region2);
-                    */
-                    divided = true;
-                    break;
-                }
-                //if not, delete the regions and continue the loop
-
-                System.out.println("invalid regions");
+            //check that board is valid
+            if (!hasFourRegionCorner()){//if valid, quit the loop
+                /*
+                System.out.println("has valid regions");
                 System.out.println("region 1: " + region1);
                 System.out.println("region 2: " + region2);
-
-                board.removeRegion(region1);
-                board.removeRegion(region2);
+                */
+                divided = true;
+                break;
             }
+            //if not, delete the regions and continue the loop
+
+            System.out.println("invalid regions");
+            System.out.println("region 1: " + region1);
+            System.out.println("region 2: " + region2);
+
+            board.removeRegion(region1);
+            board.removeRegion(region2);
+
+        }
 
             //check if division is successful
-            if (divided){
-                break;//break out of the direction loop so this does not repeat
-            }
             //if not, it means there are no valid division in the division direction randomly chosen
             //flip the direction and try again - track that both directions have been tried
-        }
         if (divided){
             //recursion - randomize depth reduction - randomly reduce by a number in range [1 ... 3], for example
             //determine the sweet spot range for a good generator by trial and error depending on board size
@@ -239,7 +299,8 @@ public final class GameLogic {
     }
 
 
-    //Fisher-Yates shuffle to randomly shuffle an array of integers
+    //Fisher-Yates shuffle to randomly shuffle an array
+    //integer array needs an overloaded function since int is a primitive type
     private static void shuffleArray(int[] array){
         Random random = new Random();
         int k, temp;
@@ -250,6 +311,17 @@ public final class GameLogic {
                 temp = array[i];
                 array[i] = array[k];
                 array[k] = temp;
+            }
+        }
+    }
+
+    private static <T> void shuffleArray(ArrayList<T> list){
+        Random random = new Random();
+        int k;
+        for (int i = list.size() - 1; i > 0; i--){
+            k = random.nextInt(i + 1);//random number in range [0 ... i]
+            if (i != k){
+                Collections.swap(list, i, k);
             }
         }
     }
