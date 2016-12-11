@@ -6,6 +6,9 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.utils.BufferUtils;
+
+import java.nio.IntBuffer;
 
 /**
  * Created by Gayming on 8/31/2016.
@@ -47,8 +50,8 @@ public class Tile extends Actor {//Actor vs Image?
         setHeight(tileHeight);
 
         //scale symbol line thickness based on tile size
-        //thickness 2.0 : tile size 50 = 1:20
-        SYMBOL_THICKNESS = tileWidth / 25.0f;
+        //thickness:tile size
+        SYMBOL_THICKNESS = Math.round(tileWidth / 40.0f * 10.0)/10.0f;//round to 1 decimal
 
         setColor(Color.WHITE);
         symbol = Symbol.NONE;
@@ -130,6 +133,7 @@ public class Tile extends Actor {//Actor vs Image?
     }
 
     private void drawSymbolHorizontal(ShapeRenderer sr, float x, float y, float width, float height){
+        //sr.rect(x + getWidth()/3, y + getHeight()/2, getWidth()/3, SYMBOL_THICKNESS);
         sr.rectLine(x + getWidth()/3, y + getHeight()/2,
                 x + getWidth()*2/3, y + getHeight()/2,
                 SYMBOL_THICKNESS);
@@ -157,11 +161,6 @@ public class Tile extends Actor {//Actor vs Image?
         return region;
     }
 
-
-    public boolean isAssignedRegion() {
-        return region != null;
-    }
-
     public void setRegion(Region region){
         this.region = region;
         if (region == null){
@@ -176,11 +175,6 @@ public class Tile extends Actor {//Actor vs Image?
     public void setSelected(boolean b, Color color){
         selected = b;
         setColor(color);
-        /*
-        else{
-            setColor(Color.WHITE);
-        }
-        */
     }
 
     public void setSelected(boolean b){

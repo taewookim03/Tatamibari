@@ -20,10 +20,7 @@ public class Region {
     //Region contains tiles and stores information about the region such as:
     //symbol, symbol location, all tiles selected (part of group), color, etc.
     private Color color;
-    //private Tile symbolTile;
     private List<Tile> tiles;
-
-    //private Vector2 upperLeft, upperRight, lowerLeft, lowerRight;
 
     private Board board;
 
@@ -176,20 +173,16 @@ public class Region {
 
     public void draw(Batch batch, float parentAlpha){
         //Gdx.app.log("region", "draw function called");
-
         if (draw){
             if (tiles.size() == 0){
                 return;
             }
 
-            float tileWidth = tiles.get(0).getWidth();
-            float tileHeight = tiles.get(0).getHeight();
-
             Vector2 minXY = getLowerLeftCorner();
             Vector2 maxXY = getUpperRightCorner();
 
             //drawing border for the region
-            batch.end();
+            batch.end();//end other batch before beginning shaperenderer
 
             Gdx.gl.glEnable(GL20.GL_BLEND);
             Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
@@ -197,6 +190,7 @@ public class Region {
             sr.begin(ShapeRenderer.ShapeType.Filled);
             sr.setColor(Color.BLACK);
 
+            //draw region borders
             sr.rectLine(minXY.x, maxXY.y, maxXY.x, maxXY.y, BORDER_THICKNESS);//top
             sr.rectLine(minXY.x, minXY.y, maxXY.x, minXY.y, BORDER_THICKNESS);//bottom
             sr.rectLine(minXY.x, minXY.y, minXY.x, maxXY.y, BORDER_THICKNESS);//left
@@ -229,9 +223,6 @@ public class Region {
     }
 
     public boolean matchesSymbol(){
-        int numRows = Math.abs(tiles.get(tiles.size() - 1).getRow() - tiles.get(0).getRow()) + 1;
-        int numCols = Math.abs(tiles.get(tiles.size() - 1).getCol() - tiles.get(0).getCol()) + 1;
-
         Tile symbolTile = getSymbolTile();
 
         if (symbolTile == null){
@@ -241,22 +232,13 @@ public class Region {
 
         switch(symbolTile.getSymbol()){
             case HORIZONTAL:
-                return numCols > numRows;
+                return isHorizontal();
             case VERTICAL:
-                return numRows > numCols;
+                return isVertical();
             case SQUARE:
-                return numRows == numCols;
+                return isSquare();
         }
-
         return false;
-    }
-
-    public Tile.Symbol getSymbol(){
-        Tile symbolTile = getSymbolTile();
-        if (symbolTile == null){
-            Gdx.app.debug("getSymbol", "there is no symbol in this region");
-        }
-        return symbolTile.getSymbol();
     }
 
     public boolean isVertical(){
@@ -271,10 +253,6 @@ public class Region {
 
     @Override
     public String toString() {
-        String str = "region containing tiles:\n";
-        for (Tile t : tiles){
-            str += t + "\n";
-        }
-        return str;
+        return "region " + getFirstTile() + " to " + getLastTile();
     }
 }

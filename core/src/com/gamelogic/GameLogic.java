@@ -113,7 +113,9 @@ public final class GameLogic {
 
 
     public void generateRandomProblem(int divisionDepth, int depthCoefficient){
-        //System.out.println("---------------NEW PROBLEM-----------------");
+        boolean randomized = false;//boolean indicating successful generation of a random problem
+        while (!randomized){
+            //System.out.println("---------------NEW PROBLEM-----------------");
         /*
         Random problem generation algorithm
         1. Select the entire board as a region
@@ -129,26 +131,81 @@ public final class GameLogic {
         9. Remove all regions created (but not the symbols)
          */
 
-        //select entire board and add it as a region
-        board.select(board.getTile(0, 0), board.getTile(board.getRows()-1, board.getCols()-1));
-        Region newRegion = new Region(board);
-        board.addRegion(newRegion);
-        board.clearSelection();
+            //select entire board and add it as a region
+            board.select(board.getTile(0, 0), board.getTile(board.getRows() - 1, board.getCols() - 1));
+            Region newRegion = new Region(board);
+            board.addRegion(newRegion);
+            board.clearSelection();
 
-        //divide region recursively
-        divideRegion(divisionDepth, depthCoefficient, newRegion);
+            //divide region recursively
+            divideRegion(divisionDepth, depthCoefficient, newRegion);
 
-        //now assign each region a symbol at a random location
+            //check if board is not very randomized (edge cases, e.g. the division extremely biased toward a single symbol)
+            //then call this function again
+            randomized = true;//initialize true
+
+            //count the number of the types of regions
+            int horizontal = 0, vertical = 0, square = 0;
+            for (Region region : board.getRegions()){
+                if (region.isHorizontal()) ++horizontal;
+                else if (region.isVertical()) ++vertical;
+                else ++square;
+
+            }
+
+            //if symbol ratios are extreme (e.g. horizontal:vertical is 4:1) - only apply to bigger boards
+            double directionRatioCutoff = 4.0;
+            if (board.getRows() > 5 && (horizontal == 0 || vertical == 0
+                    || horizontal / vertical > directionRatioCutoff || vertical / horizontal > directionRatioCutoff)){
+                //System.out.println("Failed direction ratio check");
+                randomized = false;
+            }
+
+            //if number of regions is too small or too large compared to board size
+                randomized = false;
+            }
+
+            //one edge has mostly 1x1 squares, which limits possible divisions in other areas of the board
+            //use an acceptable ratio r (up to r/100% squares on an edge is OK)
+            double squaresCutoff = 0.5;
+            int squaresTopRow = 0, squaresBottomRow = 0, squaresLeftCol = 0, squaresRightCol = 0;
+
+            //iterate over all regions and check if it is a square on any edge of the board, and keep count
+            for (Region region : board.getRegions()){
+                if (region.isSquare()){
+                    if (region.getBottomRow() == 0) ++squaresBottomRow;
+                    else if (region.getTopRow() == board.getRows() - 1) ++squaresTopRow;
+                    if (region.getLeftCol() == 0) ++squaresLeftCol;
+                    else if (region.getRightCol() == board.getCols() - 1) ++squaresRightCol;
+                }
+            }
+
+            //if number of squares on an edge exceeds cutoff, randomize again
+            if (squaresTopRow > squaresCutoff * board.getCols() || squaresBottomRow > squaresCutoff * board.getCols()
+                    || squaresLeftCol > squaresCutoff * board.getRows() || squaresRightCol > squaresCutoff * board.getRows()){
+                //System.out.println("Failed edge squares check: " + squaresTopRow + " " +squaresBottomRow + " " +
+                //squaresLeftCol + " " + squaresRightCol);
+                randomized = false;
+            }
+
+            if (!randomized){
+                while (!board.getRegions().isEmpty()){
+                    board.removeRegion(board.getRegions().get(0));
+                }
+            }
+        }//end while loop
+
+        //now assign each region a symbol at a random location in the region
         for (Region region : board.getRegions()){
             //pick a random position
             int symbolTilePosition = rand.nextInt(region.getTiles().size());//[0 ... n-1]
             Tile symbolTile = region.getTiles().get(symbolTilePosition);
             Tile.Symbol s = Tile.Symbol.NONE;
             //assign appropriate symbol
-            if (region.getRows() > region.getCols()){
+            if (region.isVertical()){
                 s = Tile.Symbol.VERTICAL;
             }
-            else if (region.getRows() < region.getCols()){
+            else if (region.isHorizontal()){
                 s = Tile.Symbol.HORIZONTAL;
             }
             else{//row and col are equal in number
@@ -158,18 +215,11 @@ public final class GameLogic {
         }
 
         //delete all regions, leaving only symbols (comment this out to see divided regions)
-        /*
-        while (!board.getRegions().isEmpty()){
-            board.removeRegion(board.getRegions().get(0));
-        }
-        */
-
-        //check if board is not very randomized (edge cases, e.g. one edge has mostly 1x1 squares or something)
-        //then call this function again: if (something) generateRandomProblem(divisionDepth);
-        //if symbol ratios are extreme? (e.g. horizontal:vertical is 10:1, a lot of squares, etc.)
-        //if number of regions is too small or too many compared to board size
-
+            while (!board.getRegions().isEmpty()){
+                board.removeRegion(board.getRegions().get(0));
+            }
     }
+
 
 
 
@@ -178,7 +228,6 @@ public final class GameLogic {
         //base cases
         if (depth <= 0) return;//no more recursion required by the recursion depth
         if (region.getTiles().size() <= 1) return;//region has only 1 tile or fewer
-
 
         //get first and last tiles of the original region then delete the region
         Tile region1FirstTile = region.getFirstTile();
@@ -205,25 +254,8 @@ public final class GameLogic {
         Region region1 = new Region(board);
         Region region2 = new Region(board);
 
-        //for (boolean divideVertical : divideDirections){
-            //randomly choose which row/column to divide at by shuffling possible indices
-            //invalid divsions will be skipped - if no valid division, swap vertical/horizontal and try again.
-            //If still no valid division, return.
-
-        /*
-            int[] divIndices;//possible indices where division can occur
-
-            if (divideVertical){
-                divIndices = new int[originalRegionCols - 1];
-            }
-            else{
-                divIndices = new int[originalRegionRows - 1];
-            }
-        */
-
-        ArrayList<Pair> divPairs = new ArrayList<Pair>();
-
         //fill array with all possible division (direction index pair)
+        ArrayList<Pair> divPairs = new ArrayList<Pair>();
         //possible vertical divisions [1 ... c - 1]
         for (int i = 0; i < originalRegionCols - 1; i++) {
             divPairs.add(new Pair(true, i + 1));
@@ -232,16 +264,7 @@ public final class GameLogic {
         for (int i = 0; i < originalRegionRows - 1; i++) {
             divPairs.add(new Pair(false, i + 1));
         }
-        shuffleArray(divPairs);//shuffle the possible indices
-
-        /*
-            //fill array with indices [1 ... n - 1]
-            for (int i = 0; i < divIndices.length; i++){
-                divIndices[i] = i + 1;
-            }
-
-            shuffleArray(divIndices);//shuffle the possible indices
-        */
+        shuffleArray(divPairs);//shuffle the possible division options
 
         //iterate over the possible division indices and see if it is valid (i.e. does not violate four corner rule)
         for (Pair pair : divPairs){

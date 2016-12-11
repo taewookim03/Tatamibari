@@ -16,8 +16,8 @@ import java.util.*;
  * Created by Gayming on 8/31/2016.
  */
 public class Board extends Group {
-    private static final float BOARD_WIDTH = 350;
-    private static final float BOARD_HEIGHT = 350;
+    private static final float BOARD_WIDTH = 500;
+    private static final float BOARD_HEIGHT = 500;
     private static final float OUTLINE_THICKNESS = 2.0f;
 
     private final int rows;
@@ -70,30 +70,24 @@ public class Board extends Group {
         8x8: 8
         10x10: 9
          */
-        int divisionDepth = 7;
-        switch (rows){
+        int divisionDepth = -1;
+        int divReductionCoeff = 3;
+        switch (rows){//assuming square board
             case 4:
-                divisionDepth = 5;
-                break;
+                divisionDepth = 5; break;
             case 5:
-                divisionDepth = 6;
-                break;
+                divisionDepth = 6; break;
             case 6:
-                divisionDepth = 7;
-                break;
+                divisionDepth = 7; break;
             case 8:
-                divisionDepth = 8;
-                break;
+                divisionDepth = 8; break;
             case 10:
-                divisionDepth = 9;
-                break;
+                divisionDepth = 9; break;
         }
-
-        logic.generateRandomProblem(divisionDepth, 3);//default depth reduction coefficient to 3 (1 - 3)
+        logic.generateRandomProblem(divisionDepth, divReductionCoeff);//default depth reduction coefficient to 3 (1 - 3)
     }
 
     public Tile getTile(int row, int col) {
-        //do i need try/catch here
         try{
             return tiles[row][col];
         }
@@ -163,7 +157,6 @@ public class Board extends Group {
                 }
             }
         }
-
         for (Region region : toBeRemoved){
             removeRegion(region);
         }
@@ -247,38 +240,6 @@ public class Board extends Group {
         batch.begin();
     }
 
-/*
-    public boolean hasFourRegionCorner() {
-        //map of corner positions (Vector2 of xy) : count, return true if any count is 4 (can't be more than 4)
-        Map<Vector2, Integer> cornerCount = new HashMap<Vector2, Integer>();
-        Vector2[] corners = new Vector2[4];
-
-        for (Region region : regions){
-
-            corners[0] = region.getLowerLeftCorner();
-            corners[1] = region.getLowerRightCorner();
-            corners[2] = region.getUpperLeftCorner();
-            corners[3] = region.getUpperRightCorner();
-
-            for (Vector2 corner : corners){
-                if (cornerCount.containsKey(corner)){
-                    cornerCount.put(corner, cornerCount.get(corner) + 1);
-                }
-                else{
-                    cornerCount.put(corner, 1);
-                }
-            }
-        }
-
-        for (Vector2 corner : cornerCount.keySet()){
-            if (cornerCount.get(corner) == 4){
-                return true;
-            }
-        }
-
-        return false;
-    }
-*/
     public boolean isFilled(){
         for (Actor actor : getChildren()){
             Tile tile = (Tile)actor;
