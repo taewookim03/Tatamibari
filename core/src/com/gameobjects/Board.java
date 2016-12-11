@@ -60,7 +60,7 @@ public class Board extends Group {
         logic = new GameLogic(this);
 
         //randomly generate a problem
-        logic.generateRandomProblem(3);//pass recursive division depth which scales with difficulty
+        logic.generateRandomProblem(5);//pass recursive division depth which scales with difficulty
 
         //for testing symbol drawing
         /*
@@ -228,39 +228,6 @@ public class Board extends Group {
         batch.begin();
     }
 
-    public boolean hasFourRegionCorner(){
-        Map<Integer, Integer> cornerCount = new HashMap<Integer, Integer>();
-        //assign each corner unique index by calculating
-        //corner = row grid * number of column grids in a row + column grid
-        int[] corners = new int[4];
-
-        //calculate corner indices of each corner of each region and remember the count
-        for (Region region : regions){
-            corners[0] = region.getBottomRow() * (this.getCols() + 1) + region.getLeftCol();//lower left corner
-            corners[1] = region.getBottomRow() * (this.getCols() + 1) + region.getRightCol() + 1;//lower right corner
-            corners[2] = (region.getTopRow() + 1) * (this.getCols() + 1) + region.getLeftCol();//upper left corner
-            corners[3] = (region.getTopRow() + 1) * (this.getCols() + 1) + region.getRightCol() + 1;//upper right corner
-
-            //store the corners into their corner indices
-            for (int corner : corners){
-                if (cornerCount.containsKey(corner)) {
-                    cornerCount.put(corner, cornerCount.get(corner) + 1);
-                }
-                else{
-                    cornerCount.put(corner, 1);
-                }
-            }
-        }
-
-        //see if any corner occurs 4 times
-        for (int corner: cornerCount.keySet()){
-            if (cornerCount.get(corner) >= 4){
-                System.out.println("Corner index " + corner + " has " + cornerCount.get(corner) + " corners.");
-                return true;
-            }
-        }
-        return false;
-    }
 /*
     public boolean hasFourRegionCorner() {
         //map of corner positions (Vector2 of xy) : count, return true if any count is 4 (can't be more than 4)

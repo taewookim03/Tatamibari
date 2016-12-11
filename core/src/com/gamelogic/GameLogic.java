@@ -6,6 +6,8 @@ import com.gameobjects.Board;
 import com.gameobjects.Region;
 import com.gameobjects.Tile;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 
 /**
@@ -19,6 +21,39 @@ public final class GameLogic {
         rand = new Random();
     }
 
+    public boolean hasFourRegionCorner(){
+        Map<Integer, Integer> cornerCount = new HashMap<Integer, Integer>();
+        //assign each corner unique index by calculating
+        //corner = row grid * number of column grids in a row + column grid
+        int[] corners = new int[4];
+
+        //calculate corner indices of each corner of each region and remember the count
+        for (Region region : board.getRegions()){
+            corners[0] = region.getBottomRow() * (board.getCols() + 1) + region.getLeftCol();//lower left corner
+            corners[1] = region.getBottomRow() * (board.getCols() + 1) + region.getRightCol() + 1;//lower right corner
+            corners[2] = (region.getTopRow() + 1) * (board.getCols() + 1) + region.getLeftCol();//upper left corner
+            corners[3] = (region.getTopRow() + 1) * (board.getCols() + 1) + region.getRightCol() + 1;//upper right corner
+
+            //store the corners into their corner indices
+            for (int corner : corners){
+                if (cornerCount.containsKey(corner)) {
+                    cornerCount.put(corner, cornerCount.get(corner) + 1);
+                }
+                else{
+                    cornerCount.put(corner, 1);
+                }
+            }
+        }
+
+        //see if any corner occurs 4 times
+        for (int corner: cornerCount.keySet()){
+            if (cornerCount.get(corner) >= 4){
+                //System.out.println("Corner index " + corner + " has " + cornerCount.get(corner) + " corners.");
+                return true;
+            }
+        }
+        return false;
+    }
 
     public boolean hasValidRegions(){
         //check if each region holds one (and only one) symbol and it satisfies the symbol requirement
@@ -29,7 +64,7 @@ public final class GameLogic {
         }
 
         //check the 4-corner rule (four regions may not share the same corner)
-        if (board.hasFourRegionCorner()){
+        if (hasFourRegionCorner()){
             return false;
         }
 
@@ -37,6 +72,7 @@ public final class GameLogic {
     }
 
     public void generateRandomProblem(int divisionDepth){
+        System.out.println("---------------NEW PROBLEM-----------------");
         /*
         Random problem generation algorithm
         1. Select the entire board as a region
@@ -60,6 +96,25 @@ public final class GameLogic {
 
         divideRegion(divisionDepth, newRegion);
         //board.setSymbol(1, 3, Tile.Symbol.SQUARE);
+
+        //now assign each region a symbol at a random location
+        for (Region region : board.getRegions()){
+            //pick a random position
+            int symbolTilePosition = rand.nextInt(region.getTiles().size());//[0 ... n-1]
+            Tile symbolTile = region.getTiles().get(symbolTilePosition);
+            Tile.Symbol s = Tile.Symbol.NONE;
+            //assign appropriate symbol
+            if (region.getRows() > region.getCols()){
+                s = Tile.Symbol.VERTICAL;
+            }
+            else if (region.getRows() < region.getCols()){
+                s = Tile.Symbol.HORIZONTAL;
+            }
+            else{//row and col are equal in number
+                s = Tile.Symbol.SQUARE;
+            }
+            symbolTile.setSymbol(s);
+        }
     }
 
 
@@ -90,6 +145,9 @@ public final class GameLogic {
         divideDirections[1] = !divideDirections[0];
 
         boolean divided = false;//boolean to track if the region has successfully been divided
+        //create the new regions but don't add them yet
+        Region region1 = new Region(board);
+        Region region2 = new Region(board);
 
         for (boolean divideVertical : divideDirections){
             //randomly choose which row/column to divide at by shuffling possible indices
@@ -110,10 +168,6 @@ public final class GameLogic {
             }
 
             shuffleArray(divIndices);//shuffle the possible indices
-
-            //create the new regions but don't add them yet
-            Region region1 = new Region(board);
-            Region region2 = new Region(board);
 
             //iterate over the possible division indices and see if it is valid (i.e. does not violate four corner rule)
             for (int divideAt : divIndices){
@@ -140,7 +194,7 @@ public final class GameLogic {
                 board.clearSelection();
 
                 //check that board is valid
-                if (!board.hasFourRegionCorner()){//if valid, quit the loop
+                if (!hasFourRegionCorner()){//if valid, quit the loop
                     /*
                     System.out.println("has valid regions");
                     System.out.println("region 1: " + region1);
@@ -150,40 +204,39 @@ public final class GameLogic {
                     break;
                 }
                 //if not, delete the regions and continue the loop
-                /*
+
                 System.out.println("invalid regions");
                 System.out.println("region 1: " + region1);
                 System.out.println("region 2: " + region2);
-                */
+
                 board.removeRegion(region1);
                 board.removeRegion(region2);
             }
 
             //check if division is successful
             if (divided){
-                //recursion - randomize depth reduction - randomly reduce by a number in range [1 ... 3], for example
-                //determine the sweet spot range for a good generator by trial and error depending on board size
-
-                //int depthReduction = 1;
-                int depthReduction = rand.nextInt(3) + 1;//[1,2,3]
-                divideRegion(depth - depthReduction, region1);
-
-                depthReduction = rand.nextInt(3) + 1;//[1,2,3]
-                divideRegion(depth - depthReduction, region2);
-
-                break;//break out of the loop so this does not repeat
+                break;//break out of the direction loop so this does not repeat
             }
             //if not, it means there are no valid division in the division direction randomly chosen
             //flip the direction and try again - track that both directions have been tried
         }
-        //if a division has not occurred, restore the original region
-        if (!divided){
+        if (divided){
+            //recursion - randomize depth reduction - randomly reduce by a number in range [1 ... 3], for example
+            //determine the sweet spot range for a good generator by trial and error depending on board size
+
+            //int depthReduction = 1;
+            int depthReduction = rand.nextInt(3) + 1;//[1,2,3]
+            divideRegion(depth - depthReduction, region1);
+
+            depthReduction = rand.nextInt(3) + 1;//[1,2,3]
+            divideRegion(depth - depthReduction, region2);
+        }
+        if (!divided){//if a division has not occurred, restore the original region
             board.select(region1FirstTile, region2LastTile);
             board.addRegion(new Region(board));
             board.clearSelection();
         }
     }
-
 
 
     //Fisher-Yates shuffle to randomly shuffle an array of integers
