@@ -259,6 +259,16 @@ public class Region {
         return symbolTile.getSymbol();
     }
 
+    public boolean isVertical(){
+        return getRows() > getCols();
+    }
+    public boolean isHorizontal(){
+        return getRows() < getCols();
+    }
+    public boolean isSquare(){
+        return getRows() == getCols();
+    }
+
     @Override
     public String toString() {
         String str = "region containing tiles:\n";
