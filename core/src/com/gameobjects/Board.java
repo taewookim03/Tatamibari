@@ -61,6 +61,9 @@ public class Board extends Group {
 
         //randomly generate a problem
         logic.generateRandomProblem(5);//pass recursive division depth which scales with difficulty
+        //5 seems good for 5x5
+        //10 for 10x10?
+
 
         //for testing symbol drawing
         /*
