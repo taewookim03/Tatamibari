@@ -54,7 +54,10 @@ public class InputHandler implements InputProcessor{
         }
 
         tileHitPosition = world.stageToScreenCoordinates(new Vector2(screenX, screenY));
-        firstTile = (Tile)world.hit(tileHitPosition.x, tileHitPosition.y, false);//get the tile clicked
+        if (world.hit(tileHitPosition.x, tileHitPosition.y, false) instanceof Tile){
+            firstTile = (Tile)world.hit(tileHitPosition.x, tileHitPosition.y, false);//get the tile clicked
+        }
+        else return false;
         //Gdx.app.log("hit","registered by stage");
 
         if (firstTile != null){//if a tile was selected
@@ -79,7 +82,10 @@ public class InputHandler implements InputProcessor{
         if (!world.isRunning()) return false;
 
         tileHitPosition = world.stageToScreenCoordinates(new Vector2(screenX, screenY));
-        currentTile = (Tile)world.hit(tileHitPosition.x, tileHitPosition.y, false);
+        if (world.hit(tileHitPosition.x, tileHitPosition.y, false) instanceof Tile){
+            currentTile = (Tile)world.hit(tileHitPosition.x, tileHitPosition.y, false);
+        }
+        else return false;
         //Gdx.app.log("drag","registered by stage");
 
         if (currentTile != null){//if a tile is hit

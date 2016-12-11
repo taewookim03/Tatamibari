@@ -112,8 +112,8 @@ public final class GameLogic {
     }
 
 
-    public void generateRandomProblem(int divisionDepth){
-        System.out.println("---------------NEW PROBLEM-----------------");
+    public void generateRandomProblem(int divisionDepth, int depthCoefficient){
+        //System.out.println("---------------NEW PROBLEM-----------------");
         /*
         Random problem generation algorithm
         1. Select the entire board as a region
@@ -136,8 +136,7 @@ public final class GameLogic {
         board.clearSelection();
 
         //divide region recursively
-        divideRegion(divisionDepth, newRegion);
-        //board.setSymbol(1, 3, Tile.Symbol.SQUARE);
+        divideRegion(divisionDepth, depthCoefficient, newRegion);
 
         //now assign each region a symbol at a random location
         for (Region region : board.getRegions()){
@@ -157,12 +156,25 @@ public final class GameLogic {
             }
             symbolTile.setSymbol(s);
         }
+
+        //delete all regions, leaving only symbols (comment this out to see divided regions)
+        /*
+        while (!board.getRegions().isEmpty()){
+            board.removeRegion(board.getRegions().get(0));
+        }
+        */
+
+        //check if board is not very randomized (edge cases, e.g. one edge has mostly 1x1 squares or something)
+        //then call this function again: if (something) generateRandomProblem(divisionDepth);
+        //if symbol ratios are extreme? (e.g. horizontal:vertical is 10:1, a lot of squares, etc.)
+        //if number of regions is too small or too many compared to board size
+
     }
 
 
 
     //takes a region, divides it and generates 2 new regions in place of the original one
-    private void divideRegion(int depth, Region region){
+    private void divideRegion(int depth, int depthCoefficient, Region region){
         //base cases
         if (depth <= 0) return;//no more recursion required by the recursion depth
         if (region.getTiles().size() <= 1) return;//region has only 1 tile or fewer
@@ -268,13 +280,14 @@ public final class GameLogic {
             }
             //if not, delete the regions and continue the loop
 
+            /*
             System.out.println("invalid regions");
             System.out.println("region 1: " + region1);
             System.out.println("region 2: " + region2);
+            */
 
             board.removeRegion(region1);
             board.removeRegion(region2);
-
         }
 
             //check if division is successful
@@ -285,11 +298,11 @@ public final class GameLogic {
             //determine the sweet spot range for a good generator by trial and error depending on board size
 
             //int depthReduction = 1;
-            int depthReduction = rand.nextInt(3) + 1;//[1,2,3]
-            divideRegion(depth - depthReduction, region1);
+            int depthReduction = rand.nextInt(depthCoefficient) + 1;//reduce depth randomly
+            divideRegion(depth - depthReduction, depthCoefficient, region1);
 
-            depthReduction = rand.nextInt(3) + 1;//[1,2,3]
-            divideRegion(depth - depthReduction, region2);
+            depthReduction = rand.nextInt(depthCoefficient) + 1;
+            divideRegion(depth - depthReduction, depthCoefficient, region2);
         }
         if (!divided){//if a division has not occurred, restore the original region
             board.select(region1FirstTile, region2LastTile);

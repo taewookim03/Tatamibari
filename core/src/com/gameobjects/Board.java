@@ -60,20 +60,36 @@ public class Board extends Group {
         logic = new GameLogic(this);
 
         //randomly generate a problem
-        logic.generateRandomProblem(5);//pass recursive division depth which scales with difficulty
-        //5 seems good for 5x5
-        //10 for 10x10?
-
-
-        //for testing symbol drawing
+        //pass recursive division depth for each board size option
+        //NOTE the depth parameter's impact on the board also depends on the depth reduction parameter, which is randomly chosen
         /*
-        setSymbol(4, 0, Tile.Symbol.HORIZONTAL);
-        setSymbol(1, 0, Tile.Symbol.HORIZONTAL);
-        setSymbol(1, 4, Tile.Symbol.HORIZONTAL);
-        setSymbol(0, 0, Tile.Symbol.HORIZONTAL);
-        setSymbol(0, 4, Tile.Symbol.SQUARE);
-        */
+        appropriate recursive depths determined by trial and error
+        4x4: 5
+        5x5: 6
+        6x6: 7
+        8x8: 8
+        10x10: 9
+         */
+        int divisionDepth = 7;
+        switch (rows){
+            case 4:
+                divisionDepth = 5;
+                break;
+            case 5:
+                divisionDepth = 6;
+                break;
+            case 6:
+                divisionDepth = 7;
+                break;
+            case 8:
+                divisionDepth = 8;
+                break;
+            case 10:
+                divisionDepth = 9;
+                break;
+        }
 
+        logic.generateRandomProblem(divisionDepth, 3);//default depth reduction coefficient to 3 (1 - 3)
     }
 
     public Tile getTile(int row, int col) {

@@ -20,7 +20,7 @@ public class Region {
     //Region contains tiles and stores information about the region such as:
     //symbol, symbol location, all tiles selected (part of group), color, etc.
     private Color color;
-    private Tile symbolTile;
+    //private Tile symbolTile;
     private List<Tile> tiles;
 
     //private Vector2 upperLeft, upperRight, lowerLeft, lowerRight;
@@ -54,11 +54,6 @@ public class Region {
             Tile tile = (Tile) actor;
             if (tile.isSelected()){
                 addTile(tile);//sets color here as well and gets the position data for drawing the region
-                //region takes the first symbol process as the symbol (checked for multiple symbols in other function)
-                if (tile.getSymbol() != Tile.Symbol.NONE && symbolTile == null){
-                    symbolTile = tile;
-                    //System.out.println("symbol Tile: " + symbolTile.toString());
-                }
             }
         }
     }
@@ -224,9 +219,25 @@ public class Region {
         return symbolCount == 1;
     }
 
+    public Tile getSymbolTile(){
+        for (Tile tile : tiles){
+            if (tile.getSymbol() != Tile.Symbol.NONE){
+                return tile;
+            }
+        }
+        return null;
+    }
+
     public boolean matchesSymbol(){
         int numRows = Math.abs(tiles.get(tiles.size() - 1).getRow() - tiles.get(0).getRow()) + 1;
         int numCols = Math.abs(tiles.get(tiles.size() - 1).getCol() - tiles.get(0).getCol()) + 1;
+
+        Tile symbolTile = getSymbolTile();
+
+        if (symbolTile == null){
+            Gdx.app.debug("matchesSymbol", "symbolTile is null");
+            return false;
+        }
 
         switch(symbolTile.getSymbol()){
             case HORIZONTAL:
@@ -238,6 +249,14 @@ public class Region {
         }
 
         return false;
+    }
+
+    public Tile.Symbol getSymbol(){
+        Tile symbolTile = getSymbolTile();
+        if (symbolTile == null){
+            Gdx.app.debug("getSymbol", "there is no symbol in this region");
+        }
+        return symbolTile.getSymbol();
     }
 
     @Override

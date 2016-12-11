@@ -44,15 +44,39 @@ public class MainMenuScreen implements Screen {
 
         //create menu buttons
         Label sizePrompt = new Label("Choose a size:", game.skin);
+        TextButton play4x4Button = new TextButton("4x4", game.skin);
         TextButton play5x5Button = new TextButton("5x5", game.skin);
+        TextButton play6x6Button = new TextButton("6x6", game.skin);
+        TextButton play8x8Button = new TextButton("8x8", game.skin);
         TextButton play10x10Button = new TextButton("10x10", game.skin);
         TextButton quitButton = new TextButton("Quit", game.skin);
 
         //add listeners to buttons
+        play4x4Button.addListener(new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float x, float y){
+                world = new GameWorld(4, 4);
+                game.setScreen(new GameScreen(game, world));
+            }
+        });
         play5x5Button.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y){
                 world = new GameWorld(5, 5);
+                game.setScreen(new GameScreen(game, world));
+            }
+        });
+        play6x6Button.addListener(new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float x, float y){
+                world = new GameWorld(6, 6);
+                game.setScreen(new GameScreen(game, world));
+            }
+        });
+        play8x8Button.addListener(new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float x, float y){
+                world = new GameWorld(8, 8);
                 game.setScreen(new GameScreen(game, world));
             }
         });
@@ -73,7 +97,13 @@ public class MainMenuScreen implements Screen {
         //add buttons to table
         mainTable.add(sizePrompt);
         mainTable.row();
+        mainTable.add(play4x4Button);
+        mainTable.row();
         mainTable.add(play5x5Button);
+        mainTable.row();
+        mainTable.add(play6x6Button);
+        mainTable.row();
+        mainTable.add(play8x8Button);
         mainTable.row();
         mainTable.add(play10x10Button);
         mainTable.row();
