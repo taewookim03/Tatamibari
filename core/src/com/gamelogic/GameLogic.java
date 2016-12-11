@@ -162,6 +162,9 @@ public final class GameLogic {
             }
 
             //if number of regions is too small or too large compared to board size
+            double regionDensity = (double)board.getRegions().size() / (board.getRows() * board.getCols());
+            if (regionDensity < 0.2 || regionDensity > 0.45) {
+                //System.out.println("Failed region ratio check: " + regionDensity);
                 randomized = false;
             }
 
