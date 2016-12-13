@@ -169,13 +169,10 @@ public class InputHandler implements InputProcessor{
         if (board.isFilled() && logic.hasValidRegions()){
             world.setSolved();
             //System.out.println("solved!");
-
-            this.showDialog();
+            this.showMainMenuDialog();
 
             return true;
         }
-
-
 
         return true;
     }
@@ -205,7 +202,7 @@ public class InputHandler implements InputProcessor{
         return false;
     }
 
-    public void showDialog() {
+    public void showMainMenuDialog() {
         skin = new Skin(Gdx.files.internal("uiskin.json"));
         Dialog dialog = new Dialog("Quit?", skin) {
 

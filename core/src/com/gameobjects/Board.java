@@ -59,6 +59,10 @@ public class Board extends Group {
 
         logic = new GameLogic(this);
 
+        randomize();
+    }
+
+    public void randomize(){
         //randomly generate a problem
         //pass recursive division depth for each board size option
         //NOTE the depth parameter's impact on the board also depends on the depth reduction parameter, which is randomly chosen
@@ -248,5 +252,19 @@ public class Board extends Group {
             }
         }
         return true;
+    }
+
+    public void removeAllRegions(){
+        while (!regions.isEmpty()){
+            removeRegion(regions.get(0));
+        }
+    }
+
+    public void removeAllSymbols(){
+        for (Tile[] tileRow : tiles){
+            for (Tile tile : tileRow){
+                tile.setSymbol(Tile.Symbol.NONE);
+            }
+        }
     }
 }

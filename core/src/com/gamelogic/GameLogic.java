@@ -191,10 +191,8 @@ public final class GameLogic {
                 randomized = false;
             }
 
-            if (!randomized){
-                while (!board.getRegions().isEmpty()){
-                    board.removeRegion(board.getRegions().get(0));
-                }
+            if (!randomized){//if not a good randomization, remove all regions
+                board.removeAllRegions();
             }
         }//end while loop
 
@@ -218,9 +216,7 @@ public final class GameLogic {
         }
 
         //delete all regions, leaving only symbols (comment this out to see divided regions)
-            while (!board.getRegions().isEmpty()){
-                board.removeRegion(board.getRegions().get(0));
-            }
+            board.removeAllRegions();
     }
 
 

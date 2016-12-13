@@ -20,10 +20,9 @@ import com.tatamibari.TatamibariGame;
 public class MainMenuScreen implements Screen {
     private TatamibariGame game;//need this to set screen based on which menu item is chosen
     private OrthographicCamera camera;
-    private GameWorld world;//stage containing game elements, to be initiated when user chooses board size and difficulty
+    //private GameWorld world;//stage containing game elements, to be initiated when user chooses board size and difficulty
     private Stage menuStage;
     private Viewport viewport;
-
 
     public MainMenuScreen(TatamibariGame game){
         this.game = game;
@@ -38,53 +37,55 @@ public class MainMenuScreen implements Screen {
     }
     @Override
     public void show() {
-        Table mainTable = new Table();
-        mainTable.setFillParent(true);//set table to fill the whole stage
-        mainTable.center();//alignment of contents
+        Table menuTable = new Table();
+        menuTable.setFillParent(true);//set table to fill the whole stage
+        menuTable.center();//alignment of contents
 
         //create menu buttons
-        Label sizePrompt = new Label("Choose a size:", game.skin);
+        //Label menuPrompt = new Label("", game.skin);
         TextButton play4x4Button = new TextButton("4x4", game.skin);
         TextButton play5x5Button = new TextButton("5x5", game.skin);
         TextButton play6x6Button = new TextButton("6x6", game.skin);
         TextButton play8x8Button = new TextButton("8x8", game.skin);
         TextButton play10x10Button = new TextButton("10x10", game.skin);
+        TextButton rulesButton = new TextButton("How to Play", game.skin);
         TextButton quitButton = new TextButton("Quit", game.skin);
 
         //add listeners to buttons
+        rulesButton.addListener(new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float x, float y){
+                game.setScreen(new RulesScreen(game));
+            }
+        });
         play4x4Button.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y){
-                world = new GameWorld(4, 4);
-                game.setScreen(new GameScreen(game, world));
+                game.setScreen(new GameScreen(game, new GameWorld(4, 4)));
             }
         });
         play5x5Button.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y){
-                world = new GameWorld(5, 5);
-                game.setScreen(new GameScreen(game, world));
+                game.setScreen(new GameScreen(game, new GameWorld(5, 5)));
             }
         });
         play6x6Button.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y){
-                world = new GameWorld(6, 6);
-                game.setScreen(new GameScreen(game, world));
+                game.setScreen(new GameScreen(game, new GameWorld(6, 6)));
             }
         });
         play8x8Button.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y){
-                world = new GameWorld(8, 8);
-                game.setScreen(new GameScreen(game, world));
+                game.setScreen(new GameScreen(game, new GameWorld(8, 8)));
             }
         });
         play10x10Button.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y){
-                world = new GameWorld(10, 10);
-                game.setScreen(new GameScreen(game, world));
+                game.setScreen(new GameScreen(game, new GameWorld(10, 10)));
             }
         });
         quitButton.addListener(new ClickListener(){
@@ -95,22 +96,24 @@ public class MainMenuScreen implements Screen {
         });
 
         //add buttons to table
-        mainTable.add(sizePrompt);
-        mainTable.row();
-        mainTable.add(play4x4Button);
-        mainTable.row();
-        mainTable.add(play5x5Button);
-        mainTable.row();
-        mainTable.add(play6x6Button);
-        mainTable.row();
-        mainTable.add(play8x8Button);
-        mainTable.row();
-        mainTable.add(play10x10Button);
-        mainTable.row();
-        mainTable.add(quitButton);
+        //menuTable.add(menuPrompt);
+        //menuTable.row();
+        menuTable.add(rulesButton);
+        menuTable.row();
+        menuTable.add(play4x4Button);
+        menuTable.row();
+        menuTable.add(play5x5Button);
+        menuTable.row();
+        menuTable.add(play6x6Button);
+        menuTable.row();
+        menuTable.add(play8x8Button);
+        menuTable.row();
+        menuTable.add(play10x10Button);
+        menuTable.row();
+        menuTable.add(quitButton);
 
         //add table to stage
-        menuStage.addActor(mainTable);
+        menuStage.addActor(menuTable);
 
         //implement difficulty as well (parameter to GameWorld which calls random problem generator)
 
@@ -121,10 +124,9 @@ public class MainMenuScreen implements Screen {
         Gdx.gl.glClearColor(1,1,1,1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        menuStage.act();
+        //menuStage.act();
         camera.update();
         menuStage.draw();
-
     }
 
     @Override
@@ -149,7 +151,6 @@ public class MainMenuScreen implements Screen {
 
     @Override
     public void dispose() {
-
+        menuStage.dispose();
     }
-
 }
