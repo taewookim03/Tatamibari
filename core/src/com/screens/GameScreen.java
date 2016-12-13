@@ -35,7 +35,7 @@ public class GameScreen implements Screen {
         giveUpButton.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y){
-                game.setScreen(new MainMenuScreen(game));
+                game.setScreen(new SizeSelectionScreen(game));
             }
         });
         giveUpButton.setX(Gdx.graphics.getWidth() - giveUpButton.getWidth());

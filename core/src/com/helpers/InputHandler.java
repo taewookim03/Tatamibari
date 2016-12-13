@@ -13,6 +13,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.gamelogic.GameLogic;
 import com.screens.MainMenuScreen;
+import com.screens.SizeSelectionScreen;
 import com.tatamibari.TatamibariGame;
 
 
@@ -204,15 +205,14 @@ public class InputHandler implements InputProcessor{
 
     public void showMainMenuDialog() {
         skin = new Skin(Gdx.files.internal("uiskin.json"));
-        Dialog dialog = new Dialog("Quit?", skin) {
+        Dialog dialog = new Dialog("You solved it!", skin) {
 
             @Override
             protected void result(Object object) {
                 boolean mainMenu = (Boolean) object;
                 if (mainMenu) {
-                    //go to main menu
-                    //do i have to delete this screen?
-                    game.setScreen(new MainMenuScreen(game));
+                    //go to size selection
+                    game.setScreen(new SizeSelectionScreen(game));
 
                 } else {
                     remove();
@@ -234,10 +234,14 @@ public class InputHandler implements InputProcessor{
                 return 50f;
             }
         };
-        dialog.button("Main Menu", true);
+
+        //dialog.getButtonTable().pad(10).row();
+        dialog.button("Back", true);
+
         //dialog.button("", false);
         dialog.key(Input.Keys.ENTER, true);
         //dialog.key(Input.Keys.ESCAPE, false);
+        dialog.setMovable(false);
         dialog.show(world);
     }
 }

@@ -9,6 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.gameworld.GameWorld;
@@ -43,12 +44,9 @@ public class MainMenuScreen implements Screen {
 
         //create menu buttons
         //Label menuPrompt = new Label("", game.skin);
-        TextButton play4x4Button = new TextButton("4x4", game.skin);
-        TextButton play5x5Button = new TextButton("5x5", game.skin);
-        TextButton play6x6Button = new TextButton("6x6", game.skin);
-        TextButton play8x8Button = new TextButton("8x8", game.skin);
-        TextButton play10x10Button = new TextButton("10x10", game.skin);
+
         TextButton rulesButton = new TextButton("How to Play", game.skin);
+        TextButton playButton = new TextButton("Play", game.skin);
         TextButton quitButton = new TextButton("Quit", game.skin);
 
         //add listeners to buttons
@@ -58,34 +56,10 @@ public class MainMenuScreen implements Screen {
                 game.setScreen(new RulesScreen(game));
             }
         });
-        play4x4Button.addListener(new ClickListener(){
+        playButton.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y){
-                game.setScreen(new GameScreen(game, new GameWorld(4, 4)));
-            }
-        });
-        play5x5Button.addListener(new ClickListener(){
-            @Override
-            public void clicked(InputEvent event, float x, float y){
-                game.setScreen(new GameScreen(game, new GameWorld(5, 5)));
-            }
-        });
-        play6x6Button.addListener(new ClickListener(){
-            @Override
-            public void clicked(InputEvent event, float x, float y){
-                game.setScreen(new GameScreen(game, new GameWorld(6, 6)));
-            }
-        });
-        play8x8Button.addListener(new ClickListener(){
-            @Override
-            public void clicked(InputEvent event, float x, float y){
-                game.setScreen(new GameScreen(game, new GameWorld(8, 8)));
-            }
-        });
-        play10x10Button.addListener(new ClickListener(){
-            @Override
-            public void clicked(InputEvent event, float x, float y){
-                game.setScreen(new GameScreen(game, new GameWorld(10, 10)));
+                game.setScreen(new SizeSelectionScreen(game));
             }
         });
         quitButton.addListener(new ClickListener(){
@@ -98,19 +72,9 @@ public class MainMenuScreen implements Screen {
         //add buttons to table
         //menuTable.add(menuPrompt);
         //menuTable.row();
-        menuTable.add(rulesButton);
-        menuTable.row();
-        menuTable.add(play4x4Button);
-        menuTable.row();
-        menuTable.add(play5x5Button);
-        menuTable.row();
-        menuTable.add(play6x6Button);
-        menuTable.row();
-        menuTable.add(play8x8Button);
-        menuTable.row();
-        menuTable.add(play10x10Button);
-        menuTable.row();
-        menuTable.add(quitButton);
+        menuTable.add(rulesButton).pad(10).row();
+        menuTable.add(playButton).pad(10).row();
+        menuTable.add(quitButton).pad(10);
 
         //add table to stage
         menuStage.addActor(menuTable);
