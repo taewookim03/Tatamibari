@@ -7,8 +7,11 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.tatamibari.TatamibariGame;
@@ -36,8 +39,36 @@ public class RulesScreen implements Screen {
 
     @Override
     public void show() {
-        //display rules
-        
+        Table table = new Table();
+        table.setFillParent(true);
+        table.left();
+
+        //create instruction labels
+        Label howToPlay = new Label("Divide the board into rectangles. Touch and drag to assign a rectangle on the board.\n" +
+                "The divided rectangles must follow the following rules:", game.skin);
+        Label rule1 = new Label("1. Each rectangle must contain exactly one symbol.", game.skin);
+        Label rule2 = new Label("2. A rectangle with + symbol must be a square", game.skin);
+        Label rule3 = new Label("3. A rectangle with - symbol must have a width greater than its height.", game.skin);
+        Label rule4 = new Label("4. A rectangle with | symbol must have a height greater than its width.", game.skin);
+        Label rule5 = new Label("5. Four rectangles may not share the same corner.", game.skin);
+        Label goal = new Label("The goal of the game is to completely fill the board with rectangles. Good luck!", game.skin);
+
+        //add instructions to table
+        table.add(howToPlay).pad(10).align(Align.left);
+        table.row();
+        table.add(rule1).pad(10).align(Align.left);
+        table.row();
+        table.add(rule2).pad(10).align(Align.left);
+        table.row();
+        table.add(rule3).pad(10).align(Align.left);
+        table.row();
+        table.add(rule4).pad(10).align(Align.left);
+        table.row();
+        table.add(goal).pad(10).align(Align.left);
+        table.row();
+
+        //add table
+        stage.addActor(table);
 
         //add a back button
         TextButton backButton = new TextButton("Back to Main Menu", game.skin);
@@ -80,6 +111,6 @@ public class RulesScreen implements Screen {
 
     @Override
     public void dispose() {
-
+        stage.dispose();
     }
 }
