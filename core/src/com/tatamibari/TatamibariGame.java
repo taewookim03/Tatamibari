@@ -33,8 +33,8 @@ public class TatamibariGame extends Game {
 	@Override
 	public void create () {
 	    batch = new SpriteBatch();
-	    font = new BitmapFont(Gdx.files.internal("default.fnt"));
-		skin = new Skin(Gdx.files.internal("gdx-skins-master.gdx-skins-master/clean-crispy/skin/clean-crispy-ui.json"));
+	    //font = new BitmapFont(Gdx.files.internal("default.fnt"));
+		skin = new Skin(Gdx.files.internal("skin/uiskin.json"));
 
 		//changing window size for android
 		/*

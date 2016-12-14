@@ -2,6 +2,7 @@ package com.helpers;
 
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.gameobjects.Board;
 import com.gameobjects.Region;
 import com.gameobjects.Tile;
@@ -33,9 +34,6 @@ public class InputHandler implements InputProcessor{
     private Tile lastTile;
     private Tile currentTile;
     private Region newRegion;
-
-    private Dialog endDialog;
-    private Skin skin;
 
 
     public InputHandler(TatamibariGame game, GameWorld world){
@@ -204,8 +202,7 @@ public class InputHandler implements InputProcessor{
     }
 
     public void showMainMenuDialog() {
-        skin = new Skin(Gdx.files.internal("uiskin.json"));
-        Dialog dialog = new Dialog("You solved it!", skin) {
+        Dialog dialog = new Dialog("You solved it!", game.skin) {
 
             @Override
             protected void result(Object object) {
@@ -231,12 +228,17 @@ public class InputHandler implements InputProcessor{
 
             @Override
             public float getPrefHeight() {
-                return 50f;
+                return 100f;
             }
+
         };
 
         //dialog.getButtonTable().pad(10).row();
-        dialog.button("Back", true);
+        //dialog.getBackground().setMinHeight(500);
+        TextButton backButton = new TextButton("Back", game.skin);
+        dialog.button(backButton, true);
+        dialog.getButtonTable().setHeight(300);
+        //dialog.button("Back", true);
 
         //dialog.button("", false);
         dialog.key(Input.Keys.ENTER, true);
