@@ -23,13 +23,11 @@ public class RulesScreen implements Screen {
     private TatamibariGame game;
     private Stage stage;
     private OrthographicCamera camera;
-    private Viewport viewport;
-    private Board board;
 
     public RulesScreen(TatamibariGame game){
         this.game = game;
         camera = new OrthographicCamera();
-        viewport = new ScreenViewport(camera);
+        Viewport viewport = new ScreenViewport(camera);
         viewport.apply();//what does this do?
         camera.setToOrtho(false);
         camera.update();
@@ -40,7 +38,7 @@ public class RulesScreen implements Screen {
     @Override
     public void show() {
         //make a small example board as illustration of the rules
-        board = new Board(4, 4, 150, 150, 0.5f);
+        Board board = new Board(4, 4, 150, 150, 0.5f);
         board.removeAllSymbols();
         board.setSymbol(0, 0, Tile.Symbol.SQUARE);
         board.setSymbol(0, 1, Tile.Symbol.VERTICAL);
