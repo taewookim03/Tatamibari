@@ -14,6 +14,8 @@ import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.gameobjects.Board;
+import com.gameobjects.Region;
+import com.gameobjects.Tile;
 import com.tatamibari.TatamibariGame;
 
 
@@ -22,6 +24,7 @@ public class RulesScreen implements Screen {
     private Stage stage;
     private OrthographicCamera camera;
     private Viewport viewport;
+    private Board board;
 
     public RulesScreen(TatamibariGame game){
         this.game = game;
@@ -31,12 +34,43 @@ public class RulesScreen implements Screen {
         camera.setToOrtho(false);
         camera.update();
         stage = new Stage(viewport);
-        stage.addActor(new Board(4, 4, 125, 125, 0.5f));
         Gdx.input.setInputProcessor(stage);
     }
 
     @Override
     public void show() {
+        //make a small example board as illustration of the rules
+        board = new Board(4, 4, 150, 150, 0.5f);
+        board.removeAllSymbols();
+        board.setSymbol(0, 0, Tile.Symbol.SQUARE);
+        board.setSymbol(0, 1, Tile.Symbol.VERTICAL);
+        board.setSymbol(1, 0, Tile.Symbol.VERTICAL);
+        board.setSymbol(3, 0, Tile.Symbol.SQUARE);
+        board.setSymbol(1, 3, Tile.Symbol.SQUARE);
+        board.setSymbol(3, 2, Tile.Symbol.HORIZONTAL);
+
+        board.select(board.getTile(0, 0), board.getTile(0, 0));
+        board.addRegion(new Region(board));
+        board.clearSelection();
+        board.select(board.getTile(1, 0), board.getTile(2, 0));
+        board.addRegion(new Region(board));
+        board.clearSelection();
+        board.select(board.getTile(0, 1), board.getTile(1, 1));
+        board.addRegion(new Region(board));
+        board.clearSelection();
+        board.select(board.getTile(3, 0), board.getTile(3, 0));
+        board.addRegion(new Region(board));
+        board.clearSelection();
+        board.select(board.getTile(2, 1), board.getTile(3, 3));
+        board.addRegion(new Region(board));
+        board.clearSelection();
+        board.select(board.getTile(0, 2), board.getTile(1, 3));
+        board.addRegion(new Region(board));
+        board.clearSelection();
+
+        board.setPosition(board.getX(), Gdx.graphics.getHeight() - board.getHeight() * 1.3f);
+        stage.addActor(board);
+
         Table table = new Table();
         table.setFillParent(true);
         table.left();
@@ -44,23 +78,26 @@ public class RulesScreen implements Screen {
         //create instruction labels
         //BitmapFont font = new BitmapFont(Gdx.files.internal("arial_small.fnt"));
         //Label.LabelStyle labelStyle = new Label.LabelStyle(font, Color.BLACK);
-
-        Label howToPlay = new Label("Divide the board into rectangles. Touch and drag to assign a rectangle on the board.\n" +
-                "The divided rectangles must follow the following rules:", game.skin);
-        Label rule1 = new Label("1. Each rectangle must contain exactly one symbol.", game.skin);
-        Label rule2 = new Label("2. A rectangle with a + symbol must be a square", game.skin);
-        Label rule3 = new Label("3. A rectangle with a - symbol must have a width greater than its height.", game.skin);
-        Label rule4 = new Label("4. A rectangle with a | symbol must have a height greater than its width.", game.skin);
-        Label rule5 = new Label("5. Four rectangles may not share the same corner.", game.skin);
+        Label howToPlay1 = new Label("Divide the board into rectangles. Touch and drag to assign a partitioned rectangle",
+                game.skin);
+        Label howToPlay2 = new Label("according to the following rules:", game.skin);
+        Label rule1 = new Label("    1. Each rectangle must contain exactly one symbol.", game.skin);
+        Label rule2 = new Label("    2. A rectangle with a + symbol must be a square", game.skin);
+        Label rule3 = new Label("    3. A rectangle with a - symbol must have a width greater than its height.", game.skin);
+        Label rule4 = new Label("    4. A rectangle with a | symbol must have a height greater than its width.", game.skin);
+        Label rule5 = new Label("    5. Four rectangles may not share the same corner.", game.skin);
         Label goal = new Label("The goal of the game is to completely fill the board with rectangles. Good luck!", game.skin);
 
         //add instructions to table
-        table.add(howToPlay).pad(10).align(Align.left).row();
-        table.add(rule1).pad(10).align(Align.left).row();
-        table.add(rule2).pad(10).align(Align.left).row();
-        table.add(rule3).pad(10).align(Align.left).row();
-        table.add(rule4).pad(10).align(Align.left).row();
-        table.add(rule5).pad(10).align(Align.left).row();
+        float padAmount = 5;
+        table.add(new Label("", game.skin)).pad(25).row();
+        table.add(howToPlay1).pad(padAmount).align(Align.left).row();
+        table.add(howToPlay2).pad(padAmount).align(Align.left).row();
+        table.add(rule1).pad(padAmount).align(Align.left).row();
+        table.add(rule2).pad(padAmount).align(Align.left).row();
+        table.add(rule3).pad(padAmount).align(Align.left).row();
+        table.add(rule4).pad(padAmount).align(Align.left).row();
+        table.add(rule5).pad(padAmount).align(Align.left).row();
         //table.add(goal).pad(10).align(Align.left);
 
         //add table

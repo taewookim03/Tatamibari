@@ -28,7 +28,7 @@ public class Region {
     private boolean draw;
     private ShapeRenderer sr;
 
-    private static float BORDER_THICKNESS;
+    private static final float BORDER_THICKNESS = 3.0f;
 
     public Region(Board board){
         this.board = board;
@@ -38,7 +38,7 @@ public class Region {
         draw = true;
         sr = new ShapeRenderer();
 
-        BORDER_THICKNESS = board.getOutlineThickness() * 3 / 2;
+        //BORDER_THICKNESS = board.getOutlineThickness() * 3 / 2;
     }
 
     public Region(Board board, Color color){//idea: maybe color-code -, |, + ?
