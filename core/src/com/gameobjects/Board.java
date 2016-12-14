@@ -16,10 +16,7 @@ import java.util.*;
  * A group of tiles as well as regions (tracks both)
  */
 public class Board extends Group {
-    private static final float BOARD_WIDTH = 500;
-    private static final float BOARD_HEIGHT = 500;
-    private static final float OUTLINE_THICKNESS = 2.0f;
-
+    private final float OUTLINE_THICKNESS;
     private final int rows;
     private final int cols;
     private Tile[][] tiles;
@@ -30,13 +27,17 @@ public class Board extends Group {
 
     private GameLogic logic;
 
-    public Board(int rows, int cols) {
-        super();
+    public Board(int rows, int cols){
+        this(rows, cols, 500, 500, 2.0f);//default board size
+    }
 
+    public Board(int rows, int cols, float width, float height, float outlineThickness) {
+        super();
+        OUTLINE_THICKNESS = outlineThickness;
         this.rows = rows;
         this.cols = cols;
-        final float tileWidth = BOARD_WIDTH / cols;
-        final float tileHeight = BOARD_HEIGHT / rows;
+        final float tileWidth = width / cols;
+        final float tileHeight = height / rows;
 
         tiles = new Tile[rows][cols];
 
@@ -266,5 +267,9 @@ public class Board extends Group {
                 tile.setSymbol(Tile.Symbol.NONE);
             }
         }
+    }
+
+    public float getOutlineThickness(){
+        return OUTLINE_THICKNESS;
     }
 }

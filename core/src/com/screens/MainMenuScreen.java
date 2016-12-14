@@ -42,10 +42,11 @@ public class MainMenuScreen implements Screen {
 
         //create menu buttons
         //Label menuPrompt = new Label("", game.skin);
-
+        Label title = new Label("Tatamibari", game.skin, "title");
         TextButton rulesButton = new TextButton("How to Play", game.skin);
         TextButton playButton = new TextButton("Play", game.skin);
-        TextButton quitButton = new TextButton("Quit", game.skin);
+        //TextButton quitButton = new TextButton("Quit", game.skin);
+        TextButton aboutButton = new TextButton("About", game.skin);
 
         //add listeners to buttons
         rulesButton.addListener(new ClickListener(){
@@ -60,25 +61,35 @@ public class MainMenuScreen implements Screen {
                 game.setScreen(new SizeSelectionScreen(game));
             }
         });
+        aboutButton.addListener(new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float x, float y){
+                game.setScreen(new SizeSelectionScreen(game));
+            }
+        });
+        /*
         quitButton.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y){
                 Gdx.app.exit();
             }
         });
+        */
+        //calculate button sizes - use rules button, which is the largest
+        float buttonWidth = rulesButton.getWidth();
+        float buttonHeight = rulesButton.getHeight();
 
         //add buttons to table
         //menuTable.add(menuPrompt);
         //menuTable.row();
+        menuTable.add(title).pad(50).row();
         menuTable.add(rulesButton).pad(10).row();
-        menuTable.add(playButton).pad(10).row();
-        menuTable.add(quitButton).pad(10);
+        menuTable.add(playButton).size(buttonWidth, buttonHeight).pad(10).row();
+        menuTable.add(aboutButton).size(buttonWidth, buttonHeight).pad(10).row();
+        //menuTable.add(quitButton).size(buttonWidth, buttonHeight).pad(10);
 
         //add table to stage
         menuStage.addActor(menuTable);
-
-        //implement difficulty as well (parameter to GameWorld which calls random problem generator)
-
     }
 
     @Override

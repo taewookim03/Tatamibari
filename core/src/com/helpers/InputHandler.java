@@ -3,6 +3,7 @@ package com.helpers;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.utils.Align;
 import com.gameobjects.Board;
 import com.gameobjects.Region;
 import com.gameobjects.Tile;
@@ -228,22 +229,27 @@ public class InputHandler implements InputProcessor{
 
             @Override
             public float getPrefHeight() {
-                return 100f;
+                return Gdx.graphics.getHeight() / 5;
             }
 
+            @Override
+            public float getPrefWidth() {
+                return getPrefHeight() * 2;
+            }
         };
 
         //dialog.getButtonTable().pad(10).row();
         //dialog.getBackground().setMinHeight(500);
         TextButton backButton = new TextButton("Back", game.skin);
         dialog.button(backButton, true);
-        dialog.getButtonTable().setHeight(300);
+        //dialog.getButtonTable().setHeight(300);
         //dialog.button("Back", true);
 
         //dialog.button("", false);
         dialog.key(Input.Keys.ENTER, true);
         //dialog.key(Input.Keys.ESCAPE, false);
         dialog.setMovable(false);
+        dialog.getTitleLabel().setAlignment(Align.center);
         dialog.show(world);
     }
 }

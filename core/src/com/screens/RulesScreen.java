@@ -2,11 +2,8 @@ package com.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.Camera;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
@@ -16,6 +13,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.gameobjects.Board;
 import com.tatamibari.TatamibariGame;
 
 
@@ -33,6 +31,7 @@ public class RulesScreen implements Screen {
         camera.setToOrtho(false);
         camera.update();
         stage = new Stage(viewport);
+        stage.addActor(new Board(4, 4, 125, 125, 0.5f));
         Gdx.input.setInputProcessor(stage);
     }
 
@@ -62,7 +61,7 @@ public class RulesScreen implements Screen {
         table.add(rule3).pad(10).align(Align.left).row();
         table.add(rule4).pad(10).align(Align.left).row();
         table.add(rule5).pad(10).align(Align.left).row();
-        table.add(goal).pad(10).align(Align.left);
+        //table.add(goal).pad(10).align(Align.left);
 
         //add table
         stage.addActor(table);

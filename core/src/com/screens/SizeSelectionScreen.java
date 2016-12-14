@@ -74,11 +74,15 @@ public class SizeSelectionScreen implements Screen {
             }
         });
 
-        table.add(play4x4Button).pad(10).row();
-        table.add(play5x5Button).pad(10).row();
-        table.add(play6x6Button).pad(10).row();
-        table.add(play8x8Button).pad(10).row();
-        table.add(play10x10Button).pad(10).row();
+        //get largest button size and make all buttons same size
+        float buttonWidth = play10x10Button.getWidth();
+        float buttonHeight = play10x10Button.getHeight();
+
+        table.add(play4x4Button).size(buttonWidth, buttonHeight).pad(10).row();
+        table.add(play5x5Button).size(buttonWidth, buttonHeight).pad(10).row();
+        table.add(play6x6Button).size(buttonWidth, buttonHeight).pad(10).row();
+        table.add(play8x8Button).size(buttonWidth, buttonHeight).pad(10).row();
+        table.add(play10x10Button).size(buttonWidth, buttonHeight).pad(10).row();
 
         stage.addActor(table);
 

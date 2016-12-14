@@ -86,7 +86,7 @@ public final class GameLogic {
         public int hashCode() {
             int hashDirection = new Boolean(direction).hashCode();
             int hashIndex = divideIndex;
-            return 31 * hashIndex + hashDirection;//31 chosen as a small prime
+            return 31 * hashIndex + hashDirection;//31 chosen as a small prime for the hash
         }
 
         @Override
@@ -153,10 +153,11 @@ public final class GameLogic {
 
             }
 
-            //if symbol ratios are extreme (e.g. horizontal:vertical is 4:1) - only apply to bigger boards
+            //if symbol ratios are extreme (e.g. horizontal:vertical is 4:1)
             double directionRatioCutoff = 4.0;
-            if (board.getRows() > 5 && (horizontal == 0 || vertical == 0
-                    || horizontal / vertical > directionRatioCutoff || vertical / horizontal > directionRatioCutoff)){
+            if (horizontal == 0 || vertical == 0 || square == 0
+                    || horizontal / vertical > directionRatioCutoff || vertical / horizontal > directionRatioCutoff
+                    || square / vertical > directionRatioCutoff || square / horizontal > directionRatioCutoff){
                 //System.out.println("Failed direction ratio check");
                 randomized = false;
             }
