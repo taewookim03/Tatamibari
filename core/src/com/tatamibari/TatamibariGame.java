@@ -1,10 +1,6 @@
 package com.tatamibari;
 
-/*
- * Tatamibari
- *
- */
-
+import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -24,35 +20,28 @@ import com.screens.GameScreen;
 import com.screens.MainMenuScreen;
 
 public class TatamibariGame extends Game {
-
-	//using default fonts and skins instead of loading assets for now
-    public SpriteBatch batch;
-    public BitmapFont font;
 	public Skin skin;
 
 	@Override
 	public void create () {
-	    batch = new SpriteBatch();
-	    //font = new BitmapFont(Gdx.files.internal("default.fnt"));
 		skin = new Skin(Gdx.files.internal("skin/uiskin.json"));
 
 		//changing window size for android
 		/*
-		if (Gdx.app.getType().equals(ApplicationType.Android)) {
-			Gdx.graphics.setDisplayMode(500, 500, false);
+		if (Gdx.app.getType().equals(Application.ApplicationType.Android)) {
+			//Gdx.graphics.setDisplayMode(500, 500, false);
 		} else {
-			Gdx.graphics.setDisplayMode(Gdx.graphics.getWidth(),Gdx.graphics.getHeight(), true);
+			//Gdx.graphics.setDisplayMode(Gdx.graphics.getWidth(),Gdx.graphics.getHeight(), true);
 		}
-		 */
+		*/
 
+		//go to main menu
         setScreen(new MainMenuScreen(this));
 	}
 
 	@Override
 	public void dispose () {
 		super.dispose();
-        batch.dispose();
-        font.dispose();
 		skin.dispose();
 	}
 

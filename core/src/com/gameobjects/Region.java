@@ -14,7 +14,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by Gayming on 9/1/2016.
+ * A region is a user-selected group of tiles that form a rectangle. A region must contain exactly one symbol
+ * and its dimensions must match the symbol.
  */
 public class Region {
     //Region contains tiles and stores information about the region such as:
@@ -31,7 +32,8 @@ public class Region {
 
     public Region(Board board){
         this.board = board;
-        color = new Color(Color.rgba8888(255/255f, 255/255f, 0/255f, 0.3f));
+        //color = new Color(Color.rgba8888(255/255f, 255/255f, 0/255f, 0.3f));//light yellow
+        color = new Color(Color.rgba8888(1f, 0.627451f, 0.08235294f, 0.5f));
         tiles = new ArrayList<Tile>();
         draw = true;
         sr = new ShapeRenderer();
