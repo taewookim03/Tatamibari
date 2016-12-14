@@ -192,6 +192,9 @@ public final class GameLogic {
                 randomized = false;
             }
 
+            //do not apply randomization check to small boards
+            if (board.getRows() <= 3) randomized = true;
+
             if (!randomized){//if not a good randomization, remove all regions
                 board.removeAllRegions();
             }

@@ -75,7 +75,7 @@ public class Board extends Group {
         8x8: 8
         10x10: 9
          */
-        int divisionDepth = -1;
+        int divisionDepth = 0;
         int divReductionCoeff = 3;
         switch (rows){//assuming square board
             case 4:
@@ -139,8 +139,10 @@ public class Board extends Group {
 
     public void addRegion(Region newRegion){
         newRegion.addSelectedTiles();
-
         regions.add(newRegion);
+    }
+    public void addRegion(){
+        addRegion(new Region(this));
     }
 
     public void removeRegion(Region region){
@@ -268,6 +270,19 @@ public class Board extends Group {
             }
         }
     }
+
+    public void setDrawTileOutlines(boolean b){
+        for (Tile[] tileRow : tiles){
+            for (Tile tile : tileRow){
+                tile.setDrawOutline(b);
+            }
+        }
+    }
+    /*
+    public Tile[][] getTiles(){
+        return tiles;
+    }
+    */
 
     public float getOutlineThickness(){
         return OUTLINE_THICKNESS;

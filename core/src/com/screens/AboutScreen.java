@@ -13,6 +13,9 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.gameobjects.Board;
+import com.gameobjects.Region;
+import com.gameobjects.Tile;
 import com.tatamibari.TatamibariGame;
 
 /**
@@ -36,6 +39,67 @@ public class AboutScreen implements Screen {
 
     @Override
     public void show() {
+        //create a couple small boards for tatami layout illustration
+        Board board1 = new Board(3, 3, 150, 150, 0.0f);
+        board1.removeAllSymbols();
+        //set all tile outlines to not draw
+        board1.setDrawTileOutlines(false);
+
+        board1.select(board1.getTile(0, 0), board1.getTile(0, 1));
+        board1.addRegion();
+        board1.clearSelection();
+        board1.select(board1.getTile(0, 2), board1.getTile(1, 2));
+        board1.addRegion();
+        board1.clearSelection();
+        board1.select(board1.getTile(1, 0), board1.getTile(2, 0));
+        board1.addRegion();
+        board1.clearSelection();
+        board1.select(board1.getTile(2, 1), board1.getTile(2, 2));
+        board1.addRegion();
+        board1.clearSelection();
+        board1.select(board1.getTile(1, 1), board1.getTile(1, 1));
+        board1.addRegion();
+        board1.clearSelection();
+
+        stage.addActor(board1);
+
+        Board board2 = new Board(4, 4, 200, 200, 0.0f);
+        board2.removeAllSymbols();
+        board2.setDrawTileOutlines(false);
+
+        board2.select(board2.getTile(0, 0), board2.getTile(0, 1));
+        board2.addRegion();
+        board2.clearSelection();
+        board2.select(board2.getTile(0, 2), board2.getTile(0, 3));
+        board2.addRegion();
+        board2.clearSelection();
+        board2.select(board2.getTile(1, 0), board2.getTile(2, 0));
+        board2.addRegion();
+        board2.clearSelection();
+        board2.select(board2.getTile(1, 1), board2.getTile(1, 2));
+        board2.addRegion();
+        board2.clearSelection();
+        board2.select(board2.getTile(2, 1), board2.getTile(2, 2));
+        board2.addRegion();
+        board2.clearSelection();
+        board2.select(board2.getTile(1, 3), board2.getTile(2, 3));
+        board2.addRegion();
+        board2.clearSelection();
+        board2.select(board2.getTile(3, 0), board2.getTile(3, 1));
+        board2.addRegion();
+        board2.clearSelection();
+        board2.select(board2.getTile(3, 2), board2.getTile(3, 3));
+        board2.addRegion();
+        board2.clearSelection();
+
+        board1.setPosition(board2 . getWidth() * 0.5f,
+                Gdx.graphics.getHeight() - board2.getHeight() * 1.2f);
+        board2.setPosition(Gdx.graphics.getWidth() - board2.getWidth() * 1.5f,
+                Gdx.graphics.getHeight() - board2.getHeight() * 1.25f);
+
+        stage.addActor(board2);
+
+
         Table table = new Table();
         table.setFillParent(true);
         table.left();

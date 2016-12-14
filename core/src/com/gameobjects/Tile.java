@@ -29,6 +29,7 @@ public class Tile extends Actor {//Actor vs Image?
 
     private boolean selected;//current selection (input handling)
     //private boolean assigned;//replace with hasParent/getParent of the Actor class
+    private boolean drawOutline = true;//this is an option to allow drawing a board without tile outlines
 
     private Region region;//region of the board that the tile belongs to
 
@@ -57,7 +58,6 @@ public class Tile extends Actor {//Actor vs Image?
         sr = new ShapeRenderer();
         setBounds(getX(), getY(), getWidth(), getHeight());
 
-        //move control to stage or board since multiple actors
         /*
         addListener(new InputListener(){
             @Override
@@ -104,11 +104,13 @@ public class Tile extends Actor {//Actor vs Image?
         sr.rect(screenX, screenY, getWidth(), getHeight());
         sr.end();
 
-        sr.begin(ShapeRenderer.ShapeType.Line);
         //draw tile outline(thin gray lines)
-        sr.setColor(Color.GRAY);
-        sr.rect(screenX, screenY, getWidth(), getHeight());
-        sr.end();
+        if (drawOutline){
+            sr.begin(ShapeRenderer.ShapeType.Line);
+            sr.setColor(Color.GRAY);
+            sr.rect(screenX, screenY, getWidth(), getHeight());
+            sr.end();
+        }
 
         //draw symbol
         sr.begin(ShapeRenderer.ShapeType.Filled);
@@ -142,6 +144,9 @@ public class Tile extends Actor {//Actor vs Image?
                 SYMBOL_THICKNESS);
     }
 
+    public void setDrawOutline(boolean b){
+        drawOutline = b;
+    }
 
     public int getRow() {
         return row;
