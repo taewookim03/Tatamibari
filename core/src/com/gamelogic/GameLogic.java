@@ -10,7 +10,7 @@ import com.gameobjects.Tile;
 import java.util.*;
 
 /**
- * Created by Taewoo Kim on 9/3/2016.
+ * Manages the logical operations of the game including rule checking and random problem generation
  */
 public final class GameLogic {
     private Board board;

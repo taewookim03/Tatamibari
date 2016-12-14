@@ -15,7 +15,7 @@ import com.helpers.InputHandler;
 import com.tatamibari.TatamibariGame;
 
 /**
- * might not use this
+ * Manages the screen for the game being played
  */
 public class GameScreen implements Screen {
     private TatamibariGame game;

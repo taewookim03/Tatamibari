@@ -13,7 +13,7 @@ import com.gamelogic.GameLogic;
 import java.util.*;
 
 /**
- * Created by Gayming on 8/31/2016.
+ * A group of tiles as well as regions (tracks both)
  */
 public class Board extends Group {
     private static final float BOARD_WIDTH = 500;

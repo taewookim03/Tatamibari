@@ -14,9 +14,7 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import com.gameworld.GameWorld;
 import com.tatamibari.TatamibariGame;
 
-/**
- * Created by Gayming on 12/13/2016.
- */
+
 public class SizeSelectionScreen implements Screen {
     private TatamibariGame game;
     private Stage stage;

@@ -15,9 +15,7 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import com.gameworld.GameWorld;
 import com.tatamibari.TatamibariGame;
 
-/**
- * Created by Gayming on 9/8/2016.
- */
+
 public class MainMenuScreen implements Screen {
     private TatamibariGame game;//need this to set screen based on which menu item is chosen
     private OrthographicCamera camera;

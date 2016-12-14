@@ -10,9 +10,7 @@ import com.badlogic.gdx.utils.BufferUtils;
 
 import java.nio.IntBuffer;
 
-/**
- * Created by Gayming on 8/31/2016.
- */
+
 public class Tile extends Actor {//Actor vs Image?
     public enum Symbol{
         NONE, HORIZONTAL, VERTICAL, SQUARE

@@ -18,9 +18,7 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.tatamibari.TatamibariGame;
 
-/**
- * Created 12/13/2016.
- */
+
 public class RulesScreen implements Screen {
     private TatamibariGame game;
     private Stage stage;

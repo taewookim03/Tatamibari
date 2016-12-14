@@ -19,8 +19,7 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.gameobjects.Board;
 
 /**
- * manages game objects (tile and board (group of tiles)
- *
+ * manages game objects (tile, region and board)
  */
 public class GameWorld extends Stage {
 

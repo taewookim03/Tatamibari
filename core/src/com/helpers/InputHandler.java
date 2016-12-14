@@ -19,7 +19,7 @@ import com.tatamibari.TatamibariGame;
 
 
 /**
- * unused; see GameWorld for input processing
+ * Handles user input
  */
 
 public class InputHandler implements InputProcessor{
