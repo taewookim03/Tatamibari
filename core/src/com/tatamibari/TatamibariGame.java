@@ -8,6 +8,8 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
@@ -24,16 +26,34 @@ public class TatamibariGame extends Game {
 
 	@Override
 	public void create () {
-		skin = new Skin(Gdx.files.internal("skin/uiskin.json"));
-		Texture fontTexture = new Texture(Gdx.files.internal("skin/lato.png"), true);
-		fontTexture.setFilter(Texture.TextureFilter.MipMapLinearNearest, Texture.TextureFilter.Linear);
-		//FreeTypeFontGenerator generator;
+		//skin = new Skin(Gdx.files.internal("skin/uiskin.json"));
+		//Texture fontTexture = new Texture(Gdx.files.internal("skin/lato.png"), true);
+		//fontTexture.setFilter(Texture.TextureFilter.MipMapLinearNearest, Texture.TextureFilter.Linear);
 
-
-		//Freetype is not compatible with html
+		//Use Freetype, which allows runtime generation of fonts (to save space) that can scale with screen size
+		//Freetype is not compatible with html-use default font
 		if (Gdx.app.getType().equals(Application.ApplicationType.WebGL)){
-			//
+			skin = new Skin(Gdx.files.internal("skin/uiskin-html.json"));
 		}
+		else{
+			FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("Lato2OFL/Lato2OFL/Lato-Regular.ttf"));
+			FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
+			parameter.size = 50;
+			BitmapFont fontTitle = generator.generateFont(parameter);
+			parameter.size = 50;
+			BitmapFont font = generator.generateFont(parameter);
+			generator.dispose();
+
+			//skin.dispose();
+			skin = new Skin();
+
+			skin.addRegions(new TextureAtlas(Gdx.files.internal("skin/uiskin.atlas")));
+			skin.add("font-title", fontTitle);
+			skin.add("font", font);
+			skin.load(Gdx.files.internal("skin/uiskin.json"));
+		}
+
+
 		//changing window size for android
 		/*
 		if (Gdx.app.getType().equals(Application.ApplicationType.Android)) {
