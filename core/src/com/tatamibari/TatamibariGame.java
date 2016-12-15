@@ -29,6 +29,7 @@ public class TatamibariGame extends Game {
 		fontTexture.setFilter(Texture.TextureFilter.MipMapLinearNearest, Texture.TextureFilter.Linear);
 		//FreeTypeFontGenerator generator;
 
+
 		//Freetype is not compatible with html
 		if (Gdx.app.getType().equals(Application.ApplicationType.WebGL)){
 			//
