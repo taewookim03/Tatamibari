@@ -25,7 +25,14 @@ public class TatamibariGame extends Game {
 	@Override
 	public void create () {
 		skin = new Skin(Gdx.files.internal("skin/uiskin.json"));
+		Texture fontTexture = new Texture(Gdx.files.internal("skin/lato.png"), true);
+		fontTexture.setFilter(Texture.TextureFilter.MipMapLinearNearest, Texture.TextureFilter.Linear);
+		//FreeTypeFontGenerator generator;
 
+		//Freetype is not compatible with html
+		if (Gdx.app.getType().equals(Application.ApplicationType.WebGL)){
+			//
+		}
 		//changing window size for android
 		/*
 		if (Gdx.app.getType().equals(Application.ApplicationType.Android)) {

@@ -28,7 +28,7 @@ public class Board extends Group {
     private GameLogic logic;
 
     public Board(int rows, int cols){
-        this(rows, cols, 500, 500, 2.0f);//default board size
+        this(rows, cols, getDefaultLength(), getDefaultLength(), 2.0f);//default board size
     }
 
     public Board(int rows, int cols, float width, float height, float outlineThickness) {
@@ -63,7 +63,15 @@ public class Board extends Group {
         randomize();
     }
 
-    public void randomize(){
+    private static float getDefaultLength(){
+        //calculate appropriate board size based on screen size
+        //get smaller of the screen height and width
+        float screenLength = Gdx.graphics.getHeight() < Gdx.graphics.getWidth() ?
+                Gdx.graphics.getHeight() : Gdx.graphics.getWidth();
+        return screenLength * 0.8f;
+    }
+
+    private void randomize(){
         //randomly generate a problem
         //pass recursive division depth for each board size option
         //NOTE the depth parameter's impact on the board also depends on the depth reduction parameter, which is randomly chosen

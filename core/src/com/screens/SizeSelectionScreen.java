@@ -9,6 +9,8 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.utils.viewport.ExtendViewport;
+import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.gameworld.GameWorld;
@@ -24,7 +26,7 @@ public class SizeSelectionScreen implements Screen {
     public SizeSelectionScreen(TatamibariGame game){
         this.game = game;
         camera = new OrthographicCamera();
-        viewport = new ScreenViewport(camera);
+        viewport = new ScreenViewport();
         viewport.apply();//what does this do?
         camera.setToOrtho(false);
         camera.update();
