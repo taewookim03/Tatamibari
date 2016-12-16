@@ -28,7 +28,7 @@ public class Board extends Group {
     private GameLogic logic;
 
     public Board(int rows, int cols){
-        this(rows, cols, getDefaultLength(), getDefaultLength(), 2.0f);//default board size
+        this(rows, cols, getDefaultLength(), getDefaultLength(), getOutlineThickness());//default board size
     }
 
     public Board(int rows, int cols, float width, float height, float outlineThickness) {
@@ -69,6 +69,9 @@ public class Board extends Group {
         float screenLength = Gdx.graphics.getHeight() < Gdx.graphics.getWidth() ?
                 Gdx.graphics.getHeight() : Gdx.graphics.getWidth();
         return screenLength * 0.8f;
+    }
+    private static float getOutlineThickness(){
+        return getDefaultLength() / 300.0f;
     }
 
     private void randomize(){
@@ -292,7 +295,4 @@ public class Board extends Group {
     }
     */
 
-    public float getOutlineThickness(){
-        return OUTLINE_THICKNESS;
-    }
 }

@@ -39,15 +39,17 @@ public class TatamibariGame extends Game {
 			FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("Lato2OFL/Lato2OFL/Lato-Regular.ttf"));
 			FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
 			//title size
-			parameter.size = (int)(Gdx.graphics.getHeight() * 0.1);
+			float screenSize = Gdx.graphics.getHeight() < Gdx.graphics.getWidth() ?
+					Gdx.graphics.getHeight() : Gdx.graphics.getWidth();
+			parameter.size = (int)(screenSize * 0.1);
 			BitmapFont fontTitle = generator.generateFont(parameter);
 
 			//normal size
-			parameter.size = (int)(Gdx.graphics.getHeight() * 0.05);
+			parameter.size = (int)(screenSize * 0.05);
 			BitmapFont font = generator.generateFont(parameter);
 
 			//small size
-			parameter.size = (int)(Gdx.graphics.getHeight() * 0.03);
+			parameter.size = (int)(screenSize * 0.03);
 			BitmapFont fontSmall = generator.generateFont(parameter);
 
 			generator.dispose();

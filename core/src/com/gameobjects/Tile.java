@@ -3,6 +3,8 @@ package com.gameobjects;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.Pixmap;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -35,7 +37,7 @@ public class Tile extends Actor {//Actor vs Image?
 
     //private Color color; //this is part of Actor class
     private Symbol symbol;//symbol contained in the tile
-    private ShapeRenderer sr;//for drawing the tile
+    private static ShapeRenderer sr;//for drawing the tile
 
     public Tile(int row, int col, float tileWidth, float tileHeight){
         super();//actor ctor
@@ -52,7 +54,7 @@ public class Tile extends Actor {//Actor vs Image?
         //thickness:tile size
         SYMBOL_THICKNESS = Math.round(tileWidth / 40.0f * 10.0)/10.0f;//round to 1 decimal
 
-        setColor(Color.WHITE);
+        setColor(1, 1, 1, 0.5f);
         symbol = Symbol.NONE;
 
         sr = new ShapeRenderer();
@@ -88,6 +90,12 @@ public class Tile extends Actor {//Actor vs Image?
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
+        Pixmap pixmap = new Pixmap(1, 1, Pixmap.Format.RGBA8888);
+        pixmap.setColor(Color.WHITE);
+        pixmap.fill();
+        Texture pmTexture = new Texture(pixmap);
+        Pixmap.setBlending(Pixmap.Blending.None);
+        pixmap.dispose();//pixmap is not automatically garbage collected
 
         float screenX = getScreenX();
         float screenY = getScreenY();
@@ -98,38 +106,56 @@ public class Tile extends Actor {//Actor vs Image?
         Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
 
         sr.setProjectionMatrix(getStage().getCamera().combined);
+
         //draw tiles (white squares)
         sr.begin(ShapeRenderer.ShapeType.Filled);
         sr.setColor(getColor());
         sr.rect(screenX, screenY, getWidth(), getHeight());
-        sr.end();
-
-        //draw tile outline(thin gray lines)
-        if (drawOutline){
-            sr.begin(ShapeRenderer.ShapeType.Line);
-            sr.setColor(Color.GRAY);
-            sr.rect(screenX, screenY, getWidth(), getHeight());
-            sr.end();
-        }
 
         //draw symbol
-        sr.begin(ShapeRenderer.ShapeType.Filled);
-        sr.setColor(Color.BLACK);
-        switch (symbol){
-            case HORIZONTAL:
-                drawSymbolHorizontal(sr, screenX, screenY, getWidth(), getHeight());
-                break;
-            case VERTICAL:
-                drawSymbolVertical(sr, screenX, screenY, getWidth(), getHeight());
-                break;
-            case SQUARE:
-                drawSymbolHorizontal(sr, screenX, screenY, getWidth(), getHeight());
-                drawSymbolVertical(sr, screenX, screenY, getWidth(), getHeight());
-                break;
+        if(symbol != Symbol.NONE){
+            sr.setColor(Color.BLACK);
+            switch (symbol){
+                case HORIZONTAL:
+                    drawSymbolHorizontal(sr, screenX, screenY, getWidth(), getHeight());
+                    break;
+                case VERTICAL:
+                    drawSymbolVertical(sr, screenX, screenY, getWidth(), getHeight());
+                    break;
+                case SQUARE:
+                    drawSymbolHorizontal(sr, screenX, screenY, getWidth(), getHeight());
+                    drawSymbolVertical(sr, screenX, screenY, getWidth(), getHeight());
+                    break;
+            }
+
         }
         sr.end();
-
         batch.begin();
+        //draw tile outline(thin gray lines)
+        if (drawOutline){
+            batch.setColor(Color.GRAY);
+            float screenLength = Gdx.graphics.getHeight() < Gdx.graphics.getWidth() ?
+                    Gdx.graphics.getHeight() : Gdx.graphics.getWidth();
+            float thickness = 0.5f;//screenLength / 2000.0f;
+            /*
+            batch.draw(pmTexture, screenX, screenY, getWidth(), thickness);
+            batch.draw(pmTexture, screenX, screenY, thickness, getHeight());
+            batch.draw(pmTexture, screenX, screenY + getHeight() - thickness, getWidth(), thickness);
+            batch.draw(pmTexture, screenX + getWidth() - thickness, screenY, thickness, getHeight());
+            */
+
+            batch.draw(pmTexture, getX(), getY(), getWidth(), thickness);
+            batch.draw(pmTexture, getX(), getY(), thickness, getHeight());
+            batch.draw(pmTexture, getX(), getY() + getHeight() - thickness, getWidth(), thickness);
+            batch.draw(pmTexture, getX() + getWidth() - thickness, getY(), thickness, getHeight());
+
+
+            /*
+            sr.set(ShapeRenderer.ShapeType.Line);
+            sr.setColor(Color.GRAY);
+            sr.rect(screenX, screenY, getWidth(), getHeight());
+            */
+        }
     }
 
     private void drawSymbolHorizontal(ShapeRenderer sr, float x, float y, float width, float height){

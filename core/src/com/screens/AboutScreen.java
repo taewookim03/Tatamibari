@@ -40,7 +40,9 @@ public class AboutScreen implements Screen {
     @Override
     public void show() {
         //create a couple small boards for tatami layout illustration
-        Board board1 = new Board(3, 3, Gdx.graphics.getHeight() / 4, Gdx.graphics.getHeight() / 4, 0.0f);
+        float screenSize = Gdx.graphics.getHeight() < Gdx.graphics.getWidth() ?
+                Gdx.graphics.getHeight() : Gdx.graphics.getWidth();
+        Board board1 = new Board(3, 3, screenSize / 4, screenSize / 4, 0.0f);
         board1.removeAllSymbols();
         //set all tile outlines to not draw
         board1.setDrawTileOutlines(false);
@@ -63,7 +65,7 @@ public class AboutScreen implements Screen {
 
         stage.addActor(board1);
 
-        Board board2 = new Board(4, 4, Gdx.graphics.getHeight() / 3, Gdx.graphics.getHeight() / 3, 0.0f);
+        Board board2 = new Board(4, 4, screenSize / 3, screenSize / 3, 0.0f);
         board2.removeAllSymbols();
         board2.setDrawTileOutlines(false);
 
@@ -92,7 +94,8 @@ public class AboutScreen implements Screen {
         board2.addRegion();
         board2.clearSelection();
 
-        board1.setPosition((Gdx.graphics.getWidth() - (board1.getWidth() * 2 + board2.getWidth())) / 2,
+        float gap = (Gdx.graphics.getWidth() - (board1.getWidth() + board2.getWidth())) / 3;//gap between board 1 and 2
+        board1.setPosition((Gdx.graphics.getWidth() - (board1.getWidth() + board2.getWidth() + gap)) / 2,
                 Gdx.graphics.getHeight() - board2.getHeight() * 1.2f);
         board2.setPosition(board1.getX() + board1.getWidth() * 2,
                 Gdx.graphics.getHeight() - board2.getHeight() * 1.25f);
