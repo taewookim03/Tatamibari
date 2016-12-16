@@ -38,6 +38,7 @@ public class Tile extends Actor {//Actor vs Image?
     //private Color color; //this is part of Actor class
     private Symbol symbol;//symbol contained in the tile
     private static ShapeRenderer sr;//for drawing the tile
+    private static Texture pmTexture;//pixmap texture for drawing methods
 
     public Tile(int row, int col, float tileWidth, float tileHeight){
         super();//actor ctor
@@ -59,6 +60,13 @@ public class Tile extends Actor {//Actor vs Image?
 
         sr = new ShapeRenderer();
         setBounds(getX(), getY(), getWidth(), getHeight());
+
+        Pixmap pixmap = new Pixmap(1, 1, Pixmap.Format.RGBA8888);
+        pixmap.setColor(Color.WHITE);
+        pixmap.fill();
+        pmTexture = new Texture(pixmap);
+        //Pixmap.setBlending(Pixmap.Blending.None);
+        pixmap.dispose();//pixmap is not automatically garbage collected
 
         /*
         addListener(new InputListener(){
@@ -90,53 +98,63 @@ public class Tile extends Actor {//Actor vs Image?
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
-        Pixmap pixmap = new Pixmap(1, 1, Pixmap.Format.RGBA8888);
-        pixmap.setColor(Color.WHITE);
-        pixmap.fill();
-        Texture pmTexture = new Texture(pixmap);
-        Pixmap.setBlending(Pixmap.Blending.None);
-        pixmap.dispose();//pixmap is not automatically garbage collected
+        //this function originally used shaperenderer to render the shapes and lines, but due to performance hit
+        //a single batch with a dynamically generated texture from pixelmap was used to draw everything
 
-        float screenX = getScreenX();
-        float screenY = getScreenY();
+        //float screenX = getScreenX();
+        //float screenY = getScreenY();
 
-        batch.end();
+        //draw the tile (square)
+        batch.setColor(getColor());
+        batch.draw(pmTexture, getX(), getY(), getWidth(), getHeight());
+
+        //batch.end();
 
         Gdx.gl.glEnable(GL20.GL_BLEND);
         Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
 
-        sr.setProjectionMatrix(getStage().getCamera().combined);
+        //sr.setProjectionMatrix(getStage().getCamera().combined);
 
+        /*
         //draw tiles (white squares)
         sr.begin(ShapeRenderer.ShapeType.Filled);
         sr.setColor(getColor());
         sr.rect(screenX, screenY, getWidth(), getHeight());
+        */
 
         //draw symbol
+        //sr.begin(ShapeRenderer.ShapeType.Filled);
         if(symbol != Symbol.NONE){
-            sr.setColor(Color.BLACK);
+            //sr.setColor(Color.BLACK);
+            batch.setColor(Color.BLACK);
             switch (symbol){
                 case HORIZONTAL:
-                    drawSymbolHorizontal(sr, screenX, screenY, getWidth(), getHeight());
+                    //drawSymbolHorizontal(sr, screenX, screenY, getWidth(), getHeight());
+                    drawSymbolHorizontal(batch);
                     break;
                 case VERTICAL:
-                    drawSymbolVertical(sr, screenX, screenY, getWidth(), getHeight());
+                    //drawSymbolVertical(sr, screenX, screenY, getWidth(), getHeight());
+                    drawSymbolVertical(batch);
                     break;
                 case SQUARE:
-                    drawSymbolHorizontal(sr, screenX, screenY, getWidth(), getHeight());
-                    drawSymbolVertical(sr, screenX, screenY, getWidth(), getHeight());
+                    //drawSymbolHorizontal(sr, screenX, screenY, getWidth(), getHeight());
+                    //drawSymbolVertical(sr, screenX, screenY, getWidth(), getHeight());
+                    drawSymbolHorizontal(batch);
+                    drawSymbolVertical(batch);
                     break;
             }
 
         }
-        sr.end();
-        batch.begin();
+        //sr.end();
+        //batch.begin();
+
         //draw tile outline(thin gray lines)
         if (drawOutline){
-            batch.setColor(Color.GRAY);
+            batch.setColor(0.5f, 0.5f, 0.5f, 0.3f);//transparent gray with 0.3 alpha
             float screenLength = Gdx.graphics.getHeight() < Gdx.graphics.getWidth() ?
                     Gdx.graphics.getHeight() : Gdx.graphics.getWidth();
-            float thickness = 0.5f;//screenLength / 2000.0f;
+            float thickness = Math.round(screenLength / 1000.0f * 10.0f) / 10.0f;//round to 1 decimal
+            thickness = thickness > 0.5f ? thickness : 0.5f;//minimum 0.5
             /*
             batch.draw(pmTexture, screenX, screenY, getWidth(), thickness);
             batch.draw(pmTexture, screenX, screenY, thickness, getHeight());
@@ -149,7 +167,6 @@ public class Tile extends Actor {//Actor vs Image?
             batch.draw(pmTexture, getX(), getY() + getHeight() - thickness, getWidth(), thickness);
             batch.draw(pmTexture, getX() + getWidth() - thickness, getY(), thickness, getHeight());
 
-
             /*
             sr.set(ShapeRenderer.ShapeType.Line);
             sr.setColor(Color.GRAY);
@@ -158,6 +175,7 @@ public class Tile extends Actor {//Actor vs Image?
         }
     }
 
+    /*
     private void drawSymbolHorizontal(ShapeRenderer sr, float x, float y, float width, float height){
         //sr.rect(x + getWidth()/3, y + getHeight()/2, getWidth()/3, SYMBOL_THICKNESS);
         sr.rectLine(x + getWidth()/3, y + getHeight()/2,
@@ -168,6 +186,15 @@ public class Tile extends Actor {//Actor vs Image?
         sr.rectLine(x + getWidth()/2, y + getHeight()/3,
                 x + getWidth()/2, y + getHeight()*2/3,
                 SYMBOL_THICKNESS);
+    }
+    */
+    private void drawSymbolHorizontal(Batch batch){
+        batch.draw(pmTexture, getX() + getWidth() / 3, getY() + getHeight() / 2 - SYMBOL_THICKNESS / 2,
+                getWidth() / 3, SYMBOL_THICKNESS);
+    }
+    private void drawSymbolVertical(Batch batch){
+        batch.draw(pmTexture, getX() + getWidth() / 2 - SYMBOL_THICKNESS / 2, getY() + getHeight() / 3,
+                SYMBOL_THICKNESS, getHeight() / 3);
     }
 
     public void setDrawOutline(boolean b){
