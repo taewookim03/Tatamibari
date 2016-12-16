@@ -40,7 +40,7 @@ public class AboutScreen implements Screen {
     @Override
     public void show() {
         //create a couple small boards for tatami layout illustration
-        Board board1 = new Board(3, 3, 150, 150, 0.0f);
+        Board board1 = new Board(3, 3, Gdx.graphics.getHeight() / 4, Gdx.graphics.getHeight() / 4, 0.0f);
         board1.removeAllSymbols();
         //set all tile outlines to not draw
         board1.setDrawTileOutlines(false);
@@ -63,7 +63,7 @@ public class AboutScreen implements Screen {
 
         stage.addActor(board1);
 
-        Board board2 = new Board(4, 4, 200, 200, 0.0f);
+        Board board2 = new Board(4, 4, Gdx.graphics.getHeight() / 3, Gdx.graphics.getHeight() / 3, 0.0f);
         board2.removeAllSymbols();
         board2.setDrawTileOutlines(false);
 
@@ -92,30 +92,36 @@ public class AboutScreen implements Screen {
         board2.addRegion();
         board2.clearSelection();
 
-        board1.setPosition(board2 . getWidth() * 0.5f,
+        board1.setPosition((Gdx.graphics.getWidth() - (board1.getWidth() * 2 + board2.getWidth())) / 2,
                 Gdx.graphics.getHeight() - board2.getHeight() * 1.2f);
-        board2.setPosition(Gdx.graphics.getWidth() - board2.getWidth() * 1.5f,
+        board2.setPosition(board1.getX() + board1.getWidth() * 2,
                 Gdx.graphics.getHeight() - board2.getHeight() * 1.25f);
 
         stage.addActor(board2);
 
 
         Table table = new Table();
-        table.setFillParent(true);
-        table.left();
+        //table.setFillParent(true);
+        //table.left();
 
         Label gameDescription = new Label("Tatamibari is a logic puzzle game by Nikoli based on Japanse tatami mats.\n" +
-                "2:1 rectangular mats (and optional square mats) are laid out in different directions\n" +
-                "(horizontal or vertical) to compose the flooring of a traditional Japanese room.", game.skin);
+                "In a traditional Japanese room, the flooring consists of 2:1 rectangular mats\n" +
+                "and optional square mats, which are laid out in a variety of configurations.\n" +
+                "Above are some examples of tatami room layouts.", game.skin, "small");
         Label comment = new Label("I enjoyed solving problems that were available online, but I quickly ran out\n" +
-                "and just had to implement a random problem generator for the game.\n" +
-                "I do not own any copyrights to the game.", game.skin);
-        Label credit = new Label("Programmed by Taewoo Kim\ntaewookim03@gmail.com", game.skin);
-        table.add(gameDescription).align(Align.left).row();
-        table.add(comment).align(Align.left).row();
-        table.add(credit).align(Align.left).row();
+                "and just had to implement a random problem generator for the game.", game.skin, "small");
+        Label credit = new Label("Programmed by Taewoo Kim\ntaewookim03@gmail.com", game.skin, "small");
+
+        float padAmount = (int)(Gdx.graphics.getHeight() * 0.005);
+        table.add(gameDescription).pad(padAmount).align(Align.left).row();
+        //table.add(comment).pad(padAmount).align(Align.left).row();
+        //table.add(credit).pad(padAmount).align(Align.left).row();
+
+        table.setX((Gdx.graphics.getWidth() - table.getWidth()) / 2);
+        table.setY(board2.getY() - table.getHeight() - Gdx.graphics.getHeight() / 8);
 
         stage.addActor(table);
+        stage.addActor(credit);
 
         //add a back button
         TextButton backButton = new TextButton("Back to Main Menu", game.skin);

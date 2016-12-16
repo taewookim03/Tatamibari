@@ -38,18 +38,25 @@ public class TatamibariGame extends Game {
 		else{
 			FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("Lato2OFL/Lato2OFL/Lato-Regular.ttf"));
 			FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
-			parameter.size = 50;
+			//title size
+			parameter.size = (int)(Gdx.graphics.getHeight() * 0.1);
 			BitmapFont fontTitle = generator.generateFont(parameter);
-			parameter.size = 50;
+
+			//normal size
+			parameter.size = (int)(Gdx.graphics.getHeight() * 0.05);
 			BitmapFont font = generator.generateFont(parameter);
+
+			//small size
+			parameter.size = (int)(Gdx.graphics.getHeight() * 0.03);
+			BitmapFont fontSmall = generator.generateFont(parameter);
+
 			generator.dispose();
 
-			//skin.dispose();
 			skin = new Skin();
-
 			skin.addRegions(new TextureAtlas(Gdx.files.internal("skin/uiskin.atlas")));
 			skin.add("font-title", fontTitle);
 			skin.add("font", font);
+			skin.add("font-small", fontSmall);
 			skin.load(Gdx.files.internal("skin/uiskin.json"));
 		}
 

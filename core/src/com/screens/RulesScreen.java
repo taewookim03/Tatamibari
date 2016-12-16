@@ -38,7 +38,8 @@ public class RulesScreen implements Screen {
     @Override
     public void show() {
         //make a small example board as illustration of the rules
-        Board board = new Board(4, 4, 150, 150, 0.5f);
+        Board board = new Board(4, 4, Gdx.graphics.getHeight() * 0.3f, Gdx.graphics.getHeight() * 0.3f,
+                Gdx.graphics.getHeight() * 0.001f);
         board.removeAllSymbols();
         board.setSymbol(0, 0, Tile.Symbol.SQUARE);
         board.setSymbol(0, 1, Tile.Symbol.VERTICAL);
@@ -70,25 +71,25 @@ public class RulesScreen implements Screen {
         stage.addActor(board);
 
         Table table = new Table();
-        table.setFillParent(true);
-        table.left();
+        //table.setFillParent(true);
+        //table.left();
 
         //create instruction labels
         //BitmapFont font = new BitmapFont(Gdx.files.internal("arial_small.fnt"));
         //Label.LabelStyle labelStyle = new Label.LabelStyle(font, Color.BLACK);
         Label howToPlay1 = new Label("Divide the board into rectangles. Touch and drag to assign a partitioned rectangle",
-                game.skin);
-        Label howToPlay2 = new Label("according to the following rules:", game.skin);
-        Label rule1 = new Label("    1. Each rectangle must contain exactly one symbol.", game.skin);
-        Label rule2 = new Label("    2. A rectangle with a + symbol must be a square", game.skin);
-        Label rule3 = new Label("    3. A rectangle with a - symbol must have a width greater than its height.", game.skin);
-        Label rule4 = new Label("    4. A rectangle with a | symbol must have a height greater than its width.", game.skin);
-        Label rule5 = new Label("    5. Four rectangles may not share the same corner.", game.skin);
-        Label goal = new Label("The goal of the game is to completely fill the board with rectangles. Good luck!", game.skin);
+                game.skin, "small");
+        Label howToPlay2 = new Label("according to the following rules:", game.skin, "small");
+        Label rule1 = new Label("    1. Each rectangle must contain exactly one symbol", game.skin, "small");
+        Label rule2 = new Label("    2. A rectangle with a + symbol must be a square", game.skin, "small");
+        Label rule3 = new Label("    3. A rectangle with a - symbol must have a width greater than its height", game.skin, "small");
+        Label rule4 = new Label("    4. A rectangle with a | symbol must have a height greater than its width", game.skin, "small");
+        Label rule5 = new Label("    5. Four rectangles may not share the same corner.", game.skin, "small");
+        Label goal = new Label("The goal of the game is to completely fill the board with rectangles. Good luck!", game.skin, "small");
 
         //add instructions to table
-        float padAmount = 5;
-        table.add(new Label("", game.skin)).pad(25).row();
+        float padAmount = (int)(Gdx.graphics.getHeight() * 0.005);
+        table.add(new Label("", game.skin)).pad((int)(Gdx.graphics.getHeight() * 0.05)).row();
         table.add(howToPlay1).pad(padAmount).align(Align.left).row();
         table.add(howToPlay2).pad(padAmount).align(Align.left).row();
         table.add(rule1).pad(padAmount).align(Align.left).row();
@@ -97,6 +98,10 @@ public class RulesScreen implements Screen {
         table.add(rule4).pad(padAmount).align(Align.left).row();
         table.add(rule5).pad(padAmount).align(Align.left).row();
         //table.add(goal).pad(10).align(Align.left);
+
+        table.setX((Gdx.graphics.getWidth() - table.getWidth()) / 2);
+        //table.setY(400);
+        table.setY(board.getY() - table.getHeight() - Gdx.graphics.getHeight() / 8);
 
         //add table
         stage.addActor(table);

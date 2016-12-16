@@ -4,7 +4,8 @@ com.badlogic.gdx.graphics.Color: {
 	orange: { r: 1, g: 0.627451, b: 0.08235294, a: 1 },
 	maroon: { r: 0.6, g: 0.05490196, b: 0.2627451, a: 1 },
 	peach: { r: 0.91764706, g: 0.6862745, b: 0.5137255, a: 1 },
-	bleached_peach: { r: 0.9372549, g: 0.8980392, b: 0.8627451, a: 1 }
+	bleached_peach: { r: 0.9372549, g: 0.8980392, b: 0.8627451, a: 1 },
+	black: { r: 0, g: 0, b: 0, a: 1 }
 },
 com.badlogic.gdx.graphics.g2d.BitmapFont: {
 },
@@ -291,6 +292,10 @@ com.badlogic.gdx.scenes.scene2d.ui.Label$LabelStyle: {
 		font: font,
 		fontColor: { a: 1, b: 0.08235294, g: 0.627451, r: 1 }
 	},
+	small: {
+        font: font-small,
+        fontColor: black
+    },
 	error: {
 		font: font,
 		fontColor: { a: 1, b: 0.2627451, g: 0.05490196, r: 0.6 }

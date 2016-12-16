@@ -82,11 +82,13 @@ public class MainMenuScreen implements Screen {
         //add buttons to table
         //menuTable.add(menuPrompt);
         //menuTable.row();
-        menuTable.add(title).pad(50).row();
-        menuTable.add(rulesButton).pad(10).row();
-        menuTable.add(playButton).size(buttonWidth, buttonHeight).pad(10).row();
-        menuTable.add(aboutButton).size(buttonWidth, buttonHeight).pad(10).row();
-        //menuTable.add(quitButton).size(buttonWidth, buttonHeight).pad(10);
+        int padAmount = (int)(Gdx.graphics.getHeight() * 0.02);
+        menuTable.add(title).pad((int)(Gdx.graphics.getHeight() * 0.1)).row();
+        menuTable.add(rulesButton).pad(padAmount).row();
+        menuTable.add(playButton).size(buttonWidth, buttonHeight).pad(padAmount).row();
+        menuTable.add(aboutButton).size(buttonWidth, buttonHeight).pad(padAmount).row();
+        //menuTable.add(quitButton).size(buttonWidth, buttonHeight).pad(padAmount);
+        menuTable.setY(menuTable.getY() + (int)(Gdx.graphics.getHeight() * 0.06));//move table up a little
 
         //add table to stage
         menuStage.addActor(menuTable);
