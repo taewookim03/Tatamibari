@@ -62,7 +62,7 @@ public class TatamibariGame extends Game {
 			skin.add("font-small", fontSmall);
 			skin.load(Gdx.files.internal("skin/uiskin.json"));
 		}
-		
+
 
 		//changing window size for android
 		/*
