@@ -3,6 +3,11 @@
 <module rename-to="html">
 	<inherits name='com.badlogic.gdx.backends.gdx_backends_gwt' />
 
+	<inherits name='gamelogic' />
+	<inherits name='gameobjects' />
+	<inherits name='gameworld' />
+	<inherits name='helpers' />
+	<inherits name='screens' />
 	<inherits name='TatamibariGame' />
 	<entry-point class='com.tatamibari.client.HtmlLauncher' />
 	
