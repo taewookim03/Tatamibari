@@ -2,6 +2,7 @@ package com.helpers;
 
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.utils.Align;
 import com.gameobjects.Board;
@@ -203,7 +204,7 @@ public class InputHandler implements InputProcessor{
     }
 
     public void showMainMenuDialog() {
-        Dialog dialog = new Dialog("You solved it!", game.skin) {
+        Dialog dialog = new Dialog("", game.skin) {
 
             @Override
             protected void result(Object object) {
@@ -240,7 +241,10 @@ public class InputHandler implements InputProcessor{
 
         //dialog.getButtonTable().pad(10).row();
         //dialog.getBackground().setMinHeight(500);
+        Label label = new Label("You solved it!", game.skin, "small");
         TextButton backButton = new TextButton("Back", game.skin);
+
+        dialog.text(label);
         dialog.button(backButton, true);
         //dialog.getButtonTable().setHeight(300);
         //dialog.button("Back", true);

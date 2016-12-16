@@ -35,6 +35,7 @@ public class TatamibariGame extends Game {
 		if (Gdx.app.getType().equals(Application.ApplicationType.WebGL)){
 			skin = new Skin(Gdx.files.internal("skin/uiskin-html.json"));
 		}
+
 		else{
 			FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("Lato2OFL/Lato2OFL/Lato-Regular.ttf"));
 			FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
@@ -61,7 +62,7 @@ public class TatamibariGame extends Game {
 			skin.add("font-small", fontSmall);
 			skin.load(Gdx.files.internal("skin/uiskin.json"));
 		}
-
+		
 
 		//changing window size for android
 		/*

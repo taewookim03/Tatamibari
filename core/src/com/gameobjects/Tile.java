@@ -53,7 +53,7 @@ public class Tile extends Actor {//Actor vs Image?
 
         //scale symbol line thickness based on tile size
         //thickness:tile size
-        SYMBOL_THICKNESS = Math.round(tileWidth / 40.0f * 10.0)/10.0f;//round to 1 decimal
+        SYMBOL_THICKNESS = Math.round(tileWidth / 35.0f * 10.0)/10.0f;//round to 1 decimal
 
         setColor(1, 1, 1, 0.5f);
         symbol = Symbol.NONE;
@@ -153,7 +153,7 @@ public class Tile extends Actor {//Actor vs Image?
             batch.setColor(0.5f, 0.5f, 0.5f, 0.3f);//transparent gray with 0.3 alpha
             float screenLength = Gdx.graphics.getHeight() < Gdx.graphics.getWidth() ?
                     Gdx.graphics.getHeight() : Gdx.graphics.getWidth();
-            float thickness = Math.round(screenLength / 1000.0f * 10.0f) / 10.0f;//round to 1 decimal
+            float thickness = Math.round(screenLength / 800.0f * 10.0f) / 10.0f;//round to 1 decimal
             thickness = thickness > 0.5f ? thickness : 0.5f;//minimum 0.5
             /*
             batch.draw(pmTexture, screenX, screenY, getWidth(), thickness);
