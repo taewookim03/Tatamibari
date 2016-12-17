@@ -71,16 +71,6 @@ public class TatamibariGame extends Game {
 			skin.load(Gdx.files.internal("skin/uiskin.json"));
 		}
 		
-
-		//changing window size for android
-		/*
-		if (Gdx.app.getType().equals(Application.ApplicationType.Android)) {
-			//Gdx.graphics.setDisplayMode(500, 500, false);
-		} else {
-			//Gdx.graphics.setDisplayMode(Gdx.graphics.getWidth(),Gdx.graphics.getHeight(), true);
-		}
-		*/
-
 		//go to main menu
         setScreen(new MainMenuScreen(this));
 	}
