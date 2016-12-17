@@ -107,16 +107,20 @@ public class AboutScreen implements Screen {
         //table.setFillParent(true);
         //table.left();
 
-        Label gameDescription = new Label("Tatamibari is a logic puzzle game by Nikoli based on Japanse tatami mats.\n" +
-                "In a traditional Japanese room, the flooring consists of 2:1 rectangular mats\n" +
-                "and optional square mats, which are laid out in a variety of configurations.\n" +
-                "Above are some examples of tatami room layouts.", game.skin, "small");
+        Label desc1 = new Label("Tatamibari is a logic puzzle game by Nikoli based on Japanse tatami mats.", game.skin, "small");
+        Label desc2 = new Label("In a traditional Japanese room, the flooring consists of 2:1 rectangular mats", game.skin, "small");
+        Label desc3 = new Label("and optional square mats, which are laid out in a variety of configurations.", game.skin, "small");
+        Label desc4 = new Label("Above are some examples of tatami room layouts.", game.skin, "small");
         Label comment = new Label("I enjoyed solving problems that were available online, but I quickly ran out\n" +
                 "and just had to implement a random problem generator for the game.", game.skin, "small");
         Label credit = new Label("Programmed by Taewoo Kim\ntaewookim03@gmail.com", game.skin, "small");
+        //credit.setX(credit.getX() + Gdx.graphics.getWidth() * 0.05f);
 
         float padAmount = (int)(Gdx.graphics.getHeight() * 0.005);
-        table.add(gameDescription).pad(padAmount).align(Align.left).row();
+        table.add(desc1).pad(padAmount).align(Align.left).row();
+        table.add(desc2).pad(padAmount).align(Align.left).row();
+        table.add(desc3).pad(padAmount).align(Align.left).row();
+        table.add(desc4).pad(padAmount).align(Align.left).row();
         //table.add(comment).pad(padAmount).align(Align.left).row();
         //table.add(credit).pad(padAmount).align(Align.left).row();
 
