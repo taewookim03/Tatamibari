@@ -84,7 +84,7 @@ public class RulesScreen implements Screen {
         Label rule2 = new Label("    2. A rectangle with a + symbol must be a square", game.skin, "small");
         Label rule3 = new Label("    3. A rectangle with a - symbol must have a width greater than its height", game.skin, "small");
         Label rule4 = new Label("    4. A rectangle with a | symbol must have a height greater than its width", game.skin, "small");
-        Label rule5 = new Label("    5. Four rectangles may not share the same corner.", game.skin, "small");
+        Label rule5 = new Label("    5. Four rectangles may not share the same corner", game.skin, "small");
         Label goal = new Label("The goal of the game is to completely fill the board with rectangles. Good luck!", game.skin, "small");
 
         //add instructions to table
