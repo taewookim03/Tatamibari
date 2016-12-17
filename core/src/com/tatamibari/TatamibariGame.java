@@ -34,7 +34,7 @@ public class TatamibariGame extends Game {
 		//Freetype is not compatible with html-use default font
 		if (Gdx.app.getType().equals(Application.ApplicationType.WebGL)){
 			BitmapFont fontTitle = new BitmapFont(Gdx.files.internal("lato60.fnt"));
-			BitmapFont font = new BitmapFont(Gdx.files.internal("lato30.fnt"));
+			BitmapFont font = new BitmapFont(Gdx.files.internal("lato24.fnt"));
 			BitmapFont fontSmall = new BitmapFont(Gdx.files.internal("lato18.fnt"));
 			skin = new Skin();
 			skin.addRegions(new TextureAtlas(Gdx.files.internal("skin/uiskin-html.atlas")));
@@ -54,7 +54,7 @@ public class TatamibariGame extends Game {
 			BitmapFont fontTitle = generator.generateFont(parameter);
 
 			//normal size
-			parameter.size = (int)(screenSize * 0.05);
+			parameter.size = (int)(screenSize * 0.04);
 			BitmapFont font = generator.generateFont(parameter);
 
 			//small size
