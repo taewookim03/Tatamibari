@@ -33,10 +33,18 @@ public class TatamibariGame extends Game {
 		//Use Freetype, which allows runtime generation of fonts (to save space) that can scale with screen size
 		//Freetype is not compatible with html-use default font
 		if (Gdx.app.getType().equals(Application.ApplicationType.WebGL)){
-			skin = new Skin(Gdx.files.internal("skin/uiskin-html.json"));
+			BitmapFont fontTitle = new BitmapFont(Gdx.files.internal("lato60.fnt"));
+			BitmapFont font = new BitmapFont(Gdx.files.internal("lato30.fnt"));
+			BitmapFont fontSmall = new BitmapFont(Gdx.files.internal("lato18.fnt"));
+			skin = new Skin();
+			skin.addRegions(new TextureAtlas(Gdx.files.internal("skin/uiskin-html.atlas")));
+			skin.add("font-title", fontTitle);
+			skin.add("font", font);
+			skin.add("font-small", fontSmall);
+			skin.load(Gdx.files.internal("skin/uiskin-html.json"));
 		}
 
-		else{
+		else{//for non-html implementations, use Freetype to generate dynamic fonts
 			FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("Lato2OFL/Lato2OFL/Lato-Regular.ttf"));
 			FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
 			//title size
