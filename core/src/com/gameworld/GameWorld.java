@@ -1,20 +1,6 @@
 package com.gameworld;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
-import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.Touchable;
-import com.badlogic.gdx.scenes.scene2d.ui.Button;
-import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.gameobjects.Board;
 
@@ -38,17 +24,6 @@ public class GameWorld extends Stage {
 
         addActor(board);
     }
-
-/*
-    OVERRIDING HIT WAS CAUSING THE ISSUE WHERE DIALOG COULD NOT BE CLICKED. FINALLY FOUND THIS BUG!!!
-    @Override
-    public Tile hit(float stageX, float stageY, boolean touchable) {
-        if (super.hit(stageX, stageY, touchable) instanceof Tile){
-            return (Tile)super.hit(stageX, stageY, touchable);
-        }
-        return null;
-    }
-*/
 
     public Board getBoard(){
         return board;

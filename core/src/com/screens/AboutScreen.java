@@ -14,12 +14,10 @@ import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.gameobjects.Board;
-import com.gameobjects.Region;
-import com.gameobjects.Tile;
 import com.tatamibari.TatamibariGame;
 
 /**
- * Created by Gayming on 12/14/2016.
+ * Screen that provides some background info about the game
  */
 public class AboutScreen implements Screen {
     private TatamibariGame game;
@@ -104,8 +102,6 @@ public class AboutScreen implements Screen {
 
 
         Table table = new Table();
-        //table.setFillParent(true);
-        //table.left();
 
         Label desc1 = new Label("Tatamibari is a logic puzzle game by Nikoli based on Japanse tatami mats.", game.skin, "small");
         Label desc2 = new Label("In a traditional Japanese room, the flooring consists of 2:1 rectangular mats", game.skin, "small");
@@ -114,7 +110,6 @@ public class AboutScreen implements Screen {
         Label comment = new Label("I enjoyed solving problems that were available online, but I quickly ran out\n" +
                 "and just had to implement a random problem generator for the game.", game.skin, "small");
         Label credit = new Label("Programmed by Taewoo Kim\ntaewookim03@gmail.com", game.skin, "small");
-        //credit.setX(credit.getX() + Gdx.graphics.getWidth() * 0.05f);
 
         float padAmount = (int)(Gdx.graphics.getHeight() * 0.005);
         table.add(desc1).pad(padAmount).align(Align.left).row();

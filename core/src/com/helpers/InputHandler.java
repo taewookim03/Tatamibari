@@ -13,9 +13,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.gamelogic.GameLogic;
-import com.screens.MainMenuScreen;
 import com.screens.SizeSelectionScreen;
 import com.tatamibari.TatamibariGame;
 
@@ -37,7 +35,6 @@ public class InputHandler implements InputProcessor{
     private Tile currentTile;
     private Region newRegion;
 
-
     public InputHandler(TatamibariGame game, GameWorld world){
         this.game = game;
         this.world = world;
@@ -51,7 +48,6 @@ public class InputHandler implements InputProcessor{
         if (!world.isRunning()) {
             //System.out.println("InputHandler touchDown returning false");
             return false;
-            //return world.touchDown(screenX, screenY, pointer, button);
         }
 
         tileHitPosition = world.stageToScreenCoordinates(new Vector2(screenX, screenY));
@@ -99,12 +95,8 @@ public class InputHandler implements InputProcessor{
                         //currentTile.getRegion().setDraw(false);//if necessary to restore invalidated region, replace above with this
                     }
                 }
-
                 board.clearSelection();//to account for cases where selection shrinks
                 board.select(firstTile, lastTile, newRegion.getColor());//selects a rectangular region and marks them
-                //make sure that the selection color covers the existing tiles for visibility
-
-
                 //System.out.println("(" + currentTile.getRow() + ", " + currentTile.getCol() + ")");
             }
         }
@@ -114,7 +106,6 @@ public class InputHandler implements InputProcessor{
     @Override
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
         //update states when touch up, might want to encapsulate everything into an update() function if needed
-
         //Gdx.app.log("touchUp", "registered");
 
         if (!world.isRunning()){//if game is not running, do nothing
@@ -126,13 +117,6 @@ public class InputHandler implements InputProcessor{
 
         board.addRegion(newRegion);//add new region which was instantiated in touchDown based on tiles selected
 
-        /*
-        System.out.println(newRegion.getBottomRow());
-        System.out.println(newRegion.getTopRow());
-        System.out.println(newRegion.getLeftCol());
-        System.out.println(newRegion.getRightCol());
-        */
-
         //System.out.println("one symbol: " + newRegion.hasOneSymbol());
         //System.out.println("symbol match: " + newRegion.matchesSymbol());
 
@@ -141,7 +125,7 @@ public class InputHandler implements InputProcessor{
             List<Tile> tiles = newRegion.getTiles();
             System.out.println(tiles.get(0).getRow() + ", " + tiles.get(0).getCol() + ", " +
                     tiles.get(tiles.size()-1).getRow() + ", " +tiles.get(tiles.size()-1).getCol());
-                    */
+            */
 
             //if compliant, clear existing region from overlapping tiles
             board.clearOverlappingRegions();
@@ -150,10 +134,7 @@ public class InputHandler implements InputProcessor{
             board.removeRegion(newRegion);
         }
         board.refreshRegions();
-
         //System.out.println(board.getX() + ", " + board.getY() + ", " + board.getWidth() + ", " + board.getHeight());
-
-        //run some sort of game logic for rule checking e.g. logic member has board and and calls .checkRules function
 
         //if a new selection has overlaps with assigned tiles (checked at touchUp) then the old one will be invalidated.
         //need to make a board function to do that as well (keep assigned grouped together maybe use Group of actors?
@@ -161,7 +142,6 @@ public class InputHandler implements InputProcessor{
 
         //clean up
         board.clearSelection();
-
         firstTile = null;
         lastTile = null;
         currentTile = null;
@@ -171,8 +151,6 @@ public class InputHandler implements InputProcessor{
             world.setSolved();
             //System.out.println("solved!");
             this.showMainMenuDialog();
-
-            return true;
         }
 
         return true;
@@ -205,14 +183,12 @@ public class InputHandler implements InputProcessor{
 
     public void showMainMenuDialog() {
         Dialog dialog = new Dialog("", game.skin) {
-
             @Override
             protected void result(Object object) {
                 boolean mainMenu = (Boolean) object;
                 if (mainMenu) {
                     //go to size selection
                     game.setScreen(new SizeSelectionScreen(game));
-
                 } else {
                     remove();
                 }
@@ -246,12 +222,9 @@ public class InputHandler implements InputProcessor{
 
         dialog.text(label);
         dialog.button(backButton, true);
-        //dialog.getButtonTable().setHeight(300);
-        //dialog.button("Back", true);
 
         //dialog.button("", false);
         dialog.key(Input.Keys.ENTER, true);
-        //dialog.key(Input.Keys.ESCAPE, false);
         dialog.setMovable(false);
         dialog.getTitleLabel().setAlignment(Align.center);
         dialog.show(world);

@@ -2,24 +2,23 @@ package com.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import com.gameworld.GameWorld;
 import com.tatamibari.TatamibariGame;
 
+/**
+ * Main menu screen
+ */
 
 public class MainMenuScreen implements Screen {
     private TatamibariGame game;//need this to set screen based on which menu item is chosen
     private OrthographicCamera camera;
-    //private GameWorld world;//stage containing game elements, to be initiated when user chooses board size and difficulty
     private Stage menuStage;
     private Viewport viewport;
 
@@ -27,7 +26,7 @@ public class MainMenuScreen implements Screen {
         this.game = game;
         camera = new OrthographicCamera();
         viewport = new ScreenViewport(camera);
-        viewport.apply();//what does this do?
+        viewport.apply();
         camera.setToOrtho(false);
         camera.update();
         //instantiate world based on which size board is touched
@@ -80,9 +79,8 @@ public class MainMenuScreen implements Screen {
         float buttonHeight = rulesButton.getHeight();
 
         //add buttons to table
-        //menuTable.add(menuPrompt);
-        //menuTable.row();
         int padAmount = (int)(Gdx.graphics.getHeight() * 0.02);
+        //menuTable.add(menuPrompt).pad(padAmount)row();
         menuTable.add(title).pad((int)(Gdx.graphics.getHeight() * 0.1)).row();
         menuTable.add(rulesButton).pad(padAmount).row();
         menuTable.add(playButton).size(buttonWidth, buttonHeight).pad(padAmount).row();
@@ -99,7 +97,6 @@ public class MainMenuScreen implements Screen {
         Gdx.gl.glClearColor(1,1,1,1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        //menuStage.act();
         camera.update();
         menuStage.draw();
     }

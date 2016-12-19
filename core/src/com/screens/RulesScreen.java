@@ -14,10 +14,12 @@ import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.gameobjects.Board;
-import com.gameobjects.Region;
 import com.gameobjects.Tile;
 import com.tatamibari.TatamibariGame;
 
+/**
+ * Manages the how to play (rules) screen
+ */
 
 public class RulesScreen implements Screen {
     private TatamibariGame game;
@@ -28,7 +30,7 @@ public class RulesScreen implements Screen {
         this.game = game;
         camera = new OrthographicCamera();
         Viewport viewport = new ScreenViewport(camera);
-        viewport.apply();//what does this do?
+        viewport.apply();
         camera.setToOrtho(false);
         camera.update();
         stage = new Stage(viewport);
@@ -71,12 +73,8 @@ public class RulesScreen implements Screen {
         stage.addActor(board);
 
         Table table = new Table();
-        //table.setFillParent(true);
-        //table.left();
 
         //create instruction labels
-        //BitmapFont font = new BitmapFont(Gdx.files.internal("arial_small.fnt"));
-        //Label.LabelStyle labelStyle = new Label.LabelStyle(font, Color.BLACK);
         Label howToPlay1 = new Label("Divide the board into rectangles. Touch and drag to assign a partitioned",
                 game.skin, "small");
         Label howToPlay2 = new Label("rectangle according to the following rules:", game.skin, "small");
@@ -100,7 +98,6 @@ public class RulesScreen implements Screen {
         //table.add(goal).pad(10).align(Align.left);
 
         table.setX((Gdx.graphics.getWidth() - table.getWidth()) / 2);
-        //table.setY(400);
         table.setY(board.getY() - table.getHeight() - Gdx.graphics.getHeight() / 8);
 
         //add table
