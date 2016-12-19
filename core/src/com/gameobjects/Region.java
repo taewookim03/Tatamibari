@@ -4,11 +4,9 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.Group;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,20 +26,24 @@ public class Region {
     private boolean draw;
     private ShapeRenderer sr;
 
-    private static final float BORDER_THICKNESS = 3.0f;
+    private static final float BORDER_THICKNESS = getBorderThickness();//3.0f on 800x600 looks good
+
+    private static float getBorderThickness(){
+        float screenLength = Gdx.graphics.getHeight() < Gdx.graphics.getWidth() ?
+                Gdx.graphics.getHeight() : Gdx.graphics.getWidth();
+        return Math.round(screenLength * 0.005f * 10.0f)/10.0f;//round to 1 decimal
+    }
 
     public Region(Board board){
         this.board = board;
         //color = new Color(Color.rgba8888(255/255f, 255/255f, 0/255f, 0.3f));//light yellow
-        color = new Color(Color.rgba8888(1f, 0.627451f, 0.08235294f, 0.5f));
+        color = new Color(Color.rgba8888(1f, 0.627451f, 0.08235294f, 0.5f));//orange
         tiles = new ArrayList<Tile>();
         draw = true;
         sr = new ShapeRenderer();
-
-        //BORDER_THICKNESS = board.getOutlineThickness() * 3 / 2;
     }
 
-    public Region(Board board, Color color){//idea: maybe color-code -, |, + ?
+    public Region(Board board, Color color){
         this(board);
         this.color = color;
     }
@@ -59,13 +61,12 @@ public class Region {
         }
     }
 
-    public void addTile(Tile tile){
+    private void addTile(Tile tile){
         tile.setRegion(this);
         tile.setColor(color);
         tiles.add(tile);
 
     }
-    //need some kind of a container of colors to assign to each region and free up as a region is deleted, etc.
 
     public void clearRegionFromTiles(){
         for (Tile tile : tiles){

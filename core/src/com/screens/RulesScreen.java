@@ -77,9 +77,9 @@ public class RulesScreen implements Screen {
         //create instruction labels
         //BitmapFont font = new BitmapFont(Gdx.files.internal("arial_small.fnt"));
         //Label.LabelStyle labelStyle = new Label.LabelStyle(font, Color.BLACK);
-        Label howToPlay1 = new Label("Divide the board into rectangles. Touch and drag to assign a partitioned rectangle",
+        Label howToPlay1 = new Label("Divide the board into rectangles. Touch and drag to assign a partitioned",
                 game.skin, "small");
-        Label howToPlay2 = new Label("according to the following rules:", game.skin, "small");
+        Label howToPlay2 = new Label("rectangle according to the following rules:", game.skin, "small");
         Label rule1 = new Label("    1. Each rectangle must contain exactly one symbol", game.skin, "small");
         Label rule2 = new Label("    2. A rectangle with a + symbol must be a square", game.skin, "small");
         Label rule3 = new Label("    3. A rectangle with a - symbol must have a width greater than its height", game.skin, "small");

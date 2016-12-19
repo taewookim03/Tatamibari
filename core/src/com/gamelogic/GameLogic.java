@@ -1,8 +1,5 @@
 package com.gamelogic;
 
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.g3d.particles.influencers.ColorInfluencer;
-import com.badlogic.gdx.scenes.scene2d.ui.List;
 import com.gameobjects.Board;
 import com.gameobjects.Region;
 import com.gameobjects.Tile;
@@ -62,12 +59,8 @@ public final class GameLogic {
             }
         }
 
-        //check the 4-corner rule (four regions may not share the same corner)
-        if (hasFourRegionCorner()){
-            return false;
-        }
-
-        return true;
+        //check the 4-corner rule (four regions may not share the same corner - if they do, return false)
+        return !hasFourRegionCorner();
     }
 
 
@@ -84,7 +77,7 @@ public final class GameLogic {
 
         @Override
         public int hashCode() {
-            int hashDirection = new Boolean(direction).hashCode();
+            int hashDirection = Boolean.valueOf(direction).hashCode();
             int hashIndex = divideIndex;
             return 31 * hashIndex + hashDirection;//31 chosen as a small prime for the hash
         }
@@ -106,16 +99,13 @@ public final class GameLogic {
         public boolean getDirection(){
             return direction;
         }
-        public int getDivideIndex(){
+        private int getDivideIndex(){
             return divideIndex;
         }
     }
 
 
     public void generateRandomProblem(int divisionDepth, int depthCoefficient){
-        boolean randomized = false;//boolean indicating successful generation of a random problem
-        while (!randomized){
-            //System.out.println("---------------NEW PROBLEM-----------------");
         /*
         Random problem generation algorithm
         1. Select the entire board as a region
@@ -130,7 +120,9 @@ public final class GameLogic {
         8. For each region, pick a random tile on the region and assign an appropriate symbol (-, |, +)
         9. Remove all regions created (but not the symbols)
          */
-
+        boolean randomized = false;//boolean indicating successful generation of a random problem
+        while (!randomized){
+            //System.out.println("---------------NEW PROBLEM-----------------");
             //select entire board and add it as a region
             board.select(board.getTile(0, 0), board.getTile(board.getRows() - 1, board.getCols() - 1));
             Region newRegion = new Region(board);
@@ -150,7 +142,6 @@ public final class GameLogic {
                 if (region.isHorizontal()) ++horizontal;
                 else if (region.isVertical()) ++vertical;
                 else ++square;
-
             }
 
             //if symbol ratios are extreme (e.g. horizontal:vertical is 4:1)
@@ -224,8 +215,6 @@ public final class GameLogic {
     }
 
 
-
-
     //takes a region, divides it and generates 2 new regions in place of the original one
     private void divideRegion(int depth, int depthCoefficient, Region region){
         //base cases
@@ -245,12 +234,6 @@ public final class GameLogic {
         //direction does not have any valid divisions)
         //true: divide vertically (dividing line is vertical across the board)
         //false: divide horizontally (dividing line is horizontal across the board)
-        //boolean divideVertical = rand.nextBoolean();
-        /*
-        boolean[] divideDirections = new boolean[2];
-        divideDirections[0] = rand.nextBoolean();
-        divideDirections[1] = !divideDirections[0];
-        */
 
         boolean divided = false;//boolean to track if the region has successfully been divided
         //create the new regions but don't add them yet
@@ -305,13 +288,11 @@ public final class GameLogic {
                 break;
             }
             //if not, delete the regions and continue the loop
-
             /*
             System.out.println("invalid regions");
             System.out.println("region 1: " + region1);
             System.out.println("region 2: " + region2);
             */
-
             board.removeRegion(region1);
             board.removeRegion(region2);
         }

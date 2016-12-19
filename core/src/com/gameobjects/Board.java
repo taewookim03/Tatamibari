@@ -5,7 +5,6 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.gamelogic.GameLogic;
@@ -20,11 +19,8 @@ public class Board extends Group {
     private final int rows;
     private final int cols;
     private Tile[][] tiles;
-
     private List<Region> regions;//maybe initialize regions with different colors
-
     private ShapeRenderer sr;
-
     private GameLogic logic;
 
     public Board(int rows, int cols){
@@ -232,9 +228,6 @@ public class Board extends Group {
     public void draw(Batch batch, float parentAlpha) {
         super.draw(batch, parentAlpha);//draw tiles
 
-        //http://stackoverflow.com/questions/16381106/libgdx-shaperenderer-in-group-draw-renders-in-wrong-colour
-        //also note performance hit of batch being/end
-
         //draw regions
         for (Region region : regions){
             region.draw(batch, parentAlpha);
@@ -289,10 +282,4 @@ public class Board extends Group {
             }
         }
     }
-    /*
-    public Tile[][] getTiles(){
-        return tiles;
-    }
-    */
-
 }
