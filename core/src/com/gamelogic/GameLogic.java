@@ -17,7 +17,7 @@ public final class GameLogic {
         rand = new Random();
     }
 
-    public boolean hasFourRegionCorner(){
+    private boolean hasFourRegionCorner(){
         Map<Integer, Integer> cornerCount = new HashMap<Integer, Integer>();
         //assign each corner unique index by calculating
         //corner = row grid * number of column grids in a row + column grid
@@ -69,20 +69,18 @@ public final class GameLogic {
         private final boolean direction;//true = vertical, false = horizontal
         private final int divideIndex;
 
-        public Pair(boolean direction, int divideIndex){
+        private Pair(boolean direction, int divideIndex){
             super();
             this.direction = direction;
             this.divideIndex = divideIndex;
         }
 
-        @Override
         public int hashCode() {
             int hashDirection = Boolean.valueOf(direction).hashCode();
             int hashIndex = divideIndex;
             return 31 * hashIndex + hashDirection;//31 chosen as a small prime for the hash
         }
 
-        @Override
         public boolean equals(Object other) {//two pairs are equal if the members are equal
             if (other instanceof Pair){
                 Pair otherPair = (Pair)other;
@@ -91,7 +89,6 @@ public final class GameLogic {
             return false;
         }
 
-        @Override
         public String toString() {
             return (direction ? "vertical" : "horizontal") + "," + divideIndex;
         }
@@ -279,31 +276,19 @@ public final class GameLogic {
 
             //check that board is valid
             if (!hasFourRegionCorner()){//if valid, quit the loop
-                /*
-                System.out.println("has valid regions");
-                System.out.println("region 1: " + region1);
-                System.out.println("region 2: " + region2);
-                */
                 divided = true;
                 break;
             }
             //if not, delete the regions and continue the loop
-            /*
-            System.out.println("invalid regions");
-            System.out.println("region 1: " + region1);
-            System.out.println("region 2: " + region2);
-            */
             board.removeRegion(region1);
             board.removeRegion(region2);
         }
-
             //check if division is successful
             //if not, it means there are no valid division in the division direction randomly chosen
             //flip the direction and try again - track that both directions have been tried
         if (divided){
             //recursion - randomize depth reduction - randomly reduce by a number in range [1 ... 3], for example
             //determine the sweet spot range for a good generator by trial and error depending on board size
-
             //int depthReduction = 1;
             int depthReduction = rand.nextInt(depthCoefficient) + 1;//reduce depth randomly
             divideRegion(depth - depthReduction, depthCoefficient, region1);
@@ -311,7 +296,7 @@ public final class GameLogic {
             depthReduction = rand.nextInt(depthCoefficient) + 1;
             divideRegion(depth - depthReduction, depthCoefficient, region2);
         }
-        if (!divided){//if a division has not occurred, restore the original region
+        else {//if a division has not occurred, restore the original region
             board.select(region1FirstTile, region2LastTile);
             board.addRegion(new Region(board));
             board.clearSelection();
