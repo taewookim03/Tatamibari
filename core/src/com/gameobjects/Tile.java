@@ -8,9 +8,6 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.utils.BufferUtils;
-
-import java.nio.IntBuffer;
 
 
 public class Tile extends Actor {//Actor vs Image?
@@ -30,12 +27,10 @@ public class Tile extends Actor {//Actor vs Image?
     private final int col;
 
     private boolean selected;//current selection (input handling)
-    //private boolean assigned;//replace with hasParent/getParent of the Actor class
     private boolean drawOutline = true;//this is an option to allow drawing a board without tile outlines
 
     private Region region;//region of the board that the tile belongs to
 
-    //private Color color; //this is part of Actor class
     private Symbol symbol;//symbol contained in the tile
     private static ShapeRenderer sr;//for drawing the tile
     private static Texture pmTexture;//pixmap texture for drawing methods
@@ -99,54 +94,32 @@ public class Tile extends Actor {//Actor vs Image?
     @Override
     public void draw(Batch batch, float parentAlpha) {
         //this function originally used shaperenderer to render the shapes and lines, but due to performance hit
-        //a single batch with a dynamically generated texture from pixelmap was used to draw everything
-
-        //float screenX = getScreenX();
-        //float screenY = getScreenY();
+        //a single batch with a dynamically generated texture from pixelmap was used to draw
 
         //draw the tile (square)
         batch.setColor(getColor());
         batch.draw(pmTexture, getX(), getY(), getWidth(), getHeight());
 
-        //batch.end();
-
         Gdx.gl.glEnable(GL20.GL_BLEND);
         Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
 
-        //sr.setProjectionMatrix(getStage().getCamera().combined);
-
-        /*
-        //draw tiles (white squares)
-        sr.begin(ShapeRenderer.ShapeType.Filled);
-        sr.setColor(getColor());
-        sr.rect(screenX, screenY, getWidth(), getHeight());
-        */
-
         //draw symbol
-        //sr.begin(ShapeRenderer.ShapeType.Filled);
         if(symbol != Symbol.NONE){
-            //sr.setColor(Color.BLACK);
             batch.setColor(Color.BLACK);
             switch (symbol){
                 case HORIZONTAL:
-                    //drawSymbolHorizontal(sr, screenX, screenY, getWidth(), getHeight());
                     drawSymbolHorizontal(batch);
                     break;
                 case VERTICAL:
-                    //drawSymbolVertical(sr, screenX, screenY, getWidth(), getHeight());
                     drawSymbolVertical(batch);
                     break;
                 case SQUARE:
-                    //drawSymbolHorizontal(sr, screenX, screenY, getWidth(), getHeight());
-                    //drawSymbolVertical(sr, screenX, screenY, getWidth(), getHeight());
                     drawSymbolHorizontal(batch);
                     drawSymbolVertical(batch);
                     break;
             }
 
         }
-        //sr.end();
-        //batch.begin();
 
         //draw tile outline(thin gray lines)
         if (drawOutline){
@@ -155,39 +128,14 @@ public class Tile extends Actor {//Actor vs Image?
                     Gdx.graphics.getHeight() : Gdx.graphics.getWidth();
             float thickness = Math.round(screenLength / 800.0f * 10.0f) / 10.0f;//round to 1 decimal
             thickness = thickness > 0.5f ? thickness : 0.5f;//minimum 0.5
-            /*
-            batch.draw(pmTexture, screenX, screenY, getWidth(), thickness);
-            batch.draw(pmTexture, screenX, screenY, thickness, getHeight());
-            batch.draw(pmTexture, screenX, screenY + getHeight() - thickness, getWidth(), thickness);
-            batch.draw(pmTexture, screenX + getWidth() - thickness, screenY, thickness, getHeight());
-            */
 
             batch.draw(pmTexture, getX(), getY(), getWidth(), thickness);
             batch.draw(pmTexture, getX(), getY(), thickness, getHeight());
             batch.draw(pmTexture, getX(), getY() + getHeight() - thickness, getWidth(), thickness);
             batch.draw(pmTexture, getX() + getWidth() - thickness, getY(), thickness, getHeight());
-
-            /*
-            sr.set(ShapeRenderer.ShapeType.Line);
-            sr.setColor(Color.GRAY);
-            sr.rect(screenX, screenY, getWidth(), getHeight());
-            */
         }
     }
 
-    /*
-    private void drawSymbolHorizontal(ShapeRenderer sr, float x, float y, float width, float height){
-        //sr.rect(x + getWidth()/3, y + getHeight()/2, getWidth()/3, SYMBOL_THICKNESS);
-        sr.rectLine(x + getWidth()/3, y + getHeight()/2,
-                x + getWidth()*2/3, y + getHeight()/2,
-                SYMBOL_THICKNESS);
-    }
-    private void drawSymbolVertical(ShapeRenderer sr, float x, float y, float width, float height){
-        sr.rectLine(x + getWidth()/2, y + getHeight()/3,
-                x + getWidth()/2, y + getHeight()*2/3,
-                SYMBOL_THICKNESS);
-    }
-    */
     private void drawSymbolHorizontal(Batch batch){
         batch.draw(pmTexture, getX() + getWidth() / 3, getY() + getHeight() / 2 - SYMBOL_THICKNESS / 2,
                 getWidth() / 3, SYMBOL_THICKNESS);
@@ -225,7 +173,6 @@ public class Tile extends Actor {//Actor vs Image?
         else{
             this.setColor(region.getColor());
         }
-        //this.setColor(region.getColor());
     }
 
     public void setSelected(boolean b, Color color){
