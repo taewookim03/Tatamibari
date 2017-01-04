@@ -78,7 +78,11 @@ public final class GameLogic {
         public int hashCode() {
             int hashDirection = Boolean.valueOf(direction).hashCode();
             int hashIndex = divideIndex;
-            return 31 * hashIndex + hashDirection;//31 chosen as a small prime for the hash
+
+            int result = 17;//non-zero starting constant
+            result = 31 * result + hashIndex;
+            result = 31 * result + hashDirection;
+            return result;//31 chosen as a small prime for the hash
         }
 
         public boolean equals(Object other) {//two pairs are equal if the members are equal
