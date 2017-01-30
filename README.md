@@ -6,7 +6,9 @@ To play:
 https://taewookim03.github.io/tatamibari-web/
 
 More info/rules:
+
 http://www.janko.at/Raetsel/Nikoli/Tatamibari.htm
+
 https://en.wikipedia.org/wiki/Tatamibari
 
 ## Getting Started
