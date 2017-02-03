@@ -6,7 +6,7 @@ A pen and paper NP-complete logic puzzle game implemented digitally - playable o
 https://taewookim03.github.io/tatamibari-web/
 
 ##Solving algorithm:
-I have implemented an optimized backtracking algorithm (a la common sudoku solving algorithm) to solve any instance of a Tatamibari puzzle. It is presented and takes input like a leetcode-style problem - try it out! Problem and solution available [here](https://github.com/taewookim03/Algorithms/blob/master/src/Other/tatamibari_solver.java)
+I have implemented an optimized backtracking algorithm (a la common sudoku solving algorithm) to solve any instance of a Tatamibari puzzle. Do try implementing one own your own, and let me know of any cool solutions! Problem statement and my solution available [here](https://github.com/taewookim03/Algorithms/blob/master/src/Other/tatamibari_solver.java)
 
 ##More info/rules:  
 http://www.janko.at/Raetsel/Nikoli/Tatamibari.htm  
