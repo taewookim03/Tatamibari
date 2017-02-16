@@ -37,7 +37,7 @@ public class AboutScreen implements Screen {
 
     @Override
     public void show() {
-        //create a couple small boards for tatami layout illustration
+        //create a couple small example boards for tatami layout illustration
         float screenSize = Gdx.graphics.getHeight() < Gdx.graphics.getWidth() ?
                 Gdx.graphics.getHeight() : Gdx.graphics.getWidth();
         Board board1 = new Board(3, 3, screenSize / 4, screenSize / 4, 0.0f);
@@ -45,21 +45,11 @@ public class AboutScreen implements Screen {
         //set all tile outlines to not draw
         board1.setDrawTileOutlines(false);
 
-        board1.select(board1.getTile(0, 0), board1.getTile(0, 1));
-        board1.addRegion();
-        board1.clearSelection();
-        board1.select(board1.getTile(0, 2), board1.getTile(1, 2));
-        board1.addRegion();
-        board1.clearSelection();
-        board1.select(board1.getTile(1, 0), board1.getTile(2, 0));
-        board1.addRegion();
-        board1.clearSelection();
-        board1.select(board1.getTile(2, 1), board1.getTile(2, 2));
-        board1.addRegion();
-        board1.clearSelection();
-        board1.select(board1.getTile(1, 1), board1.getTile(1, 1));
-        board1.addRegion();
-        board1.clearSelection();
+        board1.addRegion(board1.getTile(0, 0), board1.getTile(0, 1));
+        board1.addRegion(board1.getTile(0, 2), board1.getTile(1, 2));
+        board1.addRegion(board1.getTile(1, 0), board1.getTile(2, 0));
+        board1.addRegion(board1.getTile(2, 1), board1.getTile(2, 2));
+        board1.addRegion(board1.getTile(1, 1), board1.getTile(1, 1));
 
         stage.addActor(board1);
 
@@ -67,30 +57,14 @@ public class AboutScreen implements Screen {
         board2.removeAllSymbols();
         board2.setDrawTileOutlines(false);
 
-        board2.select(board2.getTile(0, 0), board2.getTile(0, 1));
-        board2.addRegion();
-        board2.clearSelection();
-        board2.select(board2.getTile(0, 2), board2.getTile(0, 3));
-        board2.addRegion();
-        board2.clearSelection();
-        board2.select(board2.getTile(1, 0), board2.getTile(2, 0));
-        board2.addRegion();
-        board2.clearSelection();
-        board2.select(board2.getTile(1, 1), board2.getTile(1, 2));
-        board2.addRegion();
-        board2.clearSelection();
-        board2.select(board2.getTile(2, 1), board2.getTile(2, 2));
-        board2.addRegion();
-        board2.clearSelection();
-        board2.select(board2.getTile(1, 3), board2.getTile(2, 3));
-        board2.addRegion();
-        board2.clearSelection();
-        board2.select(board2.getTile(3, 0), board2.getTile(3, 1));
-        board2.addRegion();
-        board2.clearSelection();
-        board2.select(board2.getTile(3, 2), board2.getTile(3, 3));
-        board2.addRegion();
-        board2.clearSelection();
+        board2.addRegion(board2.getTile(0, 0), board2.getTile(0, 1));
+        board2.addRegion(board2.getTile(0, 2), board2.getTile(0, 3));
+        board2.addRegion(board2.getTile(1, 0), board2.getTile(2, 0));
+        board2.addRegion(board2.getTile(1, 1), board2.getTile(1, 2));
+        board2.addRegion(board2.getTile(2, 1), board2.getTile(2, 2));
+        board2.addRegion(board2.getTile(1, 3), board2.getTile(2, 3));
+        board2.addRegion(board2.getTile(3, 0), board2.getTile(3, 1));
+        board2.addRegion(board2.getTile(3, 2), board2.getTile(3, 3));
 
         float gap = (Gdx.graphics.getWidth() - (board1.getWidth() + board2.getWidth())) / 3;//gap between board 1 and 2
         board1.setPosition((Gdx.graphics.getWidth() - (board1.getWidth() + board2.getWidth() + gap)) / 2,
@@ -103,19 +77,19 @@ public class AboutScreen implements Screen {
 
         Table table = new Table();
 
-        Label desc1 = new Label("Tatamibari is a logic puzzle game by Nikoli based on Japanse tatami mats.", game.skin, "small");
-        Label desc2 = new Label("In a traditional Japanese room, the flooring consists of 2:1 rectangular mats", game.skin, "small");
-        Label desc3 = new Label("and optional square mats, which are laid out in a variety of configurations.", game.skin, "small");
-        Label desc4 = new Label("Above are some examples of tatami room layouts.", game.skin, "small");
-        Label comment = new Label("I enjoyed solving problems that were available online, but I quickly ran out\n" +
-                "and just had to implement a random problem generator for the game.", game.skin, "small");
+        Label[] desc = new Label[]{
+                new Label("Tatamibari is a logic puzzle game by Nikoli based on Japanse tatami mats.", game.skin, "small"),
+                new Label("In a traditional Japanese room, the flooring consists of 2:1 rectangular mats", game.skin, "small"),
+                new Label("and optional square mats, which are laid out in a variety of configurations.", game.skin, "small"),
+                new Label("Above are some examples of tatami room layouts.", game.skin, "small"),
+
+        };
         Label credit = new Label("Programmed by Taewoo Kim\ntaewookim03@gmail.com", game.skin, "small");
 
         float padAmount = (int)(Gdx.graphics.getHeight() * 0.005);
-        table.add(desc1).pad(padAmount).align(Align.left).row();
-        table.add(desc2).pad(padAmount).align(Align.left).row();
-        table.add(desc3).pad(padAmount).align(Align.left).row();
-        table.add(desc4).pad(padAmount).align(Align.left).row();
+        for (Label d : desc){
+            table.add(d).pad(padAmount).align(Align.left).row();
+        }
         //table.add(comment).pad(padAmount).align(Align.left).row();
         //table.add(credit).pad(padAmount).align(Align.left).row();
 

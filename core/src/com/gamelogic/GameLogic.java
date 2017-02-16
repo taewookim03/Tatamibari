@@ -163,7 +163,7 @@ public final class GameLogic {
 
             //one edge has mostly 1x1 squares, which limits possible divisions in other areas of the board
             //use an acceptable ratio r (up to r/100% squares on an edge is OK)
-            double squaresCutoff = 0.5;
+            double squaresEdgeLimit = 0.4;
             int squaresTopRow = 0, squaresBottomRow = 0, squaresLeftCol = 0, squaresRightCol = 0;
 
             //iterate over all regions and check if it is a square on any edge of the board, and keep count
@@ -177,8 +177,8 @@ public final class GameLogic {
             }
 
             //if number of squares on an edge exceeds cutoff, randomize again
-            if (squaresTopRow > squaresCutoff * board.getCols() || squaresBottomRow > squaresCutoff * board.getCols()
-                    || squaresLeftCol > squaresCutoff * board.getRows() || squaresRightCol > squaresCutoff * board.getRows()){
+            if (squaresTopRow > squaresEdgeLimit * board.getCols() || squaresBottomRow > squaresEdgeLimit * board.getCols()
+                    || squaresLeftCol > squaresEdgeLimit * board.getRows() || squaresRightCol > squaresEdgeLimit * board.getRows()){
                 //System.out.println("Failed edge squares check: " + squaresTopRow + " " +squaresBottomRow + " " +
                 //squaresLeftCol + " " + squaresRightCol);
                 randomized = false;

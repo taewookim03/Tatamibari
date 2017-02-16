@@ -50,24 +50,12 @@ public class RulesScreen implements Screen {
         board.setSymbol(1, 3, Tile.Symbol.SQUARE);
         board.setSymbol(3, 2, Tile.Symbol.HORIZONTAL);
 
-        board.select(board.getTile(0, 0), board.getTile(0, 0));
-        board.addRegion();
-        board.clearSelection();
-        board.select(board.getTile(1, 0), board.getTile(2, 0));
-        board.addRegion();
-        board.clearSelection();
-        board.select(board.getTile(0, 1), board.getTile(1, 1));
-        board.addRegion();
-        board.clearSelection();
-        board.select(board.getTile(3, 0), board.getTile(3, 0));
-        board.addRegion();
-        board.clearSelection();
-        board.select(board.getTile(2, 1), board.getTile(3, 3));
-        board.addRegion();
-        board.clearSelection();
-        board.select(board.getTile(0, 2), board.getTile(1, 3));
-        board.addRegion();
-        board.clearSelection();
+        board.addRegion(board.getTile(0, 0), board.getTile(0, 0));
+        board.addRegion(board.getTile(1, 0), board.getTile(2, 0));
+        board.addRegion(board.getTile(0, 1), board.getTile(1, 1));
+        board.addRegion(board.getTile(3, 0), board.getTile(3, 0));
+        board.addRegion(board.getTile(2, 1), board.getTile(3, 3));
+        board.addRegion(board.getTile(0, 2), board.getTile(1, 3));
 
         board.setPosition(board.getX(), Gdx.graphics.getHeight() - board.getHeight() * 1.3f);
         stage.addActor(board);

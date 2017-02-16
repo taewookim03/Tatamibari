@@ -152,6 +152,12 @@ public class Board extends Group {
         addRegion(new Region(this));
     }
 
+    public void addRegion(Tile firstTile, Tile lastTile){
+        select(firstTile, lastTile);
+        addRegion();
+        clearSelection();
+    }
+
     public void removeRegion(Region region){
         //System.out.println("deleting region: " + region);
         region.clearRegionFromTiles();
