@@ -45,11 +45,11 @@ public class AboutScreen implements Screen {
         //set all tile outlines to not draw
         board1.setDrawTileOutlines(false);
 
-        board1.addRegion(board1.getTile(0, 0), board1.getTile(0, 1));
-        board1.addRegion(board1.getTile(0, 2), board1.getTile(1, 2));
-        board1.addRegion(board1.getTile(1, 0), board1.getTile(2, 0));
-        board1.addRegion(board1.getTile(2, 1), board1.getTile(2, 2));
-        board1.addRegion(board1.getTile(1, 1), board1.getTile(1, 1));
+        board1.addRegion(0,0, 0,1);
+        board1.addRegion(0,2, 1,2);
+        board1.addRegion(1,0, 2,0);
+        board1.addRegion(2,1, 2,2);
+        board1.addRegion(1,1, 1,1);
 
         stage.addActor(board1);
 
@@ -57,14 +57,14 @@ public class AboutScreen implements Screen {
         board2.removeAllSymbols();
         board2.setDrawTileOutlines(false);
 
-        board2.addRegion(board2.getTile(0, 0), board2.getTile(0, 1));
-        board2.addRegion(board2.getTile(0, 2), board2.getTile(0, 3));
-        board2.addRegion(board2.getTile(1, 0), board2.getTile(2, 0));
-        board2.addRegion(board2.getTile(1, 1), board2.getTile(1, 2));
-        board2.addRegion(board2.getTile(2, 1), board2.getTile(2, 2));
-        board2.addRegion(board2.getTile(1, 3), board2.getTile(2, 3));
-        board2.addRegion(board2.getTile(3, 0), board2.getTile(3, 1));
-        board2.addRegion(board2.getTile(3, 2), board2.getTile(3, 3));
+        board2.addRegion(0,0, 0,1);
+        board2.addRegion(0,2, 0,3);
+        board2.addRegion(1,0, 2,0);
+        board2.addRegion(1,1, 1,2);
+        board2.addRegion(2,1, 2,2);
+        board2.addRegion(1,3, 2,3);
+        board2.addRegion(3,0, 3,1);
+        board2.addRegion(3,2, 3,3);
 
         float gap = (Gdx.graphics.getWidth() - (board1.getWidth() + board2.getWidth())) / 3;//gap between board 1 and 2
         board1.setPosition((Gdx.graphics.getWidth() - (board1.getWidth() + board2.getWidth() + gap)) / 2,
@@ -82,7 +82,6 @@ public class AboutScreen implements Screen {
                 new Label("In a traditional Japanese room, the flooring consists of 2:1 rectangular mats", game.skin, "small"),
                 new Label("and optional square mats, which are laid out in a variety of configurations.", game.skin, "small"),
                 new Label("Above are some examples of tatami room layouts.", game.skin, "small"),
-
         };
         Label credit = new Label("Programmed by Taewoo Kim\ntaewookim03@gmail.com", game.skin, "small");
 

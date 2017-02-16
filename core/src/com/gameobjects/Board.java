@@ -152,7 +152,9 @@ public class Board extends Group {
         addRegion(new Region(this));
     }
 
-    public void addRegion(Tile firstTile, Tile lastTile){
+    public void addRegion(int r1, int c1, int r2, int c2){
+        Tile firstTile = getTile(r1, c1);
+        Tile lastTile = getTile(r2, c2);
         select(firstTile, lastTile);
         addRegion();
         clearSelection();
